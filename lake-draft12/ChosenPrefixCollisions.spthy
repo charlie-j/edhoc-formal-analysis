@@ -1,0 +1,43 @@
+theory coll
+
+// Minimal model to obtain the Chosen Prefix Collisions
+//  tamarin-prover ChosenPrefixCollisions.spthy -D=AttackerDomain -D=CPcol -D=LEcol --prove
+
+
+begin
+
+builtins: concatenation
+
+functions: wrap/1
+
+#include "HashLibrary.splib"
+
+rule init1:
+[ Fr(~G_X)]
+--[OnceI()]->[Out(~G_X), I(~G_X)]
+
+rule init2:
+ let tohashTH_2 = 'method' || 'suitesI' || wrap(~G_X) || 'C_I' || 'EAD_1' ||  wrap(G_Y) || C_R in
+[ I(~G_X), In(<G_Y,C_R>)]
+--[HashC(tohashTH_2,hval),AuthI(~G_X,G_Y,hval,tohashTH_2)]->[]
+
+
+rule resp:
+ let tohashTH_2 = 'method' || 'suitesI' || wrap(G_X) || 'C_I' || EAD_1 ||  wrap(~G_Y) || 'C_R' in
+ [Fr(~G_Y), In(<G_X,'C_I',EAD_1>)]
+ --[OnceR(), HashC(tohashTH_2, hval), AuthR(G_X,~G_Y,hval,tohashTH_2)]->[Out(~G_Y)]
+
+
+restriction FixedSize:
+ "All x #i. FixedSize(x)@i ==> not (Ex k l. x = k || l)"
+
+restriction OnceI:
+ "All #i #j. OnceI()@i & OnceI()@j ==> #i=#j"
+
+restriction OnceR:
+ "All #i #j. OnceR()@i & OnceR()@j ==> #i=#j"
+
+lemma nocol:
+ "All gx gy gx2 gy2 hv t1 t2 #i #j. AuthI(gx,gy,hv,t1)@i & AuthR(gx2,gy2,hv,t2)@j & not(t1=t2) ==> gx=gx2 & gy=gy2"
+
+end

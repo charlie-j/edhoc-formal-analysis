@@ -1,0 +1,709 @@
+{# Jinja 2 templating
+
+Install:
+ $ pip3 install jinja2-cli
+
+Main file generation:
+ $ jinja lake-edhoc.jinja
+
+Enable Hash Events
+ $ jinja lake-edhoc.jinja.spthy -D HashEvent t
+
+Enable DDH Events
+ $ jinja lake-edhoc.jinja.spthy -D DDHEvent t
+
+
+#}
+/*
+ * Protocol:   LAKE
+   https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-12
+
+   A lightweight DH based key exchange.
+
+
+# Weaker primitive modeling and compromises
+`-D=WeakestSignature` enables all weak signature models,  see StrongSignatureExamples/attackfinding.spthy. This actually enables a set of sub-flags, one for each atomic weakness.
+`-D=CollapseHash`  consider a collapsing hash function
+`-D=LeakShare` allows to leak ephemeral shares
+`-D=XorPrecise` emulates a malleable xor.
+`-D=WeakAEAD` is a malleable aead
+
+# Stronger Protocol Check
+`-D=NeutralCheck` enforces that the protocol agents verifies that the DH share they received is not the identity element such that e^x = e    
+`-D=CredCheck` enforces that the agents checks that they do not communicate with themselves.
+
+# Extra security property
+`-D=NonRepudiatonSoundness` incudes processes for non repudiation soundness
+`-D=NonRepudiationCompleteness` incudes processes for non repudiation completeness  -> implies that shares are leaked, and does not work in proverif
+
+Scenarios to check ideally:
+ - `tamarin-prover -D=NonRepudiation -D=WeakestSignature -D=LeakShare`
+ - `tamarin-prover -D=WeakestSignature -D=LeakShare`
+
+*/
+
+theory edhoc
+
+begin
+{% if not KEM%}
+builtins: diffie-hellman
+{% else %}
+functions: grpid/0
+{% endif %}
+
+functions: method_zero/0, method_one/0, method_two/0, method_three/0, length/0,
+		   hash_length/0, edhoc_mac_length/0, key_length/0, iv_length/0, ciphertext_length/0,
+		   error_code_one/0, error_code_two/0,
+		   suitesIConst/0, suitesRConst/0, 
+		   aeadenc/4, aeaddec/3 [destructor],
+		   pk/1,  id/2, get_DH_cred/1 [destructor], get_sig_cred/1 [destructor],
+		   wrap/1,
+		   hash/1,hkdfextract/2, hkdfexpand/2
+
+equations: get_DH_cred(id(x,y))=y,
+           get_sig_cred(id(x,y))=x,
+           aeaddec(aeadenc(m,r,k,ad),k,ad) = m
+
+
+
+{% if HashEvent %}
+builtins: concatenation
+
+#include "HashLibrary.splib"
+
+
+{% macro HASH(variable,input) -%}
+event HashC({{ input }}, {{ variable }});
+{%- endmacro -%}
+
+{% else %}
+
+{% macro HASH(variable,input) -%}
+let {{ variable }} = hash({{ input }}) in
+{%- endmacro -%}
+{% endif %}
+
+{% if XOR %}
+{% macro encXOR(m,n) %}XOR{% endmacro %}
+{% macro decXOR(m,n) %}XOR{% endmacro %}
+{% else %}
+{% macro encXOR(m,n) %}encxor{% endmacro %}
+{% macro decXOR(m,n) %}decxor{% endmacro %}
+{% endif %}
+
+{% macro DDHElem(share) %}{% if not KEM %}{% if DDHEvent %} element('ID', grpid, 'g'^{{ share }}){% else %} 'g'^{{ share }} {% endif %}{% else %}{{ share }}{% endif %}{% endmacro %}
+
+{% macro DDHExp(variable,base,share) %}
+{% if DDHEvent %}
+    in(resDH{{ variable }}); 
+    let <ret{{ base }},res{{ base }},rn{{ base }}> = <extract_1({{ base }}),extract_2({{ base }}),extract_3({{ base }})  >  in
+    let {{ variable }} = element(ret{{ base }},resDH{{ variable }}, rn{{ base }}^{{ share }}) in
+    event Raised(ret{{ base }},res{{ base }},resDH{{ variable }},{{ share }});
+
+{% else %}
+let {{ variable }} = {{ base }}^{{ share }} in
+{% endif %}
+{% endmacro %}
+
+
+{% macro Sign(variable,value,key) %}
+let {{ variable }} = sign({{ value }}, 'rep', {{ key }}) in
+{% endmacro %}
+
+{% macro Verify(sig,value,pkey) %}
+{% if SignatureEvent %}
+event Verified ({{ sig }},e1({{ sig }}),e3({{ sig }}),{{ value }}, {{ pkey }} , sigtrue);
+{% else %}
+if (verify({{ sig }},{{ value }}, {{ pkey }}) = sigtrue) then
+{% endif %}
+{% endmacro %}
+
+
+{% if KEM %}
+
+#define KEM
+
+
+
+#ifdef weakKEM
+
+
+functions: kemkey/2, kemencap/2, kempk/1, kemdecap/2
+
+equations: kemdecap(kemencap(n,kempk(s)),s) = n
+
+
+functions: weakkem/0, weaksec/0, weakcap/0
+
+
+equations: kemkey(x,kempk(weakkem)) = weakkem,
+	   kemdecap(weakkem,s) = weakkem
+
+#else
+
+functions: kemkey/2, kemencap/2, kempk/1, kemdecap/2  [destructor]
+
+equations: kemdecap(kemencap(n,kempk(s)),s) = n
+
+#endif
+{% endif %}
+
+
+{% if DDHEvent %}
+
+#define DDHEvent
+
+restriction Consistency:
+	"All  t s r1 r2 y #i #j .
+	Raised(t,s,r1,y) @ i & Raised(t,s,r2,y) @j
+	==> r1 = r2"
+
+restriction Identity:
+	"All  t r y #i .
+	Raised(t,grpid,r,y) @ i ==> r = grpid"
+
+
+// advanced DH modeling from  https://eprint.iacr.org/2019/526.pdf
+functions: element/3, extract_1/1[destructor], extract_2/1[destructor], extract_3/1[destructor]
+equations: extract_1(element(t,s,n)) = t
+equations: extract_2(element(t,s,n)) = s
+equations: extract_3(element(t,s,n)) = n
+
+export queries:
+"
+restriction t,s,r1,r2,y:bitstring;
+	event(Raised(t,s,r1,y)) && event(Raised(t,s,r2,y)) ==> r1 = r2.
+
+restriction t,r,y:bitstring;
+	event(Raised(t,grpid,r,y)) ==> r = grpid.
+"
+
+{% endif %}
+
+
+{% if SignatureEvent %}
+
+#define SignatureEvent
+
+
+// Advanced signatures modeling: https://eprint.iacr.org/2019/779.pdf
+functions: sign/3,  revealsign/1[destructor], sigtrue/0
+
+functions: mangle/2
+equations: mangle(sign(m,r1,sk),r2) = sign(m,r2,sk)
+functions: e1/1 [private]
+functions: e2/1 [private]
+functions: e3/1 [private]
+equations: e1(sign(x,y,z)) = x
+equations: e2(sign(x,y,z)) = y
+equations: e3(sign(x,y,z)) = z
+equations: revealsign(sign(m,r, sk)) = m
+
+
+ // Restrictions 
+/*
+ restriction correctness:
+ "
+     All sig tm tpk #i #j. 
+     	Honest(tpk)@i & Verified(sig,tm,tpk,tm,tpk,false)@j
+     		==> F
+ "
+We never test against false in the protocol, so we don't need the correctness
+*/
+
+export queries:
+"
+restriction sig:bitstring, sm:bitstring, spk:bitstring, tm:bitstring,
+      tpk:bitstring;
+ ((event(Honest( tpk ))) &&
+  (event(Verified( sig, sm, spk, tm, tpk, sigtrue )))) ==>
+  
+ ((sm = tm) && (pk(spk) = tpk))
+.
+(*consistency*)
+restriction r1:bitstring, r2:bitstring, sig:bitstring, sm:bitstring,
+      spk:bitstring, tm:bitstring, tpk:bitstring;
+ ((event(Verified( sig, sm, spk, tm, tpk, r1 ))) &&
+  (event(Verified( sig, sm, spk, tm, tpk, r2 )))) ==>
+ (r1 = r2).
+
+select x,y,z:bitstring; attacker(sign(x,y,z))/-5000.
+
+"
+
+restriction noForgery: // (euf-cma)
+"
+	All sig tm tpk sm spk #i #j.
+		Honest(tpk)@i & Verified (sig, sm, spk, tm, tpk, sigtrue)@j
+		==> sm = tm & pk(spk) = tpk
+"
+
+restriction consistency:
+"
+	 All sig sm spk tm tpk r1 r2 #i #j.
+		Verified (sig, sm, spk, tm, tpk, r1)@i &
+		Verified (sig, sm, spk, tm, tpk, r2)@j 
+			==> r1 = r2
+"
+
+
+{% endif %}
+
+#include "Headers.splib"
+
+{% macro ppMethod(i) %}method_{% if i==0 %}zero{% elif i==1 %}one{%elif i==2 %}two{%elif i==3 %}three{% endif %}{% endmacro %}
+
+{% macro getCredInit(method) %}{% if method==0 or method==1 %}get_sig_cred{% else %}get_DH_cred{% endif %}{% endmacro %}
+
+{% macro getCredResp(method) %}{% if method==0 or method==2 %}get_sig_cred{% else %}get_DH_cred{% endif %}{% endmacro %}
+
+{% macro PRK3e2m(method,y) %}{% if method==0 or method==2 %}PRK_2e{% else %}hkdfextract(PRK_2e, {{ y }}){% endif %}{% endmacro %}
+
+
+
+
+
+#ifdef NonRepudiation
+
+/* I sent proof to JudgeR in order to prouve that R participate to the exchange => method_zero and method_two */
+let JudgeR =
+    new stamp;
+    in(<ID_CRED_R,TH_2,pkR,EAD_2,MAC_2,signed,shareX,gY>);    
+    let proofnrR = <ID_CRED_R,TH_2,pkR,EAD_2,MAC_2,signed,shareX,gY> in
+    event JudgeReceivedR(stamp,proofnrR);
+    {{ Verify('signed','<\'Signature1\',ID_CRED_R,TH_2,pkR,EAD_2,MAC_2>','pkR') }}
+    {% if KEM %}
+    let gYshareX = kemdecap(gY, shareX) in    
+    {% else %}
+    {{ DDHExp('gYshareX','gY','shareX') }}
+    {% endif %}
+    let PRK_2e = hkdfextract('null', gYshareX) in
+    let PRK_3e2m = PRK_2e in	 
+    let MAC2 = hkdfexpand(PRK_3e2m, <TH_2, 'MAC_2', ID_CRED_R, pkR, EAD_2, hash_length>) in	 
+    if MAC_2 = MAC2 then
+        event WasActiveR(pkR, gYshareX,proofnrR);
+        event JudgeProcessedR(proofnrR)
+    else
+        event JudgeProcessedR(proofnrR)
+
+/* R sent proof to JudgeI in order to prouve that I participate to the exchange => warning, just method_zero here */
+let JudgeI =
+    new stamp;
+    in(<ID_CRED_I,TH_3,pkI,EAD_3,MAC_3,signed,shareY,gX>);
+    let proofnrI = <ID_CRED_I,TH_3,pkI,EAD_3,MAC_3,signed,shareY,gX> in
+    event JudgeReceivedI(stamp,proofnrI) ;
+    {{ Verify('signed','<\'Signature2\',ID_CRED_I,TH_3,pkI,EAD_3,MAC_3>','pkI') }}
+    {% if KEM %}
+    let gXshareY = gX in    
+    {% else %}
+    {{ DDHExp('gXshareY','gX','shareY') }}
+    {% endif %}
+    let PRK_2e = hkdfextract('null', gXshareY) in
+    let PRK_4x3m = PRK_2e in 
+    let MAC3 = hkdfexpand(PRK_4x3m, <TH_3, 'MAC_3', ID_CRED_I,pkI,EAD_3,hash_length>) in	 
+    if MAC_3 = MAC3 then
+        event WasActiveI(pkI, gXshareY,proofnrI);
+        event JudgeProcessedI(proofnrI)
+    else
+        event JudgeProcessedI(proofnrI)
+
+#endif
+
+
+#ifdef not NonRepudiation
+
+let JudgeR = 0
+let JudgeI = 0
+
+#endif
+
+
+
+// Initiator with long term authentication key ~skI and long term DH share ~I
+// computerId is only used to keep track of the machine on which the key exists
+let I(~cid, ~skI, ~I, ID_CRED_R) =
+    in(<method,suitesI,C_I,EAD_1>); // we let the attacker fully control the parameters used2 by a session
+    event MethodOk(method);
+    new ~X; // DH share
+    new ~EAD_3; // we model the EAD_3 as a fresh name to test later its secrecy
+    event Share(~X);
+    (
+    CompromiseShare(~X) |    
+    let CRED_I = pk(~skI) in
+    let ID_CRED_I = id(CRED_I, {{ DDHElem('~I') }}) in        
+    {% if KEM %}
+    let G_X = kempk(~X) in
+    {% else %}
+    let G_X = {{ DDHElem('~X') }} in
+    let G_I = {{ DDHElem('~I') }} in    
+    {% endif %}
+    let m1 = <method,suitesI,G_X,C_I,EAD_1> in
+    out(m1);
+    
+    in(m2);
+    let < G_Y, CIPHERTEXT_2, C_R > = m2 in
+    {{ HASH('TH_2', 'wrap(method) || wrap(suitesI) || wrap(G_X) || wrap(C_I) || EAD_1 || wrap(G_Y) || C_R') }}
+    {% if KEM %}
+    let G_YX = kemdecap(G_Y,~X) in
+    {% else %}   
+    {{ DDHExp('G_YX','G_Y','~X') }}
+    {% endif %}
+    let PRK_2e = hkdfextract('null', G_YX) in
+    let KEYSTREAM_2 = hkdfexpand(PRK_2e,<TH_2,'KEYSTREAM_2','h',ciphertext_length>) in 
+    let plaintext_2 = {{ decXOR() }}(CIPHERTEXT_2,KEYSTREAM_2) in
+    let < =ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> = plaintext_2 in
+    if (check_grp(G_Y) = grpid) then // Not in the standard: we test against the value testgrpid, which is either a useless constant or the neutral element of the group.
+       0
+    else   
+    if (ID_CRED_I = check_cred(ID_CRED_R)) then // Not in the standard: we test if we did not receive our own cred
+    0
+    else
+{% macro INITIATOR(method) %}
+	    let pkR = {{ getCredResp(method) }}(ID_CRED_R) in 
+	    let pkI = {{ getCredInit(method) }}(ID_CRED_I) in 
+	    {% if method==0 or method==2 %}
+	    let PRK_3e2m = PRK_2e in
+	    {% else %}
+            {{ DDHExp('pkRX','pkR','~X') }}	    
+	    let PRK_3e2m = hkdfextract(PRK_2e, pkRX) in
+	    {% endif %}
+ 
+	    event DerivedIShared(pkI, G_YX); 
+	    let MAC_2 = hkdfexpand(PRK_3e2m,<TH_2, 'MAC_2',ID_CRED_R, pkR, EAD_2, hash_length>) in 
+	    {% if method==0 or method==2 %}
+            {{ Verify('SIGNATURE_or_MAC_2','<\'Signature1\',ID_CRED_R,TH_2,pkR,EAD_2,MAC_2>','pkR') }}
+	    {% else %}	    
+	    if (SIGNATURE_or_MAC_2 = MAC_2) then 
+	    {% endif %}	    
+		(
+		{{ HASH('TH_3', 'wrap(TH_2) || CIPHERTEXT_2') }}
+		{% if method==0 or method==1 %}
+		let PRK_4x3m = PRK_3e2m in 
+		{% else %}
+                {{ DDHExp('G_YI','G_Y','~I') }}			
+		let PRK_4x3m = hkdfextract(PRK_3e2m, G_YI) in 
+		{% endif %}
+		let MAC_3 = hkdfexpand(PRK_4x3m, <TH_3, 'MAC_3', ID_CRED_I,pkI,~EAD_3,hash_length>) in
+		{% if method==0 or method==1 %}
+		{{ Sign('SIGNATURE_or_MAC_3','<\'Signature2\',ID_CRED_I,TH_3,pkI,~EAD_3,MAC_3>', '~skI') }}
+	        {% else %}	    
+		let SIGNATURE_or_MAC_3 = MAC_3 in // 2,3		
+	        {% endif %}	
+
+		let K_3 = hkdfexpand(PRK_3e2m,<TH_3, 'K_3', 'h', key_length>) in
+		let IV_3 = hkdfexpand(PRK_3e2m,<TH_3,'IV_3','h', iv_length>) in
+		let plaintext_3 = <ID_CRED_I, SIGNATURE_or_MAC_3,~EAD_3> in
+		let m3 = aeadenc(plaintext_3,'rep',K_3,IV_3) in
+		{{ HASH('TH_4', 'wrap(TH_3) ||  m3') }}		
+		event AcceptI(~cid,{{ ppMethod(method) }},pkI,pkR,PRK_3e2m,PRK_4x3m,~X,G_Y);
+		event SecretsI(~cid,{{ ppMethod(method) }},pkI,pkR,PRK_2e,PRK_3e2m,PRK_4x3m,KEYSTREAM_2,K_3,IV_3,~X,G_Y);		
+		event AcceptIData(PRK_4x3m,{{ ppMethod(method) }},pkI,pkR,~X,G_Y,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, ~EAD_3, m1, m2, m3>);
+		out(m3);
+		  (
+                ContactJudgeFromI(ID_CRED_R,TH_2,pkR,EAD_2,MAC_2, SIGNATURE_or_MAC_2, ~X, G_Y)
+                 |
+		   leakSKey(PRK_4x3m)
+		  )
+                )		
+{% endmacro %}			   
+
+        (
+	if (method = method_zero) then
+	    (
+	    {{ INITIATOR(0) }}
+	    ) 
+	{% if not KEM and not HashEvent %}     
+	else (if (method = method_one) then 
+	    (
+	    {{ INITIATOR(1) }}
+	     )
+
+	else (if (method = method_two) then
+	    (
+	    {{ INITIATOR(2) }}
+	     )
+
+	else (if (method = method_three) then
+	    (
+	    {{ INITIATOR(3) }}		
+		
+	     )
+	)))
+	{% endif %}
+	)
+    )   
+   // no modeling of optional message 4
+
+{% if KEM %}
+#ifdef LeakShare
+
+let CompromiseKEMencap(s,encap) =
+    event LeakShare(s); event LeakShare(encap); out(s)      
+
+#else
+
+let CompromiseKEMencap(s,encap) = 0
+
+#endif
+
+{% endif %}
+
+let R(~cid, ~skR,~R) =
+    in(<C_R,EAD_2,suitesR>);
+    in(<method,suitesI,G_X,C_I,EAD_1>);
+    event MethodOk(method);    
+    let m1 = <method,suitesI,G_X,C_I,EAD_1> in
+    new ~Y;
+    event Share(~Y);
+    
+    let G_R = {{ DDHElem('~R') }} in    
+    {% if KEM %}
+    let G_XY = kemkey(~Y, G_X) in
+    let G_Y = kemencap(G_XY,G_X) in        
+    {% else %}
+    let G_Y = {{ DDHElem('~Y') }} in
+    {{ DDHExp('G_XY','G_X','~Y') }}
+    {% endif %}
+    {% if KEM %}
+    CompromiseKEMencap(~Y,G_Y) |    
+    {% else %}
+    CompromiseShare(~Y) |
+    {% endif %}
+    (
+    let CRED_R = pk(~skR) in
+    
+    let ID_CRED_R = id(CRED_R,G_R) in
+    {{ HASH('TH_2', 'wrap(method) || wrap(suitesI) || wrap(G_X) || wrap(C_I) || EAD_1 || wrap(G_Y) || C_R') }}
+    let PRK_2e = hkdfextract('null', G_XY) in
+
+    if (check_grp(G_X) = grpid) then // we test against the value testgrpid, which is either a useless constant or the neutral element of the group.
+       0
+    else   
+       (
+{% macro RESPONDER(method) %}
+	    let pkR = {{ getCredResp(method) }}(ID_CRED_R) in
+	    {% if method==0 or method==2 %}
+	    let PRK_3e2m = PRK_2e in
+	    {% else %}
+            {{ DDHExp('G_XR','G_X','~R') }}	    
+	    let PRK_3e2m = hkdfextract(PRK_2e, G_XR) in
+	    {% endif %}	    
+	    let MAC_2 = hkdfexpand(PRK_3e2m, <TH_2, 'MAC_2', ID_CRED_R, pkR, EAD_2, hash_length>) in
+	    {% if method==0 or method==2 %}
+	    {{ Sign('SIGNATURE_or_MAC_2','<\'Signature1\',ID_CRED_R,TH_2,pkR,EAD_2,MAC_2>','~skR') }}
+	    {% else %}	    
+	    let SIGNATURE_or_MAC_2 = MAC_2 in	    //1,3
+	    {% endif %}	    
+	    let plaintext_2 = <ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> in
+	    let KEYSTREAM_2 = hkdfexpand(PRK_2e, <TH_2,'KEYSTREAM_2','h',ciphertext_length>) in
+	    event DerivedR(~cid,pkR,PRK_3e2m,~Y,G_X);
+	    event DerivedRShared(pkR, G_XY); 
+	    event DerivedIdR(ID_CRED_R,PRK_3e2m);
+	    let m2 = <G_Y,{{ encXOR() }}(plaintext_2,KEYSTREAM_2),C_R> in
+            event SendRData({{ ppMethod(method) }}, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, m2>);							    
+	    out(m2);	    
+	    in(CIPHERTEXT_3);
+	    {{ HASH('TH_3', 'wrap(TH_2) || encxor(plaintext_2,KEYSTREAM_2)') }}
+	    {{ HASH('TH_4', 'wrap(TH_3) || CIPHERTEXT_3') }}
+	    let K_3 = hkdfexpand(PRK_3e2m, <TH_3, 'K_3', 'h', key_length>) in
+	    let IV_3 = hkdfexpand(PRK_3e2m,<TH_3,'IV_3','h', iv_length>) in
+	    let plaintext_3 = aeaddec(CIPHERTEXT_3,K_3,IV_3) in
+	    let <ID_CRED_I,SIGNATURE_or_MAC_3,EAD_3> = plaintext_3 in
+	    let pkI = {{ getCredInit(method) }}(ID_CRED_I) in
+   	    {% if method==0 or method==1 %}
+	    let PRK_4x3m = PRK_3e2m in 
+	    {% else %}
+            {{ DDHExp('pkIY','pkI','~Y') }}	    
+	    let PRK_4x3m = hkdfextract(PRK_3e2m, pkIY) in 
+	    {% endif %}	    	    
+	    let MAC_3 = hkdfexpand(PRK_4x3m, <TH_3, 'MAC_3', ID_CRED_I,pkI,EAD_3,hash_length>) in
+	    {% if method==0 or method==1 %}
+	    {{ Verify('SIGNATURE_or_MAC_3','<\'Signature2\',ID_CRED_I,TH_3,pkI,EAD_3,MAC_3>','pkI') }}
+	    {% else %}
+	    if (SIGNATURE_or_MAC_3 = MAC_3) then
+	    {% endif %}
+	        (if (ID_CRED_R = check_cred(ID_CRED_I)) then // Not in the standard: we test if we did not receive our own cred
+		   0
+		else   
+		    (
+
+                    event AcceptR(~cid,{{ ppMethod(method) }},pkI,pkR,PRK_4x3m,~Y,G_X);
+		    event SecretsR(~cid,{{ ppMethod(method) }},pkI,pkR,PRK_2e,PRK_3e2m,PRK_4x3m,KEYSTREAM_2,K_3,IV_3,~Y,G_X);						    
+		    event AcceptRData(PRK_4x3m,{{ ppMethod(method) }},pkI,pkR,~Y,G_X,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, m2, CIPHERTEXT_3>);
+		    (
+		    ContactJudgeFromR(ID_CRED_I,TH_3,pkI,EAD_3,MAC_3,SIGNATURE_or_MAC_3,~Y,G_X)
+		    |
+ 		   leakSKey(PRK_4x3m)
+		    )
+		    )
+		  )  
+
+{% endmacro %}
+       
+	if (method = method_zero) then
+	   (	   
+	   {{ RESPONDER(0) }}
+	    )
+	{% if not KEM and not HashEvent  %}     
+	else (if (method = method_one) then
+	    (
+	   {{ RESPONDER(1) }}
+	    )
+
+	else (if (method = method_two) then
+	    (
+	   {{ RESPONDER(2) }}
+	    )
+
+	else (if (method = method_three) then
+	    (
+   	   {{ RESPONDER(3) }}
+	    )
+	 )))   
+	 {% endif %}   
+
+   	 )
+      )
+	
+let compromise(sk) =
+    in('Comp'); event Compromise(pk(sk)); out(sk)
+
+let compromiseDH(k) =
+    in('Comp'); event Compromise({{ DDHElem('k') }}); event Leak(k); out(k)
+
+      
+process:
+(! MakeDEO)
+|
+(!JudgeR)
+|
+(!JudgeI)
+|
+!(new ~sk; new ~ltdh; new ~computerId;
+    let idd = id(pk(~sk),{{ DDHElem('~ltdh') }}) in 
+    out(<idd, pk(~sk),{{ DDHElem('~ltdh') }}>);
+    event ShareLT(~ltdh);
+      event Honest(pk(~sk));
+      event Honest({{ DDHElem('~ltdh') }});   
+( (! in(cred); I(~computerId,~sk, ~ltdh, cred)) | (!R(~computerId,~sk,~ltdh)) | compromise(~sk) | compromiseDH(~ltdh)) )
+
+
+
+
+#include "LakeProperties.splib"
+
+
+
+
+// *************************************************************
+// ************** Anonimity  ***********************************
+// *************************************************************
+
+#ifdef diffEquiv
+
+diffEquivLemma: // Anonymity as a diff equivalence
+!(  new ~sk1; new ~ltdh1; new ~computerId1;
+    let idd1 = id(pk(~sk1), {{ DDHElem('~ltdh1') }}) in 
+    out(<idd1, pk(~sk1)>);
+    new ~sk2; new ~ltdh2; new ~computerId2;
+    let idd2=id(pk(~sk2), {{ DDHElem('~ltdh2') }}) in
+    out(<idd2,pk(~sk2)>);
+    (
+     (! in(cred);I(~computerId1,~sk1,~ltdh1,cred)) | (! in(cred);I(~computerId2,~sk2,~ltdh2,cred)) |
+     (!R(~computerId1,~sk1,~ltdh1)) | (!R(~computerId2,~sk2,~ltdh2)) |
+     (! I(diff(~computerId1,~computerId2),diff(~sk1,~sk2),diff(~ltdh1,~ltdh2),idd1) ) | // test sessions with sk1 as responder
+     compromise(~sk2) // sk1 must not be compromised as it is the responder
+    )
+)
+
+/*
+diffEquivLemma: // Anonymity as a diff equivalence for only 2 sessions
+    new ~sk1; new ~ltdh1; new ~computerId1;
+    let idd1 = id(pk(~sk1), 'g'^~ltdh1) in 
+    out(<idd1, pk(~sk1)>);
+    new ~sk2; new ~ltdh2;
+    new ~computerId2;
+    let idd2=id(pk(~sk2), 'g'^~ltdh2) in
+    out(<idd2,pk(~sk2)>);
+    (
+       I(diff(~computerId1,~computerId2),diff(~sk1,~sk2),diff(~ltdh1,~ltdh2),idd1)
+     | R(~computerId1,~sk1,~ltdh1)
+     | compromise(~sk2,idd2)
+    )
+*/
+
+#endif
+
+#ifdef EquivLemmas
+
+equivLemma: // Anonymity
+(
+    new ~sk1; new ~ltdh1; new ~computerId1;
+    let idd1 = id(pk(~sk1), {{ DDHElem('~ltdh1') }}) in 
+    out(<idd1, pk(~sk1)>);
+    new ~sk2; new ~ltdh2;
+    new ~computerId2;
+    let idd2=id(pk(~sk2), {{ DDHElem('~ltdh2') }}) in
+    out(<idd2,pk(~sk2)>);
+    (
+       I(~computerId1,~sk1,~ltdh1,idd1)
+     | R(~computerId1,~sk1,~ltdh1)
+     | compromise(~sk2)
+    )
+)
+
+(
+    new ~sk1; new ~ltdh1; new ~computerId1;
+    let idd1 = id(pk(~sk1), {{ DDHElem('~ltdh1') }}) in 
+    out(<idd1, pk(~sk1)>);
+    new ~sk2; new ~ltdh2;
+    new ~computerId2;
+    let idd2=id(pk(~sk2), {{ DDHElem('~ltdh2') }}) in
+    out(<idd2,pk(~sk2)>);
+    (
+       I(~computerId2,~sk2,~ltdh2,idd1)
+     | R(~computerId1,~sk1,~ltdh1)
+     | compromise(~sk2)
+    )
+)
+
+
+
+equivLemma: // Unlinkability
+(
+    new ~sk1; new ~ltdh1; new ~computerId1;
+    let idd1 = id(pk(~sk1), {{ DDHElem('~ltdh1') }}) in 
+    out(<idd1, pk(~sk1)>);
+    new ~sk2; new ~ltdh2;
+    new ~computerId2;
+    let idd2=id(pk(~sk2), {{ DDHElem('~ltdh2') }}) in
+    out(<idd2,pk(~sk2)>);
+    (
+       I(~computerId1,~sk1,~ltdh1,idd2)
+     | I(~computerId1,~sk1,~ltdh1,idd2)
+     | R(~computerId2,~sk2,~ltdh2)
+     | R(~computerId2,~sk2,~ltdh2)
+    )
+)
+
+(
+    new ~sk1; new ~ltdh1; new ~computerId1;
+    let idd1 = id(pk(~sk1), {{ DDHElem('~ltdh1') }}) in 
+    out(<idd1, pk(~sk1)>);
+    new ~sk2; new ~ltdh2;
+    new ~computerId2;
+    let idd2=id(pk(~sk2), {{ DDHElem('~ltdh2') }}) in
+    out(att,<idd2,pk(~sk2)>);
+    (
+       I(~computerId1,~sk1,~ltdh1,idd2)
+     | I(~computerId2,~sk2,~ltdh2,idd2)
+     | R(~computerId2,~sk2,~ltdh2)
+     | R(~computerId2,~sk2,~ltdh2)
+    )
+)
+
+#endif 
+
+
+
+end

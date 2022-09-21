@@ -1,0 +1,364 @@
+
+// [SMP21] Göran Selander, John Preuß Mattsson, and Francesca Palombini. Ephemeral Diffie-
+// Hellman Over COSE (EDHOC). Internet-Draft draft-ietf-lake-edhoc-12, Internet Engi-
+// neering Task Force, October 2021. Work in Progress.
+
+// ********************************************************************
+// ************** Sanity Check ****************************************
+// ********************************************************************
+
+// Sanity checks for the executability of the protocol
+// We check for each method and each role.
+
+#ifdef SanityChecks & not KEM
+
+lemma executableR_method_1[output=[proverif]]: // sanity check
+    exists-trace
+    "Ex cid e1 e2 pkI pkR k3 ko #i. AcceptR(cid,method_one,pkI,pkR,k3,ko,e1,e2)@i"
+
+lemma executableR_method_2[output=[proverif]]: // sanity check
+    exists-trace
+    "Ex cid e1 e2 pkI pkR k3 ko #i. AcceptR(cid,method_two,pkI,pkR,k3,ko,e1,e2)@i"
+
+lemma executableR_method_3[output=[proverif]]: // sanity check
+    exists-trace
+    "Ex cid e1 e2 pkI pkR k3 ko #i. AcceptR(cid,method_three,pkI,pkR,k3,ko,e1,e2)@i"
+
+lemma executableI_method_1[output=[proverif]]: // sanity check
+  exists-trace
+  "Ex cid e1 e2 pkI pkR k3 ko k4 #i. AcceptI(cid,method_one,pkI,pkR,k3,k4,ko,e1,e2)@i"
+
+lemma executableI_method_2[output=[proverif]]: // sanity check
+  exists-trace
+  "Ex cid e1 e2 pkI pkR k3 ko k4 #i. AcceptI(cid,method_two,pkI,pkR,k3,k4,ko,e1,e2)@i"
+
+lemma executableI_method_3[output=[proverif]]: // sanity check
+  exists-trace
+  "Ex cid e1 e2 pkI pkR k3 ko k4 #i. AcceptI(cid,method_three,pkI,pkR,k3,k4,ko,e1,e2)@i"
+
+#endif
+
+#ifdef SanityChecks
+
+lemma executableR_method_0[output=[proverif]]: // sanity check
+  exists-trace
+  "Ex cid e1 e2 pkI pkR k3 ko #i #j #l. AcceptR(cid,method_zero,pkI,pkR,k3,ko,e1,e2)@i & Honest(pkI)@j & Honest(pkR)@l"
+
+lemma executableI_method_0[output=[proverif]]: // sanity check
+  exists-trace
+  "Ex cid e1 e2 pkI pkR k3 ko k4 #i #j #l. AcceptI(cid,method_zero,pkI,pkR,k3,k4,ko,e1,e2)@i & Honest(pkI)@j & Honest(pkR)@l"
+  
+  
+#endif
+
+// ****************************************************************
+// ************** Helper Lemmas ***********************************
+// ****************************************************************
+
+#ifdef  NonRepudiation  | LeakShare
+// the share are not secret in this scenario
+#else
+
+lemma secretShares[reuse]: //secrecy of the key
+   "All k #i #j. Share(k)@i & KU(k)@j // the ephemeral, secret DH share cannot be known to the attacker
+    ==> F"
+    
+#endif
+
+#ifdef not KEM
+
+lemma secretSharesLT[reuse]: //secrecy of the key
+   "All k #i #j. ShareLT(k)@i & KU(k)@j   // if a longterm DH share is known to the attacker
+    ==>  Ex #t. Leak(k)@t"                // it must have been leaked explicitly
+
+#endif
+
+
+// *********************************************************************
+// ************** Confidentiality  *************************************
+// *********************************************************************
+
+/*
+We model with two secrecy lemmas (one for each agent) the following expectations.
+
+- Forward secrecy with compromised long-term keys [SMP21, p. 43]
+Compromise of the long-term keys (private signature or static DH keys) does not compro-
+mise the security of completed EDHOC exchanges.
+
+- Session key independence [SMP21, p. 43]
+Compromise of one session key does not compromise other session keys.
+
+
+- Secrecy after Explicit Key Confirmation [SMP21, p. 44]
+After verifying message 3, the Responder is assured that [...] no other party than the Responder can compute the key
+
+
+- Implicit Key Authentication [SMP21, p. 44]
+After sending message 3, the Initiator is assured that no other party than the
+Responder can compute the key prk4e3m.
+
+*/
+
+
+// The attacker can learn the session key ONLY if the key was leaked, or the partner was compromised, or one of the two ephemeral share was leaked (-D=LeakShare)
+// and this even if:
+//      its own long term key was leaked
+//      other session leys were leaked
+//      other ephemeral keys were leaked  (-D=LeakShare)
+lemma secretR: 
+   "All cid m pkI pkR k4 ko y gx #i #j #k. AcceptR(cid,m,pkI,pkR,k4,ko,y,gx)@i & KU(ko)@j & Honest(pkI)@k // If the attacker learns the key established (according to R) with a honest initiator
+    ==> (Ex #t.
+        (Compromise(pkI)@t & t < i) )  // then the initiator's lt key was compromised before
+        | 
+        (Ex #t. LeakSessionKey(ko)@t  )        // or the session key was leaked
+        | 
+        (Ex #t. LeakShare(y)@t  )        // or the responder share was leaked
+        | 
+        (Ex #t. LeakShare(gx)@t  )        // or the initiator share was leaked	
+    "
+
+lemma secretI: 
+    "All m pkI pkR k3 k4 ko x gy cid #i #j  #k. (AcceptI(cid,m,pkI,pkR,k3,k4,ko,x,gy)@i & KU(ko)@j & Honest(pkR)@k)
+    ==>(Ex #t.
+        (Compromise(pkR)@t & t < i) )  // then the responder lt key was compromised before
+        | 
+        (Ex #t. LeakSessionKey(ko)@t  )        // or the session key was leaked
+        | 
+        (Ex #t. LeakShare(gy)@t  )        // or the responder share was leaked
+        | 
+        (Ex #t. LeakShare(x)@t  )        // or the initiator share was leaked		
+	"
+
+/*
+“Post compromise security” against passive attackers [SMP21, p. 43]
+Compromise of the long-term keys does not enable a passive attacker to compromise future
+session keys.
+*/
+
+// This will be done inside a dedicated proverif file
+
+
+// ******************************************************************
+// ************** Authentication  ***********************************
+// ******************************************************************
+
+/*
+
+Explicit Key Confirmation [SMP21, p. 44]
+After verifying message 3, the Responder is assured that the Initiator has calculated the key prk4e3m (explicit key confirmation)
+
+- Key compromise impersonation [SMP21, p. 44] (Part 1)
+In EDHOC authenticated with signature keys, EDHOC provides KCI protection against
+an attacker having access to the long-term key or the ephemeral secret key.
+
+-> does this mean only method 0, or also 1 and 2 but in a single direction?
+*/
+
+// Non injective authentication
+lemma honestauthRI_non_inj:  
+    "All cid m pkI pkR k4 ko y gx #i #k. AcceptR(cid,m,pkI,pkR,k4,ko,y,gx)@i  & Honest(pkI)@k ==>    
+       (Ex #t x gy k3 ko2 cid2. t<i & AcceptI(cid2,m,pkI,pkR,k3,k4,ko2,x,gy)@t) // honest case
+       |  (Ex #t.  Compromise(pkI)@t)   // the initiator was compromised
+       |  (Ex #t.  LeakShare(y)@t & (m=method_two | m =method_three)
+       // the responder share was leaked, and the initiator is not authenticating with sig
+           )  
+
+    "
+
+// Uniqueness implies injective authentication
+lemma honestauthRI_unique:  
+    "All cid m pkI pkR k4 ko y gx #i #j #k. 
+     (
+     AcceptR(cid,m,pkI,pkR,k4,ko,y,gx)@i & AcceptR(cid,m,pkI,pkR,k4,ko,y,gx)@j & Honest(pkI)@k  ==> 
+     (Ex #t.  Compromise(pkI)@t)
+     |  (Ex #t.  LeakShare(y)@t & (m=method_two | m =method_three)
+
+           )   // the responder share was leaked, and the initiator is not authenticating with sig     
+     |
+     (Ex #t. Honest(pkI)@t &    #i = #j) // hack, dumb honest event added due to restrictions on exportable lemmas to proverif
+     )"
+
+// General Session key uniqueness (even with compromised adversaries
+// The following lemma does not correspond to any security property mentioned in the draft
+// However, it is false when the attacker can send for two different sessions the neutral DH element
+lemma authRI_unique:  
+    "All m cid pkI pkR k4 ko y1 gx1 y2 gx2 #i #j. 
+     (
+     AcceptR(cid,m,pkI,pkR,k4,ko,y1,gx1)@i & AcceptR(cid,m,pkI,pkR,k4,ko,y2,gx2)@j  ==> #i = #j
+     )"
+
+
+lemma authIR_unique:  
+    "All m pkI pkR k3 k4 ko x gy x2 gy2 cid #i #j.      
+     AcceptI(cid,m,pkI,pkR,k3,k4,ko,x,gy)@i & AcceptI(cid,m,pkI,pkR,k3,k4,ko,x2,gy2)@j  ==> 
+     #i = #j"
+
+
+// The following lemmas do not correspond to any security property mentioned in the draft
+// They correspond to the autentication on the other side
+lemma honestauthIR_non_inj:  // should be true
+    "All m pkI pkR k3 k4 ko gy x cid #i #k. AcceptI(cid,m,pkI,pkR,k3,k4,ko,x,gy)@i & Honest(pkR)@k ==>
+    (
+       (Ex #j y gx cid2. j<i & DerivedR(cid2,pkR,k3,y,gx)@j)
+      |  (Ex #t.  Compromise(pkR)@t)
+     |  (Ex #t.  LeakShare(x)@t & (m=method_one | m =method_three)      )
+    )"
+
+lemma honestauthIR_unique:  
+    "All m pkI pkR k3 k4 ko x gy cid #i #j #k. 
+     (
+     AcceptI(cid,m,pkI,pkR,k3,k4,ko,x,gy)@i & AcceptI(cid,m,pkI,pkR,k3,k4,ko,x,gy)@j & Honest(pkI)@k  ==> 
+     (Ex #t.  Compromise(pkI)@t)
+     |  (Ex #t.  LeakShare(x)@t & (m=method_one | m =method_three)
+
+           )   // the responder share was leaked, and the initiator is not authenticating with sig     
+     |
+     (Ex #t. Honest(pkI)@t &    #i = #j) // hack, dumb honest event added due to restrictions on exportable lemmas to proverif
+     )"
+
+
+/*
+Transcript authentication [SMP21, p.8 ]
+*Transcript hashes (hashes of message data) TH_2, TH_3, TH_4 used for key derivation and as additional authenticated data.
+
+Messages + algo + EAD authentication [SMP21, p.42]
+*Compared to [SIGMA], EDHOC adds an explicit method type and expands
+*   the message authentication coverage to additional elements such as
+*   algorithms, external authorization data, and previous messages. 
+*/
+
+
+
+lemma data_authentication_I_to_R: 
+    "All method pkI pkR TH_2 TH_3 TH_4 suitesI EAD_1 EAD_2 EAD_3 m1 m2 m3 #i #j x gy PRK_out.
+     AcceptIData(PRK_out,method,pkI,pkR,x,gy,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, m2, m3>)@i
+     & Honest(pkR)@j ==>    
+      (Ex #l m11 m22. l<i & SendRData(method,pkR,<TH_2,suitesI, EAD_1, EAD_2, m11, m22>)@l)
+    | (Ex #l. l<i & Compromise(pkR)@l)
+    |  (Ex #l.  LeakShare(x)@l & (method=method_two | method=method_three))      
+       "
+
+
+lemma data_authentication_R_to_I: 
+    "All method y gx pkI pkR TH_2 TH_3 TH_4 suitesI EAD_1 EAD_2 EAD_3 m1 m2 m3 #i #j PRK_out.
+     AcceptRData(PRK_out,method,pkI,pkR,y,gx,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, m2, m3>)@i
+     & Honest(pkI)@j ==>
+    
+      (Ex #l gy x m11 m22 m33. l<i & AcceptIData(PRK_out,method,pkI,pkR,x,gy,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m11, m22, m33>)@l)
+    | (Ex #l. l<i & Compromise(pkI)@l)
+    | (Ex #l.  LeakShare(y)@l & (method=method_two | method=method_three))
+       "
+
+// *******************************************************************
+// ************** Non Repudiation  ***********************************
+// *******************************************************************
+
+/*
+Non-repudiation [SMP, p.44]
+In EDHOC authenticated with signature keys, the Initiator
+could theoretically prove that the Responder performed a run of the protocol by presenting
+the private ephemeral key, and vice versa.
+
+The explicit test for non-repudation is missing.
+
+*/                                       
+
+
+#ifdef NonRepudiationCompleteness
+
+// Completeness
+// If the judge says that an uncompromised key was active, it was indeed.
+// --> for proverif, we export those query in the injective style with the export flag. 
+lemma non_repudation_R_completeness[output=[spthy]]:
+    "All pkr th proofnr #i #j.   WasActiveR(pkr,th,proofnr)@i & Honest(pkr)@j==> 
+            (Ex #l. DerivedRShared(pkr,th)@l) | (Ex #l. Compromise(pkr)@l)"
+
+
+lemma non_repudation_I_completeness[output=[spthy]]:
+    "All pkI th proofnr #i #j.   WasActiveI(pkI,th,proofnr)@i & Honest(pkI)@j==> 
+            (Ex #l. DerivedIShared(pkI,th)@l) | (Ex #l. Compromise(pkI)@l)"
+
+
+#endif
+
+#ifdef NonRepudiationSoundness
+
+// Soundness
+// If the judge was contacted by an honest agent, it will accept the proof and decide that a partner was active.
+lemma non_repudiation_R_soundness[output=[spthy]]:
+	"All proofnr #i. JudgeContactedI(proofnr)@i ==> Ex pkR th #j. WasActiveR(pkR,th,proofnr)@j"
+
+
+lemma non_repudiation_I_soundness[output=[spthy]]:
+	"All proofnr #i. JudgeContactedR(proofnr)@i ==> Ex pkI th #j. WasActiveI(pkI,th,proofnr)@j"
+
+#endif
+
+
+
+// *******************************************************************
+// ************** Reflection attacks   *******************************
+// *******************************************************************
+// Reflection attacks are somewhat unspecified in the standard.
+// Is the fact that an agent can talk to himself an issue? 
+// --> we model this with a unique computer identifier.
+
+// We take the two main authentication lemmas, and expect that the cids are distinct
+
+lemma no_reflection_attacks_RI:  
+    "All m pkI pkR k4 ko y gx cid #i #k. AcceptR(cid,m,pkI,pkR,k4,ko,y,gx)@i  & Honest(pkI)@k ==>    
+       (Ex #t x gy k3 ko2 cid2. t<i & AcceptI(cid2,m,pkI,pkR,k3,k4,ko2,x,gy)@t & not(cid=cid2)) // honest case
+       |  (Ex #t.  Compromise(pkI)@t)   // the initiator was compromised
+       |  (Ex #t.  LeakShare(y)@t & (m=method_two | m =method_three)     )  
+       // the responder share was leaked, and the initiator is not authenticating with sig
+       |  (Ex #t.  LeakShare(gx)@t )  // should this be needed ? 
+"
+
+
+lemma no_reflection_attacks_IR:  // should be true
+    "All m pkI pkR k3 k4 ko gy x cid #i #k. AcceptI(cid,m,pkI,pkR,k3,k4,ko,x,gy)@i & Honest(pkR)@k ==>
+    (
+       (Ex #j y gx cid2. j<i & DerivedR(cid2,pkR,k3,y,gx)@j & not(cid=cid2))
+      |  (Ex #t.  Compromise(pkR)@t)
+     |  (Ex #t.  LeakShare(x)@t & (m=method_one | m =method_three)      )
+    )"
+
+
+
+
+// ****************************************************************
+// ************** Downgrade attacks   *****************************
+// ****************************************************************
+
+// This is included inside the data authentication done checked previously.
+//  -> the attacker can try to lie about the value 'suiteI' sent by the attacker
+
+
+// ****************************************************************
+// ************** Extra Confidentiality ***************************
+// ****************************************************************
+
+// we reuse the conditions from secretR and secretI
+
+lemma secretRprk2e: 
+   "All cid m pkI pkR prk2e prk3e2m  prk4e3m ko ks2 k3 iv3 y gx #i #j #k.
+      SecretsR(cid,m,pkI,pkR, prk2e,prk3e2m, prk4e3m,ko,ks2,k3,iv3,y,gx)@i
+     & KU(prk2e)@j & Honest(pkI)@k // If the attacker learns the key established (according to R) with a honest initiator
+    ==> (Ex #t.(Compromise(pkI)@t & t < i) ) | (Ex #t. LeakSessionKey(ko)@t ) | (Ex #t. LeakShare(y)@t  )  | (Ex #t. LeakShare(gx)@t  )  
+    "
+
+
+lemma secretRks2: 
+   "All cid m pkI pkR prk2e prk3e2m  prk4e3m ko ks2 k3 iv3 y gx #i #j #k.
+      SecretsR(cid,m,pkI,pkR, prk2e,prk3e2m, prk4e3m,ko,ks2,k3,iv3,y,gx)@i
+     & KU(ks2)@j & Honest(pkI)@k // If the attacker learns the key established (according to R) with a honest initiator
+    ==> (Ex #t.(Compromise(pkI)@t & t < i) ) | (Ex #t. LeakSessionKey(ko)@t ) | (Ex #t. LeakShare(y)@t  )  | (Ex #t. LeakShare(gx)@t  )  
+    "
+
+
+lemma secretIks2: 
+   "All cid m pkI pkR prk2e prk3e2m  prk4e3m ko ks2 k3 iv3 y gx #i #j #k.
+      SecretsI(cid,m,pkI,pkR, prk2e,prk3e2m, prk4e3m,ko,ks2,k3,iv3,y,gx)@i
+     & KU(ks2)@j & Honest(pkR)@k // If the attacker learns the key established (according to R) with a honest initiator
+    ==> (Ex #t.(Compromise(pkR)@t & t < i) ) | (Ex #t. LeakSessionKey(ko)@t ) | (Ex #t. LeakShare(y)@t  )  | (Ex #t. LeakShare(gx)@t  )  
+    "
