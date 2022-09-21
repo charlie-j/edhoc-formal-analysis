@@ -472,7 +472,7 @@ if args.retry:
     print("ReChecking %i scenarios" % (len(list(scenarios))))
     new_results = init_result()
     for scen in proved_scenarios:
-        set_result(new_results,get_result(results,scen))
+        set_result(new_results,scen,get_result(results,scen))
     results=new_results
     load_results(results)
     
