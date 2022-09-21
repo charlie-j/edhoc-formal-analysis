@@ -456,18 +456,24 @@ else:
     load_results(results)
 
 if args.retry:
-    scenarios=[]         
+    scenarios=[]
+    proved_scenarios=[]
     for prot in Protocols:
         for lemma in Lemmas:
             for threat in ThreatModels:
                 scen=Scenario(prot,lemma,threat)
                 try:
-                    if scen.valid() and get_result(results,scen)!="true" and get_result(results,scen):
+                    if scen.valid() and get_result(results,scen)!="true" and get_result(results,scen) != "false":
                         scenarios += [scen]
+                    elif scen.valid() and (get_result(results,scen)=="true" or get_result(results,scen) == "false"):
+                        proved_scenarios += [scen]
                 except: None
     scenarios.sort(reverse=False,key=lambda x: len(x.threats))
     print("ReChecking %i scenarios" % (len(list(scenarios))))
-    results = init_result()
+    new_results = init_result()
+    for scen in proved_scenarios:
+        set_result(new_results,get_result(results,scen))
+    results=new_results
     load_results(results)
     
 res = {}
