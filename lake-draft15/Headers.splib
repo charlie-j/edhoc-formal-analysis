@@ -1,0 +1,290 @@
+
+#ifdef CollapseHash
+
+functions: hout/0
+
+equations: hash(x)=hout
+
+
+#endif
+
+#ifdef WeakestSignature & not SignatureEvent
+
+#define weakPK
+
+#define CEO
+
+#define malleability
+
+#define reveal
+
+#define DEO
+
+#endif
+
+#ifdef weakPK | CEO | malleability | reveal | DEO
+
+#include "WeakSignatures.splib"
+
+#else
+
+functions:sign/3,verify/3 [destructor],revealsign/1[destructor], pk/1, sigtrue/0
+
+equations: verify(sign(m,r, sk), m, pk(sk)) = sigtrue, // correctness
+	   revealsign(sign(m,r, sk)) = m // the content is not hidden
+
+let MakeDEO = 0
+
+#endif
+
+#ifdef NeutralCheck
+
+functions: check_grp/1 [destructor]
+
+equations: check_grp(x) = x
+
+#else
+
+functions: check_grp/1  [destructor], const_grp/0
+
+equations: check_grp(x) = const_grp
+
+
+#endif
+
+
+
+
+#ifdef WeakAEAD
+
+functions: aeadmalleable/2
+
+equations: aeadmalleable(aeadenc(m,r,k,aa),r2) = aeadenc(m,r2,k,aa)
+
+#endif
+
+#ifdef NonRepudiationSoundness | NonRepudiationCompleteness
+
+#define NonRepudiation
+
+#endif
+
+// we begin with with processes dedicated for the non-repudiation analysis
+#ifdef NonRepudiationSoundness
+
+// Process used at the end of I , method 0 and 1, to prove that R was involved inside a KE
+let ContactJudgeFromI(ID_CRED_R,TH_2J,pkR,EAD_2,MAC_2J, SIGNATURE_or_MAC_2) =
+   let proofnrR = <ID_CRED_R,TH_2J,pkR,EAD_2,MAC_2J, SIGNATURE_or_MAC_2> in
+   out(proofnrR); // proof for JudgeR
+   event JudgeContactedI(proofnrR)
+
+
+// Process used at the end of R, method zero, to prove that I participated
+let ContactJudgeFromR(ID_CRED_I,TH_3J,pkI,EAD_3,MAC_3J,SIGNATURE_or_MAC_3) =
+    let proofnrI = <ID_CRED_I,TH_3J,pkI,EAD_3,MAC_3J,SIGNATURE_or_MAC_3> in   
+    out(proofnrI); // proof for JudgeI
+    event JudgeContactedR(proofnrI)
+
+restriction JudgeR:
+    "All proofnr #i. JudgeContactedI(proofnr)@i ==> Ex #j. (JudgeProcessedR(proofnr)@j)"
+
+restriction JudgeI:
+	"All proofnr #i. JudgeContactedR(proofnr)@i ==> Ex #j. (JudgeProcessedI(proofnr)@j)"
+
+#else
+
+let ContactJudgeFromI(ID_CRED_R,TH_2J,pkR,EAD_2,MAC_2J, SIGNATURE_or_MAC_2) = 0
+let ContactJudgeFromR(ID_CRED_I,TH_3J,pkI,EAD_3,MAC_3J,SIGNATURE_or_MAC_3) = 0
+
+#endif
+
+
+
+#ifdef LeakShare & not KEM
+
+let CompromiseShare(s) =
+    event LeakShare(s); event LeakShare('g'^s); out(s)
+
+#endif
+
+#ifdef LeakShare & KEM
+
+let CompromiseShare(s) =
+    event LeakShare(s); event LeakShare(kempk(s)); out(s)
+
+#endif
+
+#ifdef not LeakShare
+
+let CompromiseShare(s) = event LeakShare('null'); 0
+
+#endif
+
+
+export queries:
+ "
+set preciseActions=true.
+"
+
+#ifdef NonRepudiation 
+
+export queries:
+"
+(* a judge only accepts once a proof. *)
+restriction st1,st2,pr:bitstring;
+  event(JudgeReceivedI( st1,pr )) &&   event(JudgeReceivedI( st2,pr )) ==> st1 = st2.
+
+restriction st1,st2,pr:bitstring;
+  event(JudgeReceivedR( st1,pr )) &&   event(JudgeReceivedR( st2,pr )) ==> st1 = st2.
+
+(* non_repudation_R_completeness injective version *)
+query th2:bitstring, pkr:bitstring, proofnr:bitstring, i:time,
+      j:time, l:time;
+ ((inj-event(WasActiveR( pkr, th2, proofnr ))@i) &&
+  (event(Honest( pkr ))@j)) ==>
+ ((inj-event(THRShared( pkr, th2 ))@l) ||
+  (event(Compromise( pkr ))@l))
+.
+(* non_repudation_I_completeness injective version *)
+query th3:bitstring, pkI:bitstring, proofnr:bitstring, i:time,
+      j:time, l:time;
+ ((inj-event(WasActiveI( pkI, th3, proofnr ))@i) &&
+  (event(Honest( pkI ))@j)) ==>
+ ((inj-event(THIShared( pkI, th3 ))@l) ||
+  (event(Compromise( pkI ))@l))
+.
+
+"
+
+#endif
+
+
+
+#ifdef not LeakShare & not NonRepudiation & not XorPrecise & not KEM & not diffEquiv
+
+export queries:
+"
+not attacker (new X_1 ).
+not attacker (new Y_1 ).
+
+"
+
+#else
+
+export queries:
+"
+axiom k:bitstring; event(Share( k )) && attacker( k ) ==> event(LeakShare(k)).
+axiom k:bitstring; event(ShareLT( k )) && attacker( k ) ==> event(Leak(k)).
+"
+
+#endif
+
+
+#ifdef MethodZero
+
+export queries:
+"
+(* can be used to restrict methods *)
+restriction m:bitstring; event(MethodOk(m)) ==> m=method_zero.
+"
+
+restriction method_zero:
+ "All x #i. MethodOk(x)@i ==> x=method_zero"
+ 
+#endif
+
+
+#ifdef MethodOne
+
+export queries:
+"
+(* can be used to restrict methods *)
+restriction m:bitstring; event(MethodOk(m)) ==> m=method_one.
+"
+
+restriction method_one:
+ "All x #i. MethodOk(x)@i ==> x=method_one"
+ 
+#endif
+
+#ifdef MethodTwo
+
+export queries:
+"
+(* can be used to restrict methods *)
+restriction m:bitstring; event(MethodOk(m)) ==> m=method_two.
+"
+
+restriction method_two:
+ "All x #i. MethodOk(x)@i ==> x=method_two"
+ 
+#endif
+
+#ifdef MethodThree
+
+export queries:
+"
+(* can be used to restrict methods *)
+restriction m:bitstring; event(MethodOk(m)) ==> m=method_three.
+"
+
+restriction method_three:
+ "All x #i. MethodOk(x)@i ==> x=method_three"
+ 
+#endif
+
+
+#ifdef XorPrecise 
+
+export queries:
+"
+fun xord():bitstring.
+
+reduc forall x,z,k,a,b,c:bitstring;   xormalleables( encxor( (x, (sign(a,b,c), z)) , k) ) =  encxor( (x, (sign(a,xord,c), z) ), k).
+reduc  forall a,b,nid,y,z,k:bitstring;   xormalleableidr(nid, encxor( (id(a,b),(y,z)) ,k) ) =  encxor( (nid,(y,z)) ,k).
+reduc  forall a,b,nid,y,z,k:bitstring;   xormalleableidl(nid, encxor( (id(a,b),(y,z)) ,k) ) =  encxor( (nid,(y,z)) ,k).
+reduc  forall x,y,nid,z,k:bitstring;   xormalleablel(nid, encxor( (x,(y,z)) ,k) ) =  encxor( (x,(y,nid)) ,k).
+"
+
+#endif
+
+
+#ifdef XorPrecise
+
+functions: 		   encxor/2, decxor/2 
+equations:           decxor(encxor(m,x),x) = m, decxor(encxor(m,x),m) = x
+
+#else
+
+functions: 		   encxor/2, decxor/2  [destructor]
+equations:           decxor(encxor(m,x),x) = m
+
+#endif
+
+
+
+#ifdef CredCheck
+
+functions: check_cred/1 [destructor]
+
+equations: check_cred(x) = x
+
+#else
+
+functions: check_cred/1  [destructor], const_cred/0
+
+equations: check_cred(x) = const_cred
+
+
+#endif
+
+#ifdef LeakSessionKey
+
+let leakSKey(key) =
+ event LeakSessionKey(key); out(key)
+
+#else
+
+let leakSKey(key) =  event LeakSessionKey('null') 
+
+#endif

@@ -1,0 +1,627 @@
+// Some wip points:
+// LEcol is  not integrated as nicely as it could everywhere, and is harcoded only inside the CPcol or branch. Checkout if the performances are indeed very different
+
+
+functions: col1/2,col2/2,colip1/1,colip2/1, sndpre/1, pre/1, constcol1/0, constcol2/0
+
+
+// HashC(x,y) is used to bind together according to the set of HashE.
+restriction originHash:
+"All x hs #i. HashC(x,hs)@i ==> (Ex #j. HashE(x,hs)@j & j<i) "
+//Remark: the j<i than i is important, otherwise we loose soundness
+
+restriction deterministic: // needed otherwise properties of CR over HashC would not carry over to HashE
+"All x1 x2 h1 h2 #i #j. HashE(x1,h1)@i & HashE(x2,h2)@j & x1=x2 ==>#i=#j"
+
+
+// lemma orig[sources]:
+//   "All x hs #i. HashC(x,hs)@i ==> (Ex #j. HV(hs)@j & j<i) |  (Ex #j. KU(hs)@j & j<i)"
+
+
+/*
+*
+*
+* FRESHDOMAIN
+*
+*
+*/
+
+
+// FreshDomain -> hash output domains can be fresh values.
+// If the hash is needed to
+#ifdef FreshDomain
+// HashE(x,y) is used to store the fact that y=h(x).
+
+rule hashVals:
+ [Fr(~n)]-->[!HashVals(~n)]
+
+rule createHash:
+[!HashVals(~n)]--[HashE(x,~n), HV(~n)]->[]
+
+
+
+rule attHash:
+[In(x), !HashVals(~hs)]--[HashC(x,~hs)]->[Out(~hs)]
+
+lemma orig[sources]:
+  "All x hs #i. HashC(x,hs)@i ==> (Ex #j. HV(hs)@j & j<i) |  (Ex #j. KU(hs)@j & j<i)"
+
+#endif
+
+
+
+/*
+*
+*
+* ATTACKERDOMAIN
+*
+*
+*/
+
+
+// AttackerDomain -> hash output values are attacker chosen
+#ifdef AttackerDomain
+
+// In this scenario, the attacker can choose all the values of output.
+rule forceHash:
+[In(x)]--[HashE(y,x)]->[]
+
+
+rule attHash:
+[In(x), In(y)]--[HashC(x,y)]->[Out(y)]
+
+
+lemma orig[sources]:
+  "All x hs #i. HashC(x,hs)@i ==> (Ex #j. KU(hs)@j & j<i)"
+
+#endif
+
+
+
+/*
+*
+*
+* ATTACKERDOMAIN Fresh
+*
+*
+*/
+
+
+// AttackerDomainFresh -> hash output values are attacker chosen, but must be names
+#ifdef AttackerDomainFresh
+
+
+rule hashVals:
+ [Fr(~n)]-->[!HashVals(~n),Out(~n)]
+
+rule createHash:
+[In(~n),!HashVals(~n)]--[HashE(x,~n), HV(~n)]->[]
+
+
+rule attHash:
+[In(x), In(~hs)]--[HashC(x,~hs)]->[]
+
+
+lemma orig[sources]:
+  "All x hs #i. HashC(x,hs)@i ==> (Ex #j. KU(hs)@j & j<i)"
+
+#endif
+
+
+#ifdef iLeak
+
+
+rule attLeakHash:
+[In(h)]--[HashD(x,h)]->[Out(x)]
+
+
+restriction originHashLeakRestr:
+"All x hs #i. HashD(x,hs)@i ==> (Ex #j. HashC(x,hs)@j & j<i) "
+
+
+lemma originHashLeak[sources]:
+"All x hs #i. HashD(x,hs)@i ==> (Ex #j. HashC(x,hs)@j & j<i) "
+
+
+#endif
+
+
+
+
+
+
+
+/*
+*
+*
+* Collision Resistance
+*
+*
+*/
+
+
+
+#ifdef CR
+
+restriction CollisionResistance:
+"
+All x1 x2 n #i #j. HashC(x1 ,n)@i & HashC(x2, n)@j ==> x1=x2
+"
+
+#endif
+
+
+
+#ifdef ExCol & not PreImage & not SndPreImage & not CPcol & not LEcol & not IPcol
+
+restriction CollisionResistance:
+"
+All x1 x2 n #i #j. HashC(x1 ,n)@i & HashC(x2, n)@j ==> x1=x2
+    | (x1 = constcol1() & x2 = constcol2())
+    | (x2 = constcol1() & x1 = constcol2())
+"
+
+#endif
+
+#ifdef ExCol & not PreImage & not SndPreImage & not CPcol & LEcol & not IPcol
+
+restriction CollisionResistance:
+"
+All x1 x2 n #i #j. HashC(x1 ,n)@i & HashC(x2, n)@j ==> x1=x2
+    | (Ex l. x1 = constcol1() || l & x2 = constcol2() || l )
+    | (Ex l. x2 = constcol1() || l & x1 = constcol2() || l)
+"
+
+#endif
+
+
+/*
+*
+*
+* Length Extension
+*
+*
+*/
+
+
+#ifdef FreshDomain & LengthExtension & not iLeak
+
+rule lengthextend:
+[In(l), In(~hy),  !HashVals(~hy),  !HashVals(~res)]--[HashC(y,~hy),HashC(y||l, ~res), SingleHash4()]->[Out(~res)]
+
+
+#endif
+
+
+
+
+
+/*
+*
+*
+* Preimage, Second Preimage and Chosen/Identical Prefix Collisions, all combined with length extensions
+*
+*
+*/
+
+
+#ifdef PreImage & not CPcol & not LEcol  & not IPcol
+
+restriction Collisions:
+"
+All x1 x2 n #i #j. HashC(x1 ,n)@i & HashC(x2, n)@j ==> x1=x2
+| (Ex #k. x2 = pre(n) & TokenPre(n)[+]@k)
+| (Ex #k. x1 = pre(n) & TokenPre(n)[+]@k)
+"
+
+rule TokPre:
+ [In(x)]--[TokenPre(x),SingleHash2()]->[]
+
+
+#endif
+
+// for preimage, we don't split over sndpreimage, as preimage => sndpreimage
+#ifdef PreImage & not CPcol & LEcol  & not IPcol
+
+restriction Collisions:
+"
+All x1 x2 n #i #j. HashC(x1 ,n)@i & HashC(x2, n)@j ==>
+    x1=x2
+//| (Ex #k. x2 = pre(n) & TokenPre(n)[+]@k)
+// | (Ex #k. x1 = pre(n) & TokenPre(n)[+]@k)
+| (Ex #k1 #k2 l y1 n2 . x2 = pre(n2) || l  & x1 = y1 || l & HashC(y1,n2)@k1 &  TokenPre(n2)[+]@k2)
+| (Ex #k1 #k2 l y1 n2 . x1 = pre(n2) || l  & x2 = y1 || l & HashC(y1,n2)@k1 &  TokenPre(n2)[+]@k2)
+
+"
+
+rule TokPre:
+ [In(x)]--[TokenPre(x),SingleHash2()]->[]
+
+
+#endif
+
+
+
+#ifdef PreImage  & CPcol & not LEcol
+
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p1 p2 #k. x1 = p1 || col1(p1,p2) &  x2 = p2 || col2(p1,p2) & TokenCP(p1,p2)[+]@k)
+    | (Ex #k. x2 = pre(h1) & TokenPre(h1)[+]@k)
+    | (Ex #k. x1 = pre(h2) & TokenPre(h2)[+]@k)
+"
+
+rule TokPre:
+ [In(x)]--[TokenPre(x),SingleHash2()]->[]
+
+
+rule Tok:
+ [In(<p1,p2>)]--[TokenCP(p1,p2),SingleHash()]->[]
+
+#endif
+
+
+#ifdef PreImage  & CPcol & LEcol
+
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p1 p2 l #k. x1 = p1 || col1(p1,p2) || l &  x2 = p2 || col2(p1,p2) || l & TokenCP(p1,p2)[+]@k)
+    | (Ex #k1 #k2 l y1 n2 . x2 = pre(n2) || l  & x1 = y1 || l & HashC(y1,n2)@k1 &  TokenPre(n2)[+]@k2)
+    | (Ex #k1 #k2 l y1 n2 . x1 = pre(n2) || l  & x2 = y1 || l & HashC(y1,n2)@k1 &  TokenPre(n2)[+]@k2)
+    | (Ex #k. x2 = pre(h1) & TokenPre(h1)[+]@k)
+    | (Ex #k. x1 = pre(h1) & TokenPre(h1)[+]@k)
+
+"
+
+rule TokPre:
+ [In(x)]--[TokenPre(x),SingleHash2()]->[]
+
+
+// The token is used to limit to one CPcol compution
+rule Tok:
+ [In(<p1,p2>)]--[TokenCP(p1,p2),SingleHash()]->[]
+
+#endif
+
+
+#ifdef not PreImage & SndPreImage & not CPcol  & not IPcol & not LEcol
+
+restriction Collisions:
+"
+All x1 x2 n #i #j. HashC(x1 ,n)@i & HashC(x2, n)@j ==>
+    x1=x2
+    | (Ex #k. x2 = sndpre(x1) & TokenPre2(x1)[+]@k)
+    | (Ex #k. x1 = sndpre(x2) & TokenPre2(x2)[+]@k)
+"
+
+rule TokPre2:
+ [In(x)]--[TokenPre2(x),SingleHash3()]->[]
+
+
+#endif
+
+
+#ifdef not PreImage & SndPreImage & not CPcol  & not IPcol & LEcol
+
+restriction Collisions:
+"
+All x1 x2 n #i #j. HashC(x1 ,n)@i & HashC(x2, n)@j ==>
+    x1=x2
+    | (Ex #k. x2 = sndpre(x1) & TokenPre2(x1)[+]@k)
+    | (Ex #k. x1 = sndpre(x2) & TokenPre2(x2)[+]@k)
+    | (Ex #k l p1.  x1 = p1 || l &  x2 = sndpre(p1) || l & TokenPre2(p1)[+]@k)
+    | (Ex #k l p2. x1 = sndpre(p2) || l & x2 = p2 || l & TokenPre2(p2)[+]@k)
+"
+
+rule TokPre2:
+ [In(x)]--[TokenPre2(x),SingleHash3()]->[]
+
+
+#endif
+
+#ifdef not PreImage & SndPreImage & CPcol & LEcol
+
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p1 p2 l #k. x1 = p1 || col1(p1,p2) || l &  x2 = p2 || col2(p1,p2) || l & TokenCP(p1,p2)[+]@k)
+    | (Ex #k. x2 = sndpre(x1) & TokenPre2(x1)[+]@k)
+    | (Ex #k. x1 = sndpre(x2) & TokenPre2(x2)[+]@k)
+    | (Ex #k l p1.  x1 = p1 || l &  x2 = sndpre(p1) || l & TokenPre2(p1)[+]@k)
+    | (Ex #k l p2. x1 = sndpre(p2) || l & x2 = p2 || l & TokenPre2(p2)[+]@k)
+"
+
+rule TokPre2:
+ [In(x)]--[TokenPre2(x),SingleHash3()]->[]
+
+
+// The token is used to limit to one CPcol compution
+rule Tok:
+ [In(<p1,p2>)]--[TokenCP(p1,p2),SingleHash()]->[]
+#endif
+
+
+
+#ifdef not PreImage & SndPreImage & CPcol & not LEcol
+
+restriction Collisions:
+// x1 and x2 have the same hash value only if
+//     0) they are equal
+//     1) they are of both the form x = cons(p,l), with l some attacker unchosen value
+//     2) there is a second preimage attack
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+     (Ex p1 p2 #k. x1 = p1 || col1(p1,p2) &  x2 = p2 || col2(p1,p2)  & TokenCP(p1,p2)[+]@k)
+    | (Ex #k. x2 = sndpre(x1) & TokenPre2(x1)[+]@k)
+    | (Ex #k. x1 = sndpre(x2) & TokenPre2(x2)[+]@k)
+"
+
+rule TokPre2:
+ [In(x)]--[TokenPre2(x),SingleHash3()]->[]
+
+// The token is used to limit to one CPcol compution
+rule Tok:
+ [In(<p1,p2>)]--[TokenCP(p1,p2),SingleHash()]->[]
+#endif
+
+#ifdef not PreImage & not SndPreImage & CPcol & LEcol
+// x1 and x2 have the same hash value only if
+//     0) they are equal
+//     1) they are of both the form x = cons(p,l), with l some attacker unchosen value
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p1 p2 l #k. x1 = p1 || col1(p1,p2) || l &  x2 = p2 || col2(p1,p2) || l & TokenCP(p1,p2)[+]@k)
+"
+
+// The token is used to limit to one CPcol compution
+rule Tok:
+ [In(<p1,p2>)]--[TokenCP(p1,p2),SingleHash()]->[]
+
+#endif
+
+#ifdef not PreImage & not SndPreImage & CPcol & not LEcol
+// x1 and x2 have the same hash value only if
+//     0) they are equal
+//     1) they are of both the form x = cons(p,l), with l some attacker unchosen value
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p1 p2 #k. x1 = p1 || col1(p1,p2)  &  x2 = p2 || col2(p1,p2)  & TokenCP(p1,p2)[+]@k)
+"
+
+// The token is used to limit to one CPcol compution
+rule Tok:
+ [In(<p1,p2>)]--[TokenCP(p1,p2),SingleHash()]->[]
+
+#endif
+
+
+#ifdef PreImage  & IPcol & not LEcol
+
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p #k. x1 = p || colip1(p) &  x2 = p || colip2(p) & TokenIP(p)[+]@k)
+    | (Ex #k. x2 = pre(h1) & TokenPre(h1)[+]@k)
+    | (Ex #k. x1 = pre(h2) & TokenPre(h2)[+]@k)
+"
+
+rule TokPre:
+ [In(x)]--[TokenPre(x),SingleHash2()]->[]
+
+
+rule Tok:
+ [In(p)]--[TokenIP(p),SingleHash()]->[]
+
+#endif
+
+
+#ifdef PreImage  & IPcol & LEcol
+
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j  ==>
+     (x1 = x2) | //honest case
+    (Ex p l #k. x1 = p || colip1(p) || l  &  x2 = p || colip2(p) || l & TokenIP(p)[+]@k)
+    | (Ex #k1 #k2 l y1 n2 . x2 = pre(n2) || l  & x1 = y1 || l & HashC(y1,n2)@k1 & TokenPre(n2)[+]@k2)
+    | (Ex #k1 #k2 l y1 n2 . x1 = pre(n2) || l  & x2 = y1 || l & HashC(y1,n2)@k1 & TokenPre(n2)[+]@k2)
+    | (Ex #k. x2 = pre(h1) & TokenPre(h1)[+]@k)
+    | (Ex #k. x1 = pre(h1) & TokenPre(h1)[+]@k)
+"
+
+rule TokPre:
+ [In(x)]--[TokenPre(x),SingleHash2()]->[]
+
+
+// The token is used to limit to one IPcol compution
+
+rule Tok:
+ [In(p)]--[TokenIP(p),SingleHash()]->[]
+
+#endif
+
+
+#ifdef not PreImage & SndPreImage & IPcol & LEcol
+
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p l #k. x1 = p || colip1(p) || l  &  x2 = p || colip2(p) || l & TokenIP(p)[+]@k)
+    | (Ex #k. x2 = sndpre(x1) & TokenPre2(x1)[+]@k)
+    | (Ex #k. x1 = sndpre(x2) & TokenPre2(x2)[+]@k)
+    | (Ex #k l p1.  x1 = p1 || l &  x2 = sndpre(p1) || l & TokenPre2(p1)[+]@k)
+    | (Ex #k l p2. x1 = sndpre(p2) || l & x2 = p2 || l & TokenPre2(p2)[+]@k)
+"
+
+rule TokPre2:
+ [In(x)]--[TokenPre2(x),SingleHash3()]->[]
+
+
+// The token is used to limit to one IPcol compution
+
+rule Tok:
+ [In(p)]--[TokenIP(p),SingleHash()]->[]
+
+#endif
+
+
+
+#ifdef not PreImage & SndPreImage & IPcol & not LEcol
+
+restriction Collisions:
+// x1 and x2 have the same hash value only if
+//     0) they are equal
+//     1) they are of both the form x = cons(p,l), with l some attacker unchosen value
+//     2) there is a second preimage attack
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p #k. x1 = p || colip1(p) &  x2 = p || colip2(p) & TokenIP(p)[+]@k)
+    | (Ex #k. x2 = sndpre(x1) & TokenPre2(x1)[+]@k)
+    | (Ex #k. x1 = sndpre(x2) & TokenPre2(x2)[+]@k)
+"
+
+rule TokPre2:
+ [In(x)]--[TokenPre2(x),SingleHash3()]->[]
+
+// The token is used to limit to one IPcol compution
+
+rule Tok:
+ [In(p)]--[TokenIP(p),SingleHash()]->[]
+
+#endif
+
+
+
+#ifdef not PreImage & not SndPreImage & IPcol & LEcol
+// x1 and x2 have the same hash value only if
+//     0) they are equal
+//     1) they are of both the form x = cons(p,l), with l some attacker unchosen value
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p l #k. x1 = p || colip1(p) || l  &  x2 = p || colip2(p) || l & TokenIP(p)[+]@k)
+"
+
+// The token is used to limit to one IPcol compution
+
+rule Tok:
+ [In(p)]--[TokenIP(p),SingleHash()]->[]
+
+
+#endif
+
+
+#ifdef not PreImage & not SndPreImage & IPcol & not LEcol
+// x1 and x2 have the same hash value only if
+//     0) they are equal
+//     1) they are of both the form x = cons(p,l), with l some attacker unchosen value
+restriction Collisions:
+"
+All x1 x2 h1 h2 #i #j. HashC(x1 ,h1)@i & HashC(x2, h2)@j & h1 = h2 & i < j ==>
+     (x1 = x2) | //honest case
+    (Ex p #k. x1 = p || colip1(p) &  x2 = p || colip2(p) & TokenIP(p)[+]@k)
+"
+
+// The token is used to limit to one IPcol compution
+
+rule Tok:
+ [In(p)]--[TokenIP(p),SingleHash()]->[]
+
+
+#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+*
+*
+* Simplifiers
+*
+*
+*/
+
+
+
+
+#ifdef SingleHash & CPcol
+restriction singTokenCP:
+"
+All #i #j. SingleHash()@i & SingleHash()@j ==> #i =#j
+
+"
+
+#endif
+
+#ifdef SingleHash & IPcol
+restriction singTokenIP:
+"
+All #i #j. SingleHash()@i & SingleHash()@j ==> #i =#j
+
+"
+
+#endif
+
+
+#ifdef SingleHash & PreImage
+
+restriction singTokenPre:
+"
+All #i #j. SingleHash2()@i & SingleHash2()@j ==> #i =#j
+
+"
+#endif
+
+#ifdef SingleHash & SndPreImage
+
+restriction singTokenPre2:
+"
+All #i #j. SingleHash3()@i & SingleHash3()@j ==> #i =#j
+
+"
+#endif
+
+#ifdef SingleHash & LengthExtension
+
+restriction singLE:
+"
+All #i #j. SingleHash4()@i & SingleHash4()@j ==> #i =#j
+
+"
+
+#endif
+
+// Forbid the element to be a concat
+#ifdef FixedLength
+restriction FixedLength:
+"
+All x #i. FixedLength(x)@#i ==> not (Ex y z. x = y || z)
+"
+#endif
