@@ -55,7 +55,9 @@ def set_result(results,scen,res):
     try:
         previous_res = results[scen.prot][scen.lemma]["*".join(scen.threats)]
         if not(previous_res == res):
-            return "failed"
+            print("Updating result for %s %s from %s to %s " % (scen.prot, scen.lemma, previous_res,res))
+        results[scen.prot][scen.lemma]["*".join(scen.threats)] = res
+            
     except:
         results[scen.prot][scen.lemma]["*".join(scen.threats)] = res
         
