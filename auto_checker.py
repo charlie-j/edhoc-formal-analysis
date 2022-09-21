@@ -27,7 +27,6 @@ import multiprocessing.pool
 from functools import partial
 from multiprocessing.managers import BaseManager
 from multiprocessing import Manager
-import numpy
 
 FOLDER = "lake-draft15/"
 
@@ -131,7 +130,10 @@ class Scenario:
     
   def __repr__(self):
        threats = [i for i in self.threats if i not in ["PreciseSignatureProof", "PreciseDH"] ]
-       header="%s --lemma=%s" % (self.filename(), self.lemma)
+       if self.lemma=="non-repudiation-soundness":
+           header="%s -D=%s" % (self.filename(), self.lemma)
+       else:
+           header="%s --lemma=%s" % (self.filename(), self.lemma)           
        if threats == []:
            return header
        else:
@@ -397,13 +399,13 @@ def load_results(results):
     # for scen in scenarios:
     #     load_result_scenario(results,scen)
 
-
+    
 
 parser = argparse.ArgumentParser()
 # parser.add_argument('-p','--prots', nargs='+', help='List of prots to test, all by default')
 # parser.add_argument('-s','--scen', nargs='+', help='List of scenarios to test, all by default')
 # parser.add_argument('-d','--disp', nargs='+', help='List of prots to display together')
-# parser.add_argument('-c','--comp', nargs='+', help='Computes the differences between two prots')
+parser.add_argument('-c','--compress', help='Compress the results',  action='store_true')
 # parser.add_argument('-co','--componly', help='Only displays the line with a diff', action='store_true')
 parser.add_argument('-fs','--filesave', nargs='+', help='Save results into file')
 parser.add_argument('-fl','--fileload', nargs='+', help='Load results from file')
@@ -436,9 +438,9 @@ else:
     TIMEOUT = 30
 
 if args.fileload:
-    import numpy
-    filename = args.fileload[0]
-    res = numpy.load(filename+".npy", allow_pickle=True).item()
+    with open(args.fileload[0]) as user_file:
+        file_contents = user_file.read()
+    res = json.loads(file_contents)
     results=res
 else:
     for prot in Protocols:
@@ -457,7 +459,22 @@ for prot in Protocols:
         res[prot][lemma]={}
         for key in results[prot][lemma].keys():
             res[prot][lemma][key]=results[prot][lemma][key]
+if args.filesave:
+    f = open(args.filesave[0], "w")
+    f.write(json.dumps(res, indent=4))
+    f.close()            
 
-f = open("res", "w")
-f.write(json.dumps(res, indent=4))
-f.close()            
+if args.compress:
+    comp = {}
+    for prot in Protocols:
+        comp[prot]={}
+        for lemma in Lemmas:
+            comp[prot][lemma]={}
+    for scen in scenarios:
+        if get_result(res,scen)=="true" and all([get_result(res,scen2)!="true" or is_weaker_scenario(scen,scen2)!="true" or scen==scen2 for scen2 in scenarios]):
+            set_result(comp,scen,"true")
+        if get_result(res,scen)=="false" and all([get_result(res,scen2)!="false" or is_weaker_scenario(scen2,scen)!="true" or scen==scen2 for scen2 in scenarios]):
+            set_result(comp,scen,"false")
+        if get_result(res,scen)!="true" and all([get_result(res,scen2)!="true" or is_weaker_scenario(scen,scen2)!="true" or scen==scen2 for scen2 in scenarios]) and get_result(res,scen)!="false" and all([get_result(res,scen2)!="false" or is_weaker_scenario(scen2,scen)!="true" or scen==scen2 for scen2 in scenarios]):
+            set_result(comp,scen,get_result(res,scen))
+print(json.dumps(comp, indent=4))    
