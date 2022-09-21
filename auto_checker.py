@@ -130,7 +130,7 @@ class Scenario:
     
   def __repr__(self):
        threats = [i for i in self.threats if i not in ["PreciseSignatureProof", "PreciseDH"] ]
-       header="%s -D=%s" % (self.filename(), self.lemma)
+       header="%s --lemma=%s" % (self.filename(), self.lemma)
        if threats == []:
            return header
        else:
