@@ -83,7 +83,7 @@ def powerset(s):
 Protocols = ["DH", "KEM"]
 
 # Our list of target lemmas
-Lemmas = [ "no_reflection_attacks_RI", "authIR_unique", "data_authentication_I_to_R", "data_authentication_R_to_I", "honestauthRI_non_inj", "secretI", "secretR", "non-repudiation-soundness"]
+Lemmas = [ "no_reflection_attacks_RI", "authIR_unique", "data_authentication_I_to_R", "data_authentication_R_to_I", "honestauthRI_non_inj", "secretI", "secretR"]
 
 # The list of Attacker Capabilities or Features we are going to look at.
 AtomThreatModel= ["PreciseSignature", "PreciseSignatureProof", "LeakSessionKey", "WeakAEAD", "XorPrecise", "LeakShare", "PreciseDH", "CredCheck", "NeutralCheck"]
@@ -130,10 +130,7 @@ class Scenario:
     
   def __repr__(self):
        threats = [i for i in self.threats if i not in ["PreciseSignatureProof", "PreciseDH"] ]
-       if self.lemma=="non-repudiation-soundness":
-           header="%s -D=%s" % (self.filename(), self.lemma)
-       else:
-           header="%s --lemma=%s" % (self.filename(), self.lemma)           
+       header="%s -D=%s" % (self.filename(), self.lemma)
        if threats == []:
            return header
        else:
