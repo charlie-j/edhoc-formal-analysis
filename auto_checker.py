@@ -67,7 +67,6 @@ def get_result(results,scen):
 
 
 manager = Manager()
-results = manager.dict()
 
 
 
@@ -397,6 +396,16 @@ def load_results(results):
     #     load_result_scenario(results,scen)
 
     
+def init_result():
+    results = manager.dict()
+    for prot in Protocols:
+        sub = manager.dict()
+        results[prot] = sub
+    for prot in Protocols:    
+        for lemma in Lemmas:
+            sub = manager.dict()            
+            results[prot][lemma] = sub
+    return results
 
 parser = argparse.ArgumentParser()
 # parser.add_argument('-p','--prots', nargs='+', help='List of prots to test, all by default')
@@ -404,21 +413,23 @@ parser = argparse.ArgumentParser()
 # parser.add_argument('-d','--disp', nargs='+', help='List of prots to display together')
 parser.add_argument('-c','--compress', help='Compress the results',  action='store_true')
 # parser.add_argument('-co','--componly', help='Only displays the line with a diff', action='store_true')
+parser.add_argument('-rt','--retry', action="store_true",  help='For timeout jobs, retry to prove them')
 parser.add_argument('-fs','--filesave', nargs='+', help='Save results into file')
 parser.add_argument('-fl','--fileload', nargs='+', help='Load results from file')
 parser.add_argument('-t','--timeout', type=int, help='Timeout for proverif execution')
 parser.add_argument('-j','--proverifjobs', type=int, help='Number of parallel proverif jobs, default = total cores')
 args = parser.parse_args()
 
-scenarios=[]         
-for prot in Protocols:
-    for lemma in Lemmas:
-        for threat in ThreatModels:
-            scen=Scenario(prot,lemma,threat)
-            if scen.valid():
-                scenarios += [scen]
-scenarios.sort(reverse=False,key=lambda x: len(x.threats))
-print("Checking %i scenarios" % (len(list(scenarios))))
+if not args.retry:
+    scenarios=[]         
+    for prot in Protocols:
+        for lemma in Lemmas:
+            for threat in ThreatModels:
+                scen=Scenario(prot,lemma,threat)
+                if scen.valid():
+                    scenarios += [scen]
+    scenarios.sort(reverse=False,key=lambda x: len(x.threats))
+    print("Checking %i scenarios" % (len(list(scenarios))))
 
 # TODO
 # for prot in Protocols:
@@ -440,15 +451,22 @@ if args.fileload:
     res = json.loads(file_contents)
     results=res
 else:
-    for prot in Protocols:
-        sub = manager.dict()
-        results[prot] = sub
-    for prot in Protocols:    
-        for lemma in Lemmas:
-            sub = manager.dict()            
-            results[prot][lemma] = sub
+    results = init_result()
     load_results(results)
 
+if args.retry:
+    scenarios=[]         
+    for prot in Protocols:
+        for lemma in Lemmas:
+            for threat in ThreatModels:
+                scen=Scenario(prot,lemma,threat)
+                if scen.valid() and get_result(result,scen)!="true" and get_result(result,scen):
+                    scenarios += [scen]
+    scenarios.sort(reverse=False,key=lambda x: len(x.threats))
+    print("ReChecking %i scenarios" % (len(list(scenarios))))
+    results = init_result()
+    load_results(results)
+    
 res = {}
 for prot in Protocols:
     res[prot]={}
@@ -456,10 +474,6 @@ for prot in Protocols:
         res[prot][lemma]={}
         for key in results[prot][lemma].keys():
             res[prot][lemma][key]=results[prot][lemma][key]
-if args.filesave:
-    f = open(args.filesave[0], "w")
-    f.write(json.dumps(res, indent=4))
-    f.close()            
 
 if args.compress:
     comp = {}
@@ -474,4 +488,13 @@ if args.compress:
             set_result(comp,scen,"false")
         if get_result(res,scen)!="true" and all([get_result(res,scen2)!="true" or is_weaker_scenario(scen,scen2)!="true" or scen==scen2 for scen2 in scenarios]) and get_result(res,scen)!="false" and all([get_result(res,scen2)!="false" or is_weaker_scenario(scen2,scen)!="true" or scen==scen2 for scen2 in scenarios]):
             set_result(comp,scen,get_result(res,scen))
-print(json.dumps(comp, indent=4))    
+else:
+    comp = res
+
+                
+if args.filesave:
+    f = open(args.filesave[0], "w")
+    f.write(json.dumps(comp, indent=4))
+    f.close()            
+else:
+    print(json.dumps(comp, indent=4))    
