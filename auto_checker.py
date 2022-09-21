@@ -53,14 +53,14 @@ FOLDER = "lake-draft15/"
 
 def set_result(results,scen,res):
     try:
-        previous_res = results[scen.prot][scen.lemma]["".join(scen.threats)]
+        previous_res = results[scen.prot][scen.lemma]["*".join(scen.threats)]
         if not(previous_res == res):
             return "failed"
     except:
-        results[scen.prot][scen.lemma]["".join(scen.threats)] = res
+        results[scen.prot][scen.lemma]["*".join(scen.threats)] = res
         
 def get_result(results,scen):
-    return results[scen.prot][scen.lemma]["".join(scen.threats)]
+    return results[scen.prot][scen.lemma]["*".join(scen.threats)]
 
         
 # BaseManager.register("myresult",Data)
