@@ -375,12 +375,12 @@ def load_result_scenario(results,scenario):
         set_result(results,scenario,res)
         if res[0] == "true":
             for scen in scenarios:
-                if scen != scenario and is_weaker_scenario(scen,scenario)=="true":
+                if str(scen) != str(scenario) and is_weaker_scenario(scen,scenario)=="true":
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
                     set_result(results,scen,("true","implied"))
         if res[0] == "false":
             for scen in scenarios:
-                if scen != scenario and is_weaker_scenario(scenario,scen)=="true":
+                if str(scen) != str(scenario) and is_weaker_scenario(scenario,scen)=="true":
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
                     set_result(results, scenario,("false","implied"))
 
@@ -429,7 +429,7 @@ if not args.retry:
                     scenarios += [scen]
     scenarios.sort(reverse=False,key=lambda x: len(x.threats))
     print("Checking %i scenarios" % (len(list(scenarios))))
-
+#scenarios=[Scenario("lake-draft14/lake-edhoc-KEM","authIR_unique" ,["PreciseSignature"])]
 # TODO
 # for prot in Protocols:
 #     check_sanity(prot)
@@ -498,11 +498,11 @@ if args.compress:
         for lemma in Lemmas:
             comp[prot][lemma]={}
     for scen in scenarios:
-        if get_result(res,scen)[0]=="true" and not any([scen2 for scen2 in scenarios if get_result(res,scen2)[0]=="true" and is_weaker_scenario(scen,scen2)=="true" and scen!=scen2]):
+        if get_result(res,scen)[0]=="true" and not any([scen2 for scen2 in scenarios if get_result(res,scen2)[0]=="true" and is_weaker_scenario(scen,scen2)=="true" and str(scen)!=str(scen2)]):
             set_result(comp,scen, get_result(res,scen))
-        if get_result(res,scen)[0]=="false" and all([get_result(res,scen2)[0]!="false" or is_weaker_scenario(scen2,scen)!="true" or scen==scen2 for scen2 in scenarios]):
+        if get_result(res,scen)[0]=="false" and all([get_result(res,scen2)[0]!="false" or is_weaker_scenario(scen2,scen)!="true" or str(scen)==str(scen2) for scen2 in scenarios]):
             set_result(comp,scen, get_result(res,scen))
-        if get_result(res,scen)[0]!="true" and all([get_result(res,scen2)[0]!="true" or is_weaker_scenario(scen,scen2)!="true" or scen==scen2 for scen2 in scenarios]) and get_result(res,scen)[0]!="false" and all([get_result(res,scen2)[0]!="false" or is_weaker_scenario(scen2,scen)!="true" or scen==scen2 for scen2 in scenarios]):
+        if get_result(res,scen)[0]!="true" and all([get_result(res,scen2)[0]!="true" or is_weaker_scenario(scen,scen2)!="true" or str(scen)==str(scen2) for scen2 in scenarios]) and get_result(res,scen)[0]!="false" and all([get_result(res,scen2)[0]!="false" or is_weaker_scenario(scen2,scen)!="true" or str(scen)==str(scen2) for scen2 in scenarios]):
             set_result(comp,scen,get_result(res,scen))
 else:
     comp = res
