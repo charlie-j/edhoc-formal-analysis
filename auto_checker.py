@@ -169,9 +169,9 @@ def print_res(data,prot,lemma,res_for_prot,index):
     try:
         scenario=res_for_prot[prot][index]
         res=data[prot][lemma][scenario]
-        if res=="true": 
+        if "true" in res: 
             string_res= "\\ok"
-        else:
+        elif "false" in res:
             string_res= "\\attack" 
         scenarios = scenario.split("*")
         return u""" &  \\begin{tabular}{c} 
@@ -270,7 +270,7 @@ def gen_tex(data, filename):
 \\""" + lemmas_to_tex[lemma]
         res_for_prot = {}
         for prot in Protocols:
-            res_for_prot[prot] = [scen for scen in data[prot][lemma].keys() if data[prot][lemma][scen] in ["true","false"]]
+            res_for_prot[prot] = [scen for scen in data[prot][lemma].keys() if data[prot][lemma][scen][0] in ["true","false"]]
         maxrange=max([len(res_for_prot[prot]) for prot in Protocols])
         for i in range(0,maxrange):
             for prot in Protocols:                      
@@ -334,6 +334,7 @@ def merge_two_dicts(x, y):
 def call_proverif(scen):
     cmd = "./utilities/proverif-tamarin %s" % (FOLDER + scen.tamarin_args())
     print(cmd)
+    inittime = time.time()    
     process = subprocess.Popen(cmd.split(),cwd=os.path.dirname(os.path.realpath(__file__)),stderr=subprocess.STDOUT,stdout=subprocess.PIPE, preexec_fn=os.setsid)
     try:
         output, errors = process.communicate(timeout=TIMEOUT)
@@ -343,16 +344,17 @@ def call_proverif(scen):
             print(output)
             return (cmd+"test"+" ".join(proof_results))
         res = proof_results[0]
+        runtime = time.time() - inittime    
         if "true" in res:
-            return "true"
+            return ("true", runtime)
         elif "false" in res:
-            return "false"
+            return ("false", runtime)
         elif "cannot" in res:
-            return "cannot"
-        return "unrecognized result"
+            return ("cannot", runtime)
+        return ("unrecognized result", runtime)
     except subprocess.TimeoutExpired:
         os.killpg(os.getpgid(process.pid), signal.SIGTERM) 
-        return "timeout"
+        return ("timeout", TIMEOUT)
     
 # function which checks if the protocols are running
 def check_sanity(prot):
@@ -369,16 +371,16 @@ def load_result_scenario(results,scenario):
         res =  call_proverif(scenario)
         print("Protocol %s is %s for lemma %s in threat model %s" % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats)))
         set_result(results,scenario,res)
-        if res == "true":
+        if res[0] == "true":
             for scen in scenarios:
                 if scen != scenario and is_weaker_scenario(scen,scenario)=="true":
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
-                    set_result(results,scen,"true")
-        if res == "false":
+                    set_result(results,scen,res)
+        if res[0] == "false":
             for scen in scenarios:
                 if scen != scenario and is_weaker_scenario(scenario,scen)=="true":
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
-                    set_result(results, scenario,"false")
+                    set_result(results, scenario,res)
 
 def load_results(results):
     
@@ -457,9 +459,9 @@ if args.retry:
             for threat in ThreatModels:
                 scen=Scenario(prot,lemma,threat)
                 try:
-                    if scen.valid() and get_result(results,scen)!="true" and get_result(results,scen) != "false":
+                    if scen.valid() and get_result(results,scen)[0]!="true" and get_result(results,scen)[0] != "false":
                         scenarios += [scen]
-                    elif scen.valid() and (get_result(results,scen)=="true" or get_result(results,scen) == "false"):
+                    elif scen.valid() and (get_result(results,scen)[0]=="true" or get_result(results,scen)[0] == "false"):
                         proved_scenarios += [scen]
                 except: None
     scenarios.sort(reverse=False,key=lambda x: len(x.threats))
@@ -494,11 +496,11 @@ if args.compress:
         for lemma in Lemmas:
             comp[prot][lemma]={}
     for scen in scenarios:
-        if get_result(res,scen)=="true" and not any([scen2 for scen2 in scenarios if get_result(res,scen2)=="true" and is_weaker_scenario(scen,scen2)=="true" and scen!=scen2]):
-            set_result(comp,scen,"true")
-        if get_result(res,scen)=="false" and all([get_result(res,scen2)!="false" or is_weaker_scenario(scen2,scen)!="true" or scen==scen2 for scen2 in scenarios]):
-            set_result(comp,scen,"false")
-        if get_result(res,scen)!="true" and all([get_result(res,scen2)!="true" or is_weaker_scenario(scen,scen2)!="true" or scen==scen2 for scen2 in scenarios]) and get_result(res,scen)!="false" and all([get_result(res,scen2)!="false" or is_weaker_scenario(scen2,scen)!="true" or scen==scen2 for scen2 in scenarios]):
+        if get_result(res,scen)[0]=="true" and not any([scen2 for scen2 in scenarios if get_result(res,scen2)[0]=="true" and is_weaker_scenario(scen,scen2)=="true" and scen!=scen2]):
+            set_result(comp,scen, get_result(res,scen))
+        if get_result(res,scen)[0]=="false" and all([get_result(res,scen2)[0]!="false" or is_weaker_scenario(scen2,scen)!="true" or scen==scen2 for scen2 in scenarios]):
+            set_result(comp,scen, get_result(res,scen))
+        if get_result(res,scen)[0]!="true" and all([get_result(res,scen2)[0]!="true" or is_weaker_scenario(scen,scen2)!="true" or scen==scen2 for scen2 in scenarios]) and get_result(res,scen)[0]!="false" and all([get_result(res,scen2)[0]!="false" or is_weaker_scenario(scen2,scen)!="true" or scen==scen2 for scen2 in scenarios]):
             set_result(comp,scen,get_result(res,scen))
 else:
     comp = res
