@@ -81,7 +81,7 @@ def powerset(s):
 
 # We define the main parameters of the case study, first as full list, where we will intuitively want to consider all possible protocol and lemma under all subsets of attacker capabitlies and features
 
-Protocols = ["lake-draft12/DH", "lake-draft12/KEM", "lake-draft14/DH", "lake-draft14/KEM"]
+Protocols = ["lake-draft12/lake-edhoc", "lake-draft12/lake-edhoc-KEM", "lake-draft14/lake-edhoc", "lake-draft14/lake-edhoc-KEM"]
 
 # Our list of target lemmas
 Lemmas = [ "no_reflection_attacks_RI", "authIR_unique", "data_authentication_I_to_R", "data_authentication_R_to_I", "honestauthRI_non_inj", "secretI", "secretR"]
@@ -114,19 +114,15 @@ class Scenario:
              return False
          elif "CredCheck" in threats and not self.lemma=="no_reflection_attacks_RI":
               return False
-         elif self.prot=="KEM" and "PreciseDH" in threats:
+         elif "KEM" in self.prot and "PreciseDH" in threats:
              return False
-         elif self.prot=="KEM" and "NeutralCheck" in threats:
-             return False
-         elif "NeutralCheck" in threats:
-             return False         
+         elif "KEM" in self.prot and "NeutralCheck" in threats:
+             return False       
      return True
 
 
   def filename(self):
-    name = "lake-edhoc"
-    if self.prot == "KEM":
-        name += "-KEM"
+    name = self.prot
     if "PreciseSignatureProof" in self.threats:
         name += "-Sig"
     if "PreciseDH" in self.threats:
