@@ -377,12 +377,12 @@ def load_result_scenario(results,scenario):
             for scen in scenarios:
                 if scen != scenario and is_weaker_scenario(scen,scenario)=="true":
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
-                    set_result(results,scen,res)
+                    set_result(results,scen,("true","implied"))
         if res[0] == "false":
             for scen in scenarios:
                 if scen != scenario and is_weaker_scenario(scenario,scen)=="true":
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
-                    set_result(results, scenario,res)
+                    set_result(results, scenario,("false","implied"))
 
 def load_results(results):
     
