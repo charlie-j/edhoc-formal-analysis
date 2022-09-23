@@ -28,7 +28,7 @@ from functools import partial
 from multiprocessing.managers import BaseManager
 from multiprocessing import Manager
 
-FOLDER = "lake-draft15/"
+FOLDER = ""
 
 ###############
 ## UTILITIES ##
@@ -81,7 +81,7 @@ def powerset(s):
 
 # We define the main parameters of the case study, first as full list, where we will intuitively want to consider all possible protocol and lemma under all subsets of attacker capabitlies and features
 
-Protocols = ["DH", "KEM"]
+Protocols = ["lake-draft12/DH", "lake-draft12/KEM", "lake-draft14/DH", "lake-draft14/KEM"]
 
 # Our list of target lemmas
 Lemmas = [ "no_reflection_attacks_RI", "authIR_unique", "data_authentication_I_to_R", "data_authentication_R_to_I", "honestauthRI_non_inj", "secretI", "secretR"]
@@ -116,6 +116,10 @@ class Scenario:
               return False
          elif self.prot=="KEM" and "PreciseDH" in threats:
              return False
+         elif self.prot=="KEM" and "NeutralCheck" in threats:
+             return False
+         elif "NeutralCheck" in threats:
+             return False         
      return True
 
 
@@ -147,10 +151,9 @@ def is_weaker_scenario(scen1,scen2):
     if not(scen1.lemma == scen2.lemma and scen1.prot == scen2.prot):
         return None # incomparable
     for feature in Features:
-        if (feature in scen1.threats and not feature in scen2.threats):
-            return None
+        # adding a feature weaken the attacker
         if (feature in scen2.threats and not feature in scen1.threats):
-            return None # incomparable 
+            return "false" 
     orderedthreatmodels = [i for dim in OrderedCapabilities for i in dim]
     nonorderedthreatmodels = [i for i in AtomThreatModel if i not in orderedthreatmodels]
     for atom in nonorderedthreatmodels:
