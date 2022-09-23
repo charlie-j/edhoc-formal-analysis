@@ -92,6 +92,8 @@ ThreatModels=list(powerset(AtomThreatModel))
 
 Features = ["CredCheck", "NeutralCheck"]
 
+    
+
 # Order in threat models, list of which capability is stronger than which other one.
 # It will thus filter some threat models that are redundant.    
 OrderedCapabilities = [["PreciseSignature", "PreciseSignatureProof"] ]
@@ -162,175 +164,166 @@ def is_weaker_scenario(scen1,scen2):
         if (len(dimsc2) != 0 and len(dimsc1) != 0  and dimsc1[0] > dimsc2[0]):
             return "false"
     return "true"
+
+
+def print_res(data,prot,lemma,res_for_prot,index):
+    try:
+        scenario=res_for_prot[prot][index]
+        res=data[prot][lemma][scenario]
+        if res=="true": 
+            string_res= "\\ok"
+        else:
+            string_res= "\\attack" 
+        scenarios = scenario.split("*")
+        return u""" &  \\begin{tabular}{c} 
+        \\small \\"""+  ', \\'.join(scenarios) + """ \\\\ """ +  string_res + """\\end{tabular}"""   
+    except IndexError:
+        return u""" & """
+
+lemmas_to_tex = {
+    "no_reflection_attacks_RI":"noReflexionAttackRI",
+    "authIR_unique":"authIRunique",
+    "data_authentication_I_to_R":"dataAuthIR",
+    "data_authentication_R_to_I":"dataAuthRI",
+    "honestauthRI_non_inj":"honnestAuthRInonInj",
+    "secretI":"secretI",
+    "secretR":"secretR"
+    }
     
-# # We define a pretty printer for the scenarios, with tex templates
-# scen_pprinter = {
-# #    "AP_TLS_RO AP_TLS_RW" : "\maliom{u-tls}{\\rw}",
 
-#     }
+def gen_tex(data, filename):
+    """Generates the tex array for the given list of protocols"""
+    # need to escape \t, \n, \b \a
+    tex_template =  u"""\documentclass[compsoc, conference, letterpaper, 10pt, times, table]{standalone}
 
-# list_scen_pprinter = list(scen_pprinter.keys())
-# list_scen_pprinter.sort(key=lambda item: len(item))
-# list_scen_pprinter.reverse()
+\\usepackage[svgnames,dvipsnames]{xcolor}
+\\usepackage{pifont}
+\\usepackage{multicol}
+\\usepackage{nicematrix}
+\\usepackage{marvosym}
 
-# def gen_tex(dprots):
-#     """Generates the tex array for the given list of protocols"""
-
-#     tex_template = u"""\documentclass[compsoc, conference, letterpaper, 10pt, times, table, svgnames]{article}
-
-# \\usepackage{xcolor}
-# \\usepackage{pifont}
-# \\usepackage{multicol}
-# \\usepackage[paperwidth=20in, paperheight=40in]{geometry}
-# \\newcommand{\cmark}{\\textcolor{Lime}{\ding{51}}}
-# \\newcommand{\cannot}{?}
-# \\newcommand{\\bigcmark}{\\textcolor{Lime}{\ding{52}}}
-# \\newcommand{\\bluecmark}{\\textcolor{Blue}{\ding{51}}}
-# \\newcommand{\\bigbluecmark}{\\textcolor{Blue}{\ding{52}}}
-# \\newcommand{\greycmark}{\\textcolor{Grey}{\ding{51}}}
-# \\newcommand{\\biggreycmark}{\\textcolor{Grey}{\ding{52}}}
-# \\newcommand{\qmark}{\\textcolor{Grey}{\ding{51}}}
-# \\newcommand{\\xmark}{\\textcolor{Red}{\ding{55}}}
-# \\newcommand{\\bigxmark}{\\textcolor{Red}{\ding{54}}}
-# \\newcommand{\greyxmark}{\\textcolor{Grey}{\ding{55}}}
-# \\newcommand{\\biggreyxmark}{\\textcolor{Grey}{\ding{54}}}
-
-# \\newcommand{\mal}{\mathcal{M}}
-# \\newcommand{\\ro}{\mathcal{RO}}
-# \\newcommand{\\rw}{\mathcal{RW}}
-# \\newcommand{\chan}[1]{#1}
-# \\newcommand{\mali}[2]{$\mal^{\chan{#1}}_{in:#2}$}
-# \\newcommand{\malo}[2]{$\mal^{\chan{#1}}_{out:#2}$}
-# \\newcommand{\malio}[3]{$\mal^{\chan{#1}}_{in:#2,out:#3}$}
-# \\newcommand{\maliom}[2]{$\mal^{\chan{#1}}_{#2}$}
-
-# \\begin{document}
-# \\begin{figure}
-# \\vspace{-2.5cm}
-# \\begin{itemize}
-# \item green tick = injectivity proven,  red cross = attack found, grey cross = cannot prove, \_ = scenario not pertinent
-# \item First mark : No unwanted login with 2 Factor and 'I trust' unchecked
-# \item Second mark : No unwanted login with 2 Factor and 'I trust' checked
-# \item Third mark : No unwanted login through cookie
-# \end{itemize}
-# \\rowcolors{1}{LightSteelBlue!60}{}
-# \\begin{tabular}{p{0.25cm}p{0.25cm}p{0.3cm}cc""" + "".join([ "c" for p in dprots]) + """}
-# """
-
-#     end_tex_template="""\end{tabular}
-# \\begin{footnotesize}
-# Protocols
-# \\vspace{-.4cm}
-# \\begin{multicols}{2}
-# \\begin{itemize}
-# \item g2V - Google 2 Step with Verification code
-# \item g2VL - G2 V with code Linked to the TLS session
-# \item g2VLD - G2 V with code Linked to the TLS session and display
-# \item g2ST - Google 2 Step Single Tap
-# \item g2STD - G2 ST with Fingerprint display
-# \item g2STRD - G2 STD with a Random to compare
-# \item FIDO - FIDO Yubikey protocol
-# \item g2DTDE - g2DTD extension
-# \end{itemize}
-# \end{multicols}
-# \\vspace{-.4cm}
-# Scenarios:
-# \\vspace{-.4cm}
-# \\begin{multicols}{2}
-# \\begin{itemize}
-# \item NC - No Compare, the human does not compare values
-# \item FS - Fingerprint spoof, the attacker can copy the user IP address
-# \item WPH - The user might be victim of phishing only on trusted everyday connections
-# \item SPH - The user might be victim of phishing even when doing an untrusted connection
-# \item D\_I\_RO/D\_O\_RW/... - The phone inputs and inputs are controlled in Read Only or Read Write
-# \item P\_... - Attacker control over the user PC, where the user wants to stay logged in.
-# \item AP\_... - Attacker control over some untrusted device, where the user only want to login once.
-# \item TLS\_RO\_RW... - The attacker controls the TLS connections, inputs or outputs
-# \item USBI\_RO/USBO\_RW - Attacker control of the USB devices, inputs or outputs
-
-# \end{itemize}
-# \end{multicols}
-# \end{footnotesize}
+\\definecolor{darkgreen}{rgb}{0.0, 0.2, 0.13}
+\\definecolor{darkred}{rgb}{0.55, 0.0, 0.0}
+\\definecolor{cadmiumgreen}{rgb}{0.0, 0.42, 0.24}
+\\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
 
 
-# \end{figure}
-# \end{document}
-# """
+\\newcommand{\\attack}{\\textcolor{FireBrick}{\\ding{55}}}
+\\newcommand{\\ok}{\\textcolor{Green}{\\ding{51}}}
 
-#     tex_template += """\multicolumn{4}{c}{Threat Scenarios} """
+\\newcommand{\\attp}[1]{\\attack~(#1)}
+\\newcommand{\\attpnt}{\\attack}
+\\newcommand{\\attd}[1]{\\attack$^D$~(#1)}
+\\newcommand{\\attdnt}{\\attack$^D$}
+
+\\newcommand{\\okp}[1]{\\ok$^P$~(#1)}
+\\newcommand{\\okpnt}{\\ok$^P$}
+\\newcommand{\\okt}[1]{\\ok$^T$~(#1)}
+\\newcommand{\\oktnt}{\\ok$^T$}
+\\newcommand{\\okd}[1]{\\ok$^D$~(#1)}
+\\newcommand{\\okdnt}{\\ok$^D$}
+
+\\newcommand{\\authIRunique}{auth-IR-unique}
+\\newcommand{\\authRIunique}{auth-RI-unique}
+\\newcommand{\\dataAuthIR}{data-authentication-IR}
+\\newcommand{\\dataAuthRI}{data-authentication-RI}
+\\newcommand{\\honnestAuthRInonInj}{honest-auth-RI-non-inj}
+\\newcommand{\\noReflexionAttackRI}{no-reflection-attacks-RI}
+\\newcommand{\\secretI}{secretI}
+\\newcommand{\\secretR}{secretR}
+\\newcommand{\\repudiationSoundness}{repudiation-soundness}
+
+\\newcommand{\\weak}[1]{#1\\ensuremath{^{\\text{\\Lightning}}}}
+
+\\newcommand{\\PreciseSignature}{{\\sf \\weak{Sig}}}
+\\newcommand{\\WeakAEAD}{{\\sf \\weak{AEAD}}}
+\\newcommand{\\WeakHash}{{\\sf \\weak{Hash}}}
+\\newcommand{\\XorPrecise}{{\\sf \\weak{$\\oplus$}}}
+
+
+
+\\newcommand{\\PreciseSignatureProof}{{\\sf \\weak{Sig}-proof}}
+\\newcommand{\\PreciseDH}{{\\sf \\weak{DH}}}
+
+\\newcommand{\\LeakSessionKey}{{\\sf \\weak{SessKey}}}
+\\newcommand{\\LeakShare}{{\\sf \\weak{DHShare}}}
+
+
+\\newcommand{\\NeutralCheck}{{\\sf DH-Check}}
+\\newcommand{\\CredCheck}{\\sf Cred-Check}
+
+
+
+\\begin{document}
+
+ \\begin{NiceTabular} {c """ + " ".join([ "c" for p in Protocols]) + """ }
+   \\CodeBefore
+    \\rowlistcolors{2}{Gray!15,White}[restart,cols={2-""" + str(1+len(Protocols)) + """}]
+    \\Body
+    \\bf Lemma  """ + "".join([ (" & \\bf %s " % prot) for prot in Protocols])  + """  \\\\ \\hline
+
+  
+
+"""
+
+    for lemma in Lemmas:
+        tex_template += """
+\\""" + lemmas_to_tex[lemma]
+        res_for_prot = {}
+        for prot in Protocols:
+            res_for_prot[prot] = [scen for scen in data[prot][lemma].keys() if data[prot][lemma][scen] in ["true","false"]]
+        maxrange=max([len(res_for_prot[prot]) for prot in Protocols])
+        for i in range(0,maxrange):
+            for prot in Protocols:                      
+                tex_template +=  print_res(data,prot,lemma,res_for_prot,i)
+            tex_template += """  \\\\ """
+        tex_template += """  \\hline """                      
+            
+#     tex_template += """\\multicolumn{4}{c}{Threat Scenarios} & \\multicolumn{""" + str(len(LEMMAS)) + """}{c}{Lemmas} \\\\ """
+#     tex_template += """ \\atomOT{} & \\atomCOL{} & \\atomLE{}  & \\atomIL{} """
 #     # we compute the set of pertinent scenarios and display the protocols
 #     scens = set([])
-#     for prot in dprots:
-#         tex_template += """ & %s """ % prot
-#         scens = scens | set(results[prot].keys())
+#     for lemma in LEMMAS:
+#         tex_template += """ & %s """ % lemma.replace("_", "\_")
+#         scens = scens | set(results[lemma].keys())
 #     tex_template += """\\\\
 # """
 #     scens = list(scens)
-#     scens.sort(key=lambda item: (item != '', len(item)>=5, 'AP' in item, not('PH' in item), 'FS' in item, len(item)))
-#     print(scens)
+#     #print(scens)
 #     for scen in scens:
-#         pp_scen = scen
-#         for rw in (list_scen_pprinter):
-#             pp_scen = pp_scen.replace(rw,scen_pprinter[rw])
-#         pp_scen =  pp_scen.replace("_","\_").split(" ")
-#         print(pp_scen)
-#         if 'PH' in pp_scen:
-#             tex_template += """ PH & """
-#             pp_scen.remove("PH")
-#         else:  
-#             tex_template += """& """
-#         if 'FS' in pp_scen:
-#             tex_template += """ FS & """
-#             pp_scen.remove("FS")
-#         else:  
-#             tex_template += """& """
-#         if 'NC' in pp_scen:
-#             tex_template += """ NC & """
-#             pp_scen.remove("NC")
-#         else:  
-#             tex_template += """& """
-#         print(pp_scen)
-#         tex_template += " ".join(pp_scen)
+#         tex_template += scen_to_tex(scen_of_string(scen))
 
 
-#         for prot in dprots:
-#             result = results[prot][scen]
-#             tex_template += """& """
-#             if result == "big_true_implied":
-#                 tex_template += """\\biggreycmark """
-#             elif result == "big_true":
-#                 tex_template += """\\bigcmark """
-#             elif result == "big_true_diff":
-#                 tex_template += """\\bigbluecmark """
-#             elif result == "big_false_implied":
-#                 tex_template += """\\biggreyxmark """
-#             elif result == "big_false":
-#                 tex_template += """\\bigxmark """
-#             else:
-#                 for res in result:
-#                     if "true_implied" in res:
-#                         tex_template += """\greycmark """
-#                     elif "true_diff" in res:
-#                         tex_template += """\\bluecmark """
-#                     elif "false_implied" in res:
-#                         tex_template += """\greyxmark """
-#                     elif "true" in res:
-#                         tex_template += """\cmark """
-#                     elif "false" in res:
-#                         tex_template += """\\xmark """
-#                     elif "cannot" in res:
-#                         tex_template += """\cannot """
-#                     elif "failure" in res:
-#                         tex_template += """- """
-#                     elif "noinjvalid" in res:
-#                         tex_template += """\qmark """
+#         for lemma in LEMMAS:
+#             try:
+#                 result = results[lemma][scen]
+#                 tex_template += """& """
+#                 if "truesimpl" in result:
+#                     tex_template += """\cmark$^*$ """
+#                 elif "true" in result:
+#                     tex_template += """\cmark """
+#                 elif "false" in result:
+#                     tex_template += """\\xmark """
+#                 else:
+#                     tex_template += """- """
+#             except KeyError:  # this scen was added by another lemma, but not populated for the current one, thus it is implied
+#                 tex_template += """& """
+#                 value = get_value(results, lemma,scen_of_string(scen))
+#                 if value == "true":
+#                     tex_template += """\greycmark """
+#                 elif value == "false":
+#                     tex_template += """\greyxmark """
+#                 elif value == "truesimpl":
+#                     tex_template += """\greycmark$^*$ """
+#                 else:
+#                     tex_template += """ - """
+
 #         tex_template += """\\\\
 # """
-#     tex_template += end_tex_template
-#     filename = "-".join(dprots)+".tex"
-#     with open(filename, 'w') as res_file:
-#         res_file.write(tex_template)
-#     subprocess.call(["pdflatex", filename],stdout=subprocess.PIPE)
+    tex_template += """\\end{NiceTabular} \\end{document} """
+    with open(filename, 'w') as res_file:
+        res_file.write(tex_template)
+
 
 # utility functions to merge dictionnaries
 def merge_two_dicts(x, y):
@@ -415,6 +408,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-c','--compress', help='Compress the results',  action='store_true')
 # parser.add_argument('-co','--componly', help='Only displays the line with a diff', action='store_true')
 parser.add_argument('-rt','--retry', action="store_true",  help='For timeout jobs, retry to prove them')
+parser.add_argument('-lt','--latex', action="store_true", help='Save results into a latex file')
+parser.add_argument('-olt','--outputlatex', help='Latex file name')
 parser.add_argument('-fs','--filesave', nargs='+', help='Save results into file')
 parser.add_argument('-fl','--fileload', nargs='+', help='Load results from file')
 parser.add_argument('-t','--timeout', type=int, help='Timeout for proverif execution')
@@ -516,3 +511,12 @@ if args.filesave:
     f.close()            
 else:
     print(json.dumps(comp, indent=4))    
+
+    
+if args.outputlatex:
+    filename = args.outputlatex
+else:
+    filename = "-".join(Protocols) + "-".join(Lemmas)+".tex"
+
+if args.latex:
+    gen_tex(comp, filename)
