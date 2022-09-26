@@ -357,6 +357,9 @@ def call_proverif(scen):
     except subprocess.TimeoutExpired:
         os.killpg(os.getpgid(process.pid), signal.SIGTERM) 
         return ("timeout", TIMEOUT)
+    except OSError:
+        os.killpg(os.getpgid(process.pid), signal.SIGTERM) 
+        return ("oom", TIMEOUT)        
     
 # function which checks if the protocols are running
 def check_sanity(prot):
