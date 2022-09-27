@@ -172,9 +172,9 @@ def print_res(data,prot,lemma,res_for_prot,index):
         scenario=res_for_prot[prot][index]
         res=data[prot][lemma][scenario]
         if "true" in res: 
-            string_res= "\\ok"
+            string_res= "\\okp{%s}" % res[1]
         elif "false" in res:
-            string_res= "\\attack" 
+            string_res= "\\attp{%s}" % res[1]
         scenarios = scenario.split("*")
         return u""" &  \\begin{tabular}{c} 
         \\small \\"""+  ', \\'.join(scenarios) + """ \\\\ """ +  string_res + """\\end{tabular}"""   
@@ -385,7 +385,7 @@ def load_result_scenario(results,scenario):
             for scen in scenarios:
                 if str(scen) != str(scenario) and is_weaker_scenario(scenario,scen)=="true":
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
-                    set_result(results, scenario,("false","implied"))
+                    set_result(results, scen,("false","implied"))
 
 def load_results(results):
     
