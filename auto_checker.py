@@ -36,23 +36,6 @@ FOLDER = ""
 ## UTILITIES ##
 ###############
 
-
-# def getManager():
-#     m = BaseManager()
-#     m.start()
-#     return m
-
-# class Data:
-#     def __init__(self,data=None, length=0):
-#         self.data = data
-#         self.length = length
-
-#     def get(self):
-#         return self.data
-
-#     def set(self,data):
-#         self.data = data
-
 def set_result(results,scen,res):
     try:
         previous_res = results[scen.prot][scen.lemma]["*".join(scen.threats)]
@@ -280,47 +263,7 @@ def gen_tex(data, filename):
             tex_template += """  \\\\ """
         tex_template += """  \\hline """                      
             
-#     tex_template += """\\multicolumn{4}{c}{Threat Scenarios} & \\multicolumn{""" + str(len(LEMMAS)) + """}{c}{Lemmas} \\\\ """
-#     tex_template += """ \\atomOT{} & \\atomCOL{} & \\atomLE{}  & \\atomIL{} """
-#     # we compute the set of pertinent scenarios and display the protocols
-#     scens = set([])
-#     for lemma in LEMMAS:
-#         tex_template += """ & %s """ % lemma.replace("_", "\_")
-#         scens = scens | set(results[lemma].keys())
-#     tex_template += """\\\\
-# """
-#     scens = list(scens)
-#     #print(scens)
-#     for scen in scens:
-#         tex_template += scen_to_tex(scen_of_string(scen))
 
-
-#         for lemma in LEMMAS:
-#             try:
-#                 result = results[lemma][scen]
-#                 tex_template += """& """
-#                 if "truesimpl" in result:
-#                     tex_template += """\cmark$^*$ """
-#                 elif "true" in result:
-#                     tex_template += """\cmark """
-#                 elif "false" in result:
-#                     tex_template += """\\xmark """
-#                 else:
-#                     tex_template += """- """
-#             except KeyError:  # this scen was added by another lemma, but not populated for the current one, thus it is implied
-#                 tex_template += """& """
-#                 value = get_value(results, lemma,scen_of_string(scen))
-#                 if value == "true":
-#                     tex_template += """\greycmark """
-#                 elif value == "false":
-#                     tex_template += """\greyxmark """
-#                 elif value == "truesimpl":
-#                     tex_template += """\greycmark$^*$ """
-#                 else:
-#                     tex_template += """ - """
-
-#         tex_template += """\\\\
-# """
     tex_template += """\\end{NiceTabular} \\end{document} """
     with open(filename, 'w') as res_file:
         res_file.write(tex_template)
@@ -387,13 +330,11 @@ def load_result_scenario(results,scenario):
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
                     set_result(results, scen,("false","implied"))
 
-def load_results(results):
-    
+def load_results(results):    
     pool = Pool(processes=JOBS)
     res = pool.map(partial(load_result_scenario,results), scenarios, chunksize=1)
     pool.close()
-    # for scen in scenarios:
-    #     load_result_scenario(results,scen)
+
 
     
 def init_result():
@@ -408,11 +349,7 @@ def init_result():
     return results
 
 parser = argparse.ArgumentParser()
-# parser.add_argument('-p','--prots', nargs='+', help='List of prots to test, all by default')
-# parser.add_argument('-s','--scen', nargs='+', help='List of scenarios to test, all by default')
-# parser.add_argument('-d','--disp', nargs='+', help='List of prots to display together')
 parser.add_argument('-c','--compress', help='Compress the results',  action='store_true')
-# parser.add_argument('-co','--componly', help='Only displays the line with a diff', action='store_true')
 parser.add_argument('-rt','--retry', action="store_true",  help='For timeout jobs, retry to prove them')
 parser.add_argument('-lt','--latex', action="store_true", help='Save results into a latex file')
 parser.add_argument('-olt','--outputlatex', help='Latex file name')
@@ -432,7 +369,10 @@ if not args.retry:
                     scenarios += [scen]
     scenarios.sort(reverse=False,key=lambda x: len(x.threats))
     print("Checking %i scenarios" % (len(list(scenarios))))
+
+# fixed scenarios for test    
 #scenarios=[Scenario("lake-draft14/lake-edhoc-KEM","authIR_unique" ,["PreciseSignature"])]
+#
 # TODO
 # for prot in Protocols:
 #     check_sanity(prot)
