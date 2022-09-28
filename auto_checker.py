@@ -379,7 +379,7 @@ parser.add_argument('-fl','--fileload', nargs='+', help='Load proverif results f
 parser.add_argument('-fst','--filesavetamarin', nargs='+', help='Save tamarin results into file')
 parser.add_argument('-flt','--fileloadtamarin', nargs='+', help='Load tamarin results from file')
 parser.add_argument('-t','--timeout', type=int, help='Timeout for execution')
-parser.add_argument('-tam','--tamarin', type=int, help='Double check true results with Tamarin. each job taks 4 cores')
+parser.add_argument('-tam','--tamarin', help='Double check true results with Tamarin. each job taks 4 cores',  action='store_true')
 parser.add_argument('-j','--proverifjobs', type=int, help='Number of parallel proverif jobs, default = total cores')
 args = parser.parse_args()
 
