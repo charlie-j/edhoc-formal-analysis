@@ -455,6 +455,13 @@ if args.tamarin:
     print("ReChecking %i scenarios with Tamarin" % (len(list(scenarios))))
     tamarin_results = init_result()
     load_results(tamarin_results, "tamarin")
+    tam_res = {}
+    for prot in Protocols:
+        tam_res[prot]={}
+        for lemma in Lemmas:
+            tam_res[prot][lemma]={}
+            for key in tamarin_results[prot][lemma].keys():
+                tam_res[prot][lemma][key]=tamarin_results[prot][lemma][key]
     
 res = {}
 for prot in Protocols:
@@ -500,10 +507,10 @@ else:
                 
 if args.filesavetamarin:
     f = open(args.filesavetamarin[0], "w")
-    f.write(json.dumps(tamarin_results, indent=4))
+    f.write(json.dumps(tam_res, indent=4))
     f.close()            
 else:
-    print(json.dumps(tamarin_results, indent=4))    
+    print(json.dumps(tam_res, indent=4))    
     
 if args.outputlatex:
     filename = args.outputlatex
