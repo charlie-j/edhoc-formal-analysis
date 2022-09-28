@@ -276,27 +276,48 @@ def merge_two_dicts(x, y):
     return z
 
 # base function which calls the subscript computing the results
-def call_proverif(scen):
-    cmd = "./utilities/proverif-tamarin %s" % (FOLDER + scen.tamarin_args())
+def call_prover(scen,prover):
+    if prover=="proverif":
+        cmd = "./utilities/proverif-tamarin %s" % (FOLDER + scen.tamarin_args())
+    elif prover=="tamarin":
+        cmd = "tamarin-prover %s --prove +RTS -N4 -RTS" % (FOLDER + scen.tamarin_args())        
     print(cmd)
     inittime = time.time()    
     process = subprocess.Popen(cmd.split(),cwd=os.path.dirname(os.path.realpath(__file__)),stderr=subprocess.STDOUT,stdout=subprocess.PIPE, preexec_fn=os.setsid)
     try:
         output, errors = process.communicate(timeout=TIMEOUT)
+        if prover=="proverif":
+            proof_results = [line for line in str(output).split('\\n') if "RESULT" in line]
+            if len(proof_results) != 1:
+                print(output)
+                return (cmd+"test"+" ".join(proof_results))
+            res = proof_results[0]
+            runtime = time.time() - inittime    
+            if "true" in res:
+                return ("true", runtime)
+            elif "false" in res:
+                return ("false", runtime)
+            elif "cannot" in res:
+                return ("cannot", runtime)
+            return ("unrecognized result", runtime)
+        elif prover=="tamarin":
+            if "Maude returned warning" in str(output):
+                return "AssociativeFailure"
+            elif "CallStack" in str(output) or "internal error" in str(output):
+                return "TamarinError"
+            proof_results = [line for line in str(output).split('\\n') if (" "+lemma+" " in line and "steps" in line)]
+            if len(proof_results) == 1:
+                line = proof_results[0]
+                if "verified" in line:
+                    return ("true", runtime)
+                elif "falsified" in line:
+                    return ("false", runtime)
+                else:
+                    return ("unrecognized result", runtime)
+            else:
+                return ("unrecognized result", runtime)
 
-        proof_results = [line for line in str(output).split('\\n') if "RESULT" in line]
-        if len(proof_results) != 1:
-            print(output)
-            return (cmd+"test"+" ".join(proof_results))
-        res = proof_results[0]
-        runtime = time.time() - inittime    
-        if "true" in res:
-            return ("true", runtime)
-        elif "false" in res:
-            return ("false", runtime)
-        elif "cannot" in res:
-            return ("cannot", runtime)
-        return ("unrecognized result", runtime)
+        
     except subprocess.TimeoutExpired:
         os.killpg(os.getpgid(process.pid), signal.SIGTERM) 
         return ("timeout", TIMEOUT)
@@ -312,11 +333,11 @@ def check_sanity(prot):
         if "true" in res or "failure" in res:
             raise "Not running protocols"                
         
-def load_result_scenario(results,scenario):
+def load_result_scenario(results,prover,scenario):
     try:
         get_result(results,scenario)
     except: # when the result does not exists
-        res =  call_proverif(scenario)
+        res =  call_prover(scenario,prover)
         print("Protocol %s is %s for lemma %s in threat model %s" % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats)))
         set_result(results,scenario,res)
         if res[0] == "true":
@@ -330,9 +351,9 @@ def load_result_scenario(results,scenario):
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
                     set_result(results, scen,("false","implied"))
 
-def load_results(results):    
+def load_results(results, prover):    
     pool = Pool(processes=JOBS)
-    res = pool.map(partial(load_result_scenario,results), scenarios, chunksize=1)
+    res = pool.map(partial(load_result_scenario,results,prover), scenarios, chunksize=1)
     pool.close()
 
 
@@ -353,9 +374,12 @@ parser.add_argument('-c','--compress', help='Compress the results',  action='sto
 parser.add_argument('-rt','--retry', action="store_true",  help='For timeout jobs, retry to prove them')
 parser.add_argument('-lt','--latex', action="store_true", help='Save results into a latex file')
 parser.add_argument('-olt','--outputlatex', help='Latex file name')
-parser.add_argument('-fs','--filesave', nargs='+', help='Save results into file')
-parser.add_argument('-fl','--fileload', nargs='+', help='Load results from file')
-parser.add_argument('-t','--timeout', type=int, help='Timeout for proverif execution')
+parser.add_argument('-fs','--filesave', nargs='+', help='Save proverif results into file')
+parser.add_argument('-fl','--fileload', nargs='+', help='Load proverif results from file')
+parser.add_argument('-fst','--filesavetamarin', nargs='+', help='Save tamarin results into file')
+parser.add_argument('-flt','--fileloadtamarin', nargs='+', help='Load tamarin results from file')
+parser.add_argument('-t','--timeout', type=int, help='Timeout for execution')
+parser.add_argument('-tam','--tamarin', type=int, help='Double check true results with Tamarin. each job taks 4 cores')
 parser.add_argument('-j','--proverifjobs', type=int, help='Number of parallel proverif jobs, default = total cores')
 args = parser.parse_args()
 
@@ -415,7 +439,22 @@ if args.retry:
     for scen in proved_scenarios:
         set_result(new_results,scen,get_result(results,scen))
     results=new_results
-    load_results(results)
+    load_results(results, "proverif")
+
+if args.tamarin:
+    scenarios=[]
+    for prot in Protocols:
+        for lemma in Lemmas:
+            for threat in ThreatModels:
+                scen=Scenario(prot,lemma,threat)
+                try:
+                    if scen.valid() and get_result(results,scen)[0]=="true": 
+                        scenarios += [scen]
+                except: None
+    scenarios.sort(reverse=False,key=lambda x: len(x.threats))
+    print("ReChecking %i scenarios with Tamarin" % (len(list(scenarios))))
+    tamarin_results = init_result()
+    load_results(tamarin_results, "tamarin")
     
 res = {}
 for prot in Protocols:
@@ -458,6 +497,13 @@ if args.filesave:
 else:
     print(json.dumps(comp, indent=4))    
 
+                
+if args.filesavetamarin:
+    f = open(args.filesavetamarin[0], "w")
+    f.write(json.dumps(tamarin_results, indent=4))
+    f.close()            
+else:
+    print(json.dumps(tamarin_results, indent=4))    
     
 if args.outputlatex:
     filename = args.outputlatex
