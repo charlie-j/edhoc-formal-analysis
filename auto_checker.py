@@ -350,6 +350,8 @@ def load_result_scenario(results,prover,scenario):
                 if str(scen) != str(scenario) and is_weaker_scenario(scenario,scen)=="true":
                     print("Protocol %s is %s for lemma %s in threat model %s ==> also for %s " % (scenario.prot, res, scenario.lemma, " ".join(scenario.threats),  " ".join(scen.threats)))                                
                     set_result(results, scen,("false","implied"))
+        if prover=="tamarin":
+            bck_results(results)
 
 def load_results(results, prover):    
     pool = Pool(processes=JOBS)
@@ -357,6 +359,17 @@ def load_results(results, prover):
     pool.close()
 
 
+def bck_results(results):    
+    res = {}
+    for prot in Protocols:
+        res[prot]={}
+        for lemma in Lemmas:
+            res[prot][lemma]={}
+            for key in results[prot][lemma].keys():
+                res[prot][lemma][key]=results[prot][lemma][key]    
+    f = open("tamarin.bck", "w")
+    f.write(json.dumps(res, indent=4))
+    f.close()            
     
 def init_result():
     results = manager.dict()
