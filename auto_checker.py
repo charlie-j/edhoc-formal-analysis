@@ -172,9 +172,9 @@ def print_res(data,prot,lemma,res_for_prot,index):
         scenario=res_for_prot[prot][index]
         res=data[prot][lemma][scenario]
         if "true" in res: 
-            string_res= "\\okp{%s}" % res[1]
+            string_res= "\\okp{%s}" % int(res[1])
         elif "false" in res:
-            string_res= "\\attp{%s}" % res[1]
+            string_res= "\\attp{%s}" % int(res[1])
         scenarios = scenario.split("*")
         return u""" &  \\begin{tabular}{c} 
         \\small \\"""+  ', \\'.join(scenarios) + """ \\\\ """ +  string_res + """\\end{tabular}"""   
@@ -212,7 +212,7 @@ def gen_tex(data, filename):
 \\newcommand{\\attack}{\\textcolor{FireBrick}{\\ding{55}}}
 \\newcommand{\\ok}{\\textcolor{Green}{\\ding{51}}}
 
-\\newcommand{\\attp}[1]{\\attack~(#1)}
+\\newcommand{\\attp}[1]{\\attack$^P$~(#1)}
 \\newcommand{\\attpnt}{\\attack}
 \\newcommand{\\attd}[1]{\\attack$^D$~(#1)}
 \\newcommand{\\attdnt}{\\attack$^D$}
