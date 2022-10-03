@@ -400,11 +400,11 @@ def load_result_scenario(results,prover,scenario):
             bck_results(results)
 
 def load_results(results, prover):    
-    # pool = Pool(processes=JOBS)
-    # res = pool.map(partial(load_result_scenario,results,prover), scenarios, chunksize=1)
-    # pool.close()
-    for scen in scenarios:
-        load_result_scenario(results,prover,scen)
+    pool = Pool(processes=JOBS)
+    res = pool.map(partial(load_result_scenario,results,prover), scenarios, chunksize=1)
+    pool.close()
+    # for scen in scenarios:   # for debug
+    #     load_result_scenario(results,prover,scen)
     
 
 def bck_results(results):    
