@@ -372,8 +372,7 @@ def call_prover(scen,prover):
     except OSError:
         os.killpg(os.getpgid(process.pid), signal.SIGTERM) 
         return ("oom", TIMEOUT)        
-    except:
-        print("fail " + cmd + " except ")
+
 # function which checks if the protocols are running
 def check_sanity(prot):
     proof_results = call_check(prot, "SANITY", "")
