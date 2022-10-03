@@ -348,6 +348,7 @@ def call_prover(scen,prover):
                 return ("cannot", runtime)
             return ("unrecognized result", runtime)
         elif prover=="tamarin":
+            print(output)
             if "Maude returned warning" in str(output):
                 return "AssociativeFailure"
             elif "CallStack" in str(output) or "internal error" in str(output):
@@ -371,7 +372,8 @@ def call_prover(scen,prover):
     except OSError:
         os.killpg(os.getpgid(process.pid), signal.SIGTERM) 
         return ("oom", TIMEOUT)        
-    
+    except:
+        print("fail" + cmd)
 # function which checks if the protocols are running
 def check_sanity(prot):
     proof_results = call_check(prot, "SANITY", "")
