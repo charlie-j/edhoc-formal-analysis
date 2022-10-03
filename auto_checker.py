@@ -364,9 +364,7 @@ def call_prover(scen,prover):
                 else:
                     return ("unrecognized result", runtime)
             else:
-                return ("unrecognized result", runtime)
-
-        
+                return ("unrecognized result", runtime)        
     except subprocess.TimeoutExpired:
         os.killpg(os.getpgid(process.pid), signal.SIGTERM) 
         return ("timeout", TIMEOUT)
@@ -404,10 +402,12 @@ def load_result_scenario(results,prover,scenario):
             bck_results(results)
 
 def load_results(results, prover):    
-    pool = Pool(processes=JOBS)
-    res = pool.map(partial(load_result_scenario,results,prover), scenarios, chunksize=1)
-    pool.close()
-
+    # pool = Pool(processes=JOBS)
+    # res = pool.map(partial(load_result_scenario,results,prover), scenarios, chunksize=1)
+    # pool.close()
+    for scen in scenarios:
+        load_result_scenario(results,prover,scen)
+    
 
 def bck_results(results):    
     res = {}
@@ -516,6 +516,7 @@ if args.tamarin:
                         scenarios += [scen]
                 except: None
     scenarios.sort(reverse=False,key=lambda x: len(x.threats))
+    scenarios=[Scenario("lake-draft14/lake-edhoc-KEM","authIR_unique" ,[])]
     print("ReChecking %i scenarios with Tamarin" % (len(list(scenarios))))
     tamarin_results = init_result()
     load_results(tamarin_results, "tamarin")
