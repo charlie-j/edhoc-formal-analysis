@@ -327,7 +327,7 @@ def call_prover(scen,prover):
     if prover=="proverif":
         cmd = "./utilities/proverif-tamarin %s" % (FOLDER + scen.tamarin_args())
     elif prover=="tamarin":
-        cmd = "tamarin-prover %s --prove +RTS -N2 -RTS" % (FOLDER + scen.tamarin_args())        
+        cmd = "tamarin-prover %s --prove +RTS -N8 -RTS" % (FOLDER + scen.tamarin_args())        
     print(cmd)
     inittime = time.time()    
     process = subprocess.Popen(cmd.split(),cwd=os.path.dirname(os.path.realpath(__file__)),stderr=subprocess.STDOUT,stdout=subprocess.PIPE, preexec_fn=os.setsid)
@@ -352,6 +352,7 @@ def call_prover(scen,prover):
                 return "AssociativeFailure"
             elif "CallStack" in str(output) or "internal error" in str(output):
                 return "TamarinError"
+            print(str(output).split('\\n'))
             proof_results = [line for line in str(output).split('\\n') if (" "+lemma+" " in line and "steps" in line)]
             print("test")
             print(proof_results)
