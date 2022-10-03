@@ -352,12 +352,12 @@ def call_prover(scen,prover):
                 return "AssociativeFailure"
             elif "CallStack" in str(output) or "internal error" in str(output):
                 return "TamarinError"
-            print(str(output).split('\\n'))
             proof_results = [line for line in str(output).split('\\n') if (" "+scen.lemma+" " in line and "steps" in line)]
             print("test")
             print(proof_results)
             if len(proof_results) == 1:
                 line = proof_results[0]
+                runtime = time.time() - inittime                    
                 if "verified" in line:
                     return ("true", runtime)
                 elif "falsified" in line:
