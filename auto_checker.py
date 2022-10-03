@@ -154,8 +154,12 @@ def print_res(data,prot,lemma,res_for_prot,index):
     try:
         scenario=res_for_prot[prot][index]
         res=data[prot][lemma][scenario]
-        if "true" in res: 
+        if "true" in res and res[1]=="implied":
+            string_res= "\\okp{implied}"            
+        elif "true" in res:    
             string_res= "\\okp{%s}" % int(res[1])
+        elif "false" in res and res[1]=="implied":
+            string_res= "\\attp{implied}"
         elif "false" in res:
             string_res= "\\attp{%s}" % int(res[1])
         scenarios = scenario.split("*")
@@ -164,6 +168,26 @@ def print_res(data,prot,lemma,res_for_prot,index):
     except IndexError:
         return u""" & """
 
+
+def print_res_simpl(data,prot,lemma,scenario):
+    try:
+        res=data[prot][lemma][scenario]
+        if "true" in res and res[1]=="implied":
+            string_res= "\\okp{implied}"            
+        elif "true" in res:    
+            string_res= "\\okp{%s}" % int(res[1])
+        elif "false" in res and res[1]=="implied":
+            string_res= "\\attp{implied}"
+        elif "false" in res:
+            string_res= "\\attp{%s}" % int(res[1])
+        else:
+            string_res = "error"
+        scenarios = scenario.split("*")
+        return u""" &  \\begin{tabular}{c} 
+        \\small \\"""+  ', \\'.join(scenarios) + """ \\\\ """ +  string_res + """\\end{tabular}"""   
+    except KeyError:
+        return u""" & """
+    
 lemmas_to_tex = {
     "no_reflection_attacks_RI":"noReflexionAttackRI",
     "authIR_unique":"authIRunique",
@@ -173,11 +197,31 @@ lemmas_to_tex = {
     "secretI":"secretI",
     "secretR":"secretR"
     }
-    
 
+
+def completion(data):
+    for prot in Protocols:
+        for lemma in Lemmas:
+            for key in data[prot][lemma].keys():
+                if data[prot][lemma][key][0] in ["true", "false"]:
+                    for prot2 in Protocols:
+                        if not key in data[prot2][lemma].keys():
+                            target_scenario = Scenario(prot2,lemma,key.split("*"))
+                            data[prot2][lemma][key] = "failed"
+                            for implier in data[prot2][lemma].keys():
+                                impl_scenario = Scenario(prot2,lemma,implier.split("*"))
+                                if is_weaker_scenario(impl_scenario,target_scenario) and "false" in data[prot2][lemma][implier]:
+                                    data[prot2][lemma][key] = ("false", "implied")
+                                elif is_weaker_scenario(target_scenario,impl_scenario) and "true" in data[prot2][lemma][implier]:
+                                    data[prot2][lemma][key] = ("true", "implied")
+        return data
+        
 def gen_tex(data, filename):
     """Generates the tex array for the given list of protocols"""
     # need to escape \t, \n, \b \a
+    completion(data)
+#    print(json.dumps(data, indent=4))    
+    
     tex_template =  u"""\documentclass[compsoc, conference, letterpaper, 10pt, times, table]{standalone}
 
 \\usepackage[svgnames,dvipsnames]{xcolor}
@@ -254,12 +298,15 @@ def gen_tex(data, filename):
         tex_template += """
 \\""" + lemmas_to_tex[lemma]
         res_for_prot = {}
-        for prot in Protocols:
-            res_for_prot[prot] = [scen for scen in data[prot][lemma].keys() if data[prot][lemma][scen][0] in ["true","false"]]
-        maxrange=max([len(res_for_prot[prot]) for prot in Protocols])
-        for i in range(0,maxrange):
-            for prot in Protocols:                      
-                tex_template +=  print_res(data,prot,lemma,res_for_prot,i)
+        # for prot in Protocols:
+        #     res_for_prot[prot] = [scen for scen in data[prot][lemma].keys() if data[prot][lemma][scen][0] in ["true","false"]]
+        # maxrange=max([len(res_for_prot[prot]) for prot in Protocols])
+        # for i in range(0,maxrange):
+            # for prot in Protocols:                      
+            #     tex_template +=  print_res(data,prot,lemma,res_for_prot,i)
+        for threat in data[Protocols[0]][lemma].keys():
+            for prot in Protocols:
+                tex_template +=  print_res_simpl(data,prot,lemma,threat) 
             tex_template += """  \\\\ """
         tex_template += """  \\hline """                      
             
@@ -383,7 +430,7 @@ def init_result():
     return results
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-c','--compress', help='Compress the results',  action='store_true')
+parser.add_argument('-c','--compress', help='Compress the results, based on threqt models implications',  action='store_true')
 parser.add_argument('-rt','--retry', action="store_true",  help='For timeout jobs, retry to prove them')
 parser.add_argument('-lt','--latex', action="store_true", help='Save results into a latex file')
 parser.add_argument('-olt','--outputlatex', help='Latex file name')
@@ -521,9 +568,7 @@ else:
 if args.filesavetamarin:
     f = open(args.filesavetamarin[0], "w")
     f.write(json.dumps(tam_res, indent=4))
-    f.close()            
-else:
-    print(json.dumps(tam_res, indent=4))    
+    f.close()              
     
 if args.outputlatex:
     filename = args.outputlatex
