@@ -353,7 +353,7 @@ def call_prover(scen,prover):
             elif "CallStack" in str(output) or "internal error" in str(output):
                 return "TamarinError"
             print(str(output).split('\\n'))
-            proof_results = [line for line in str(output).split('\\n') if (" "+lemma+" " in line and "steps" in line)]
+            proof_results = [line for line in str(output).split('\\n') if (" "+scen.lemma+" " in line and "steps" in line)]
             print("test")
             print(proof_results)
             if len(proof_results) == 1:
