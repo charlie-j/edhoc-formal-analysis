@@ -203,23 +203,22 @@ def completion(data):
     for prot in Protocols:
         for lemma in Lemmas:
             for key in data[prot][lemma].keys():
-                if data[prot][lemma][key][0] in ["true", "false"]:
                     for prot2 in Protocols:
                         if not key in data[prot2][lemma].keys():
                             target_scenario = Scenario(prot2,lemma,key.split("*"))
-                            data[prot2][lemma][key] = "failed"
+                            data[prot2][lemma][key] = ("failed","failed")
                             for implier in data[prot2][lemma].keys():
                                 impl_scenario = Scenario(prot2,lemma,implier.split("*"))
                                 if is_weaker_scenario(impl_scenario,target_scenario) and "false" in data[prot2][lemma][implier]:
                                     data[prot2][lemma][key] = ("false", "implied")
                                 elif is_weaker_scenario(target_scenario,impl_scenario) and "true" in data[prot2][lemma][implier]:
                                     data[prot2][lemma][key] = ("true", "implied")
-        return data
+    return data
         
-def gen_tex(data, filename):
+def gen_tex(data1, filename):
     """Generates the tex array for the given list of protocols"""
     # need to escape \t, \n, \b \a
-    completion(data)
+    data = completion(data1)
 #    print(json.dumps(data, indent=4))    
     
     tex_template =  u"""\documentclass[compsoc, conference, letterpaper, 10pt, times, table]{standalone}
@@ -297,17 +296,18 @@ def gen_tex(data, filename):
     for lemma in Lemmas:
         tex_template += """
 \\""" + lemmas_to_tex[lemma]
-        res_for_prot = {}
+        # res_for_prot = {}
         # for prot in Protocols:
         #     res_for_prot[prot] = [scen for scen in data[prot][lemma].keys() if data[prot][lemma][scen][0] in ["true","false"]]
         # maxrange=max([len(res_for_prot[prot]) for prot in Protocols])
         # for i in range(0,maxrange):
             # for prot in Protocols:                      
             #     tex_template +=  print_res(data,prot,lemma,res_for_prot,i)
-        for threat in data[Protocols[0]][lemma].keys():
-            for prot in Protocols:
-                tex_template +=  print_res_simpl(data,prot,lemma,threat) 
-            tex_template += """  \\\\ """
+        for threat in set([threat for prot in Protocols  for threat in data[prot][lemma].keys() ]):
+            if any([data[prot][lemma][threat][0]  in ["true","false"] and not data[prot][lemma][threat][1]=="implied" for prot in Protocols]):
+                for prot in Protocols:
+                    tex_template +=  print_res_simpl(data,prot,lemma,threat) 
+                tex_template += """  \\\\ """
         tex_template += """  \\hline """                      
             
 
