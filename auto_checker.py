@@ -502,6 +502,7 @@ if args.retry:
     load_results(results, "proverif")
 
 if args.tamarin:
+    results=completion(results)
     scenarios=[]
     for prot in Protocols:
         for lemma in Lemmas:
