@@ -327,7 +327,7 @@ def call_prover(scen,prover):
     if prover=="proverif":
         cmd = "./utilities/proverif-tamarin %s" % (FOLDER + scen.tamarin_args())
     elif prover=="tamarin":
-        cmd = "tamarin-prover %s --prove +RTS -N8 -RTS" % (FOLDER + scen.tamarin_args())        
+        cmd = "tamarin-prover %s --prove +RTS -N4 -RTS" % (FOLDER + scen.tamarin_args())        
     print(cmd)
     inittime = time.time()    
     process = subprocess.Popen(cmd.split(),cwd=os.path.dirname(os.path.realpath(__file__)),stderr=subprocess.STDOUT,stdout=subprocess.PIPE, preexec_fn=os.setsid)
@@ -353,8 +353,6 @@ def call_prover(scen,prover):
             elif "CallStack" in str(output) or "internal error" in str(output):
                 return "TamarinError"
             proof_results = [line for line in str(output).split('\\n') if (" "+scen.lemma+" " in line and "steps" in line)]
-            print("test")
-            print(proof_results)
             if len(proof_results) == 1:
                 line = proof_results[0]
                 runtime = time.time() - inittime                    
@@ -516,7 +514,7 @@ if args.tamarin:
                         scenarios += [scen]
                 except: None
     scenarios.sort(reverse=False,key=lambda x: len(x.threats))
-    scenarios=[Scenario("lake-draft14/lake-edhoc-KEM","authIR_unique" ,[])]
+    # scenarios=[Scenario("lake-draft14/lake-edhoc-KEM","authIR_unique" ,[])] # for debug
     print("ReChecking %i scenarios with Tamarin" % (len(list(scenarios))))
     tamarin_results = init_result()
     load_results(tamarin_results, "tamarin")
