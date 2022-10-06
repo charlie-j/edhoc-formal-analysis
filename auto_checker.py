@@ -150,7 +150,7 @@ def is_weaker_scenario(scen1,scen2):
     return "true"
 
 
-def print_res(data,prot,lemma,res_for_prot,index):
+def print_res(data,data_tam,prot,lemma,res_for_prot,index):
     try:
         scenario=res_for_prot[prot][index]
         res=data[prot][lemma][scenario]
@@ -161,7 +161,7 @@ def print_res(data,prot,lemma,res_for_prot,index):
         elif "false" in res and res[1]=="implied":
             string_res= "\\attp{implied}"
         elif "false" in res:
-            string_res= "\\attp{%s}" % int(res[1])
+            string_res= "\\attp{%s}" % int(res[1])            
         scenarios = scenario.split("*")
         return u""" &  \\begin{tabular}{c} 
         \\small \\"""+  ', \\'.join(scenarios) + """ \\\\ """ +  string_res + """\\end{tabular}"""   
@@ -169,22 +169,46 @@ def print_res(data,prot,lemma,res_for_prot,index):
         return u""" & """
 
 
-def print_res_simpl(data,prot,lemma,scenario):
+def print_res_simpl(data,data_tam,prot,lemma,scenario):
     try:
         res=data[prot][lemma][scenario]
         if "true" in res and res[1]=="implied":
-            string_res= "\\okp{implied}"            
+            string_res= "\\okp{\\implied}"            
         elif "true" in res:    
             string_res= "\\okp{%s}" % int(res[1])
         elif "false" in res and res[1]=="implied":
-            string_res= "\\attp{implied}"
+            string_res= "\\attp{\\implied}"
         elif "false" in res:
             string_res= "\\attp{%s}" % int(res[1])
+        elif "timeout" in res:
+            string_res = "\\timeoutp"
+        elif "invalid" in res:
+            string_res = "\\invalid"            
         else:
-            string_res = "error"
+            string_res = str(res)
+        if scenario in data_tam[prot][lemma].keys():
+            res_tam=data_tam[prot][lemma][scenario]
+            if "true" in res_tam and res_tam[1]=="implied":
+                string_res_tam= "\\okt{\\implied}"            
+            elif "true" in res_tam:    
+                string_res_tam= "\\okt{%s}" % int(res_tam[1])
+            elif "false" in res_tam and res_tam[1]=="implied":
+                string_res_tam= "\\attt{\\implied}"
+            elif "false" in res_tam:
+                string_res_tam= "\\attt{%s}" % int(res_tam[1])
+            elif "timeout" in res_tam:
+                string_res_tam = "\\timeoutt"
+            elif "invalid" in res_tam:
+                string_res_tam = "\\invalid"                
+            else:
+                string_res_tam = str(res_tam)
+        else:
+            string_res_tam = ""
+            
         scenarios = scenario.split("*")
-        return u""" &  \\begin{tabular}{c} 
-        \\small \\"""+  ', \\'.join(scenarios) + """ \\\\ """ +  string_res + """\\end{tabular}"""   
+        # return u""" &  \\begin{tabular}{c} 
+        # \\small \\"""+  ', \\'.join(scenarios) + """ \\\\ """ +  string_res + " " + string_res_tam + """\\end{tabular}"""
+        return u""" & """ +  string_res + " " + string_res_tam
     except KeyError:
         return u""" & """
     
@@ -206,25 +230,29 @@ def completion(data):
                     for prot2 in Protocols:
                         if not key in data[prot2][lemma].keys():
                             target_scenario = Scenario(prot2,lemma,key.split("*"))
-                            data[prot2][lemma][key] = ("failed","failed")
-                            for implier in data[prot2][lemma].keys():
-                                impl_scenario = Scenario(prot2,lemma,implier.split("*"))
-                                if is_weaker_scenario(impl_scenario,target_scenario) and "false" in data[prot2][lemma][implier]:
-                                    data[prot2][lemma][key] = ("false", "implied")
-                                elif is_weaker_scenario(target_scenario,impl_scenario) and "true" in data[prot2][lemma][implier]:
-                                    data[prot2][lemma][key] = ("true", "implied")
+                            if target_scenario.valid():                                
+                                data[prot2][lemma][key] = ("failed","failed")
+                                for implier in data[prot2][lemma].keys():
+                                    impl_scenario = Scenario(prot2,lemma,implier.split("*"))                                    
+                                    if is_weaker_scenario(impl_scenario,target_scenario)=="true" and "false" in data[prot2][lemma][implier]:
+                                        data[prot2][lemma][key] = ("false", "implied")
+                                    elif is_weaker_scenario(target_scenario,impl_scenario)=="true" and "true" in data[prot2][lemma][implier]:
+                                        data[prot2][lemma][key] = ("true", "implied")
+                            else:
+                                data[prot2][lemma][key] = "invalid"                                
     return data
         
-def gen_tex(data1, filename):
+def gen_tex(data1, data_tam, filename):
     """Generates the tex array for the given list of protocols"""
     # need to escape \t, \n, \b \a
     data = completion(data1)
 #    print(json.dumps(data, indent=4))    
     
-    tex_template =  u"""\documentclass[compsoc, conference, letterpaper, 10pt, times, table]{standalone}
+    tex_template =  u"""\documentclass[letterpaper, 10pt, table]{standalone}
 
 \\usepackage[svgnames,dvipsnames]{xcolor}
 \\usepackage{pifont}
+\\usepackage{fontawesome5}
 \\usepackage{multicol}
 \\usepackage{nicematrix}
 \\usepackage{marvosym}
@@ -238,10 +266,15 @@ def gen_tex(data1, filename):
 \\newcommand{\\attack}{\\textcolor{FireBrick}{\\ding{55}}}
 \\newcommand{\\ok}{\\textcolor{Green}{\\ding{51}}}
 
+
+
 \\newcommand{\\attp}[1]{\\attack$^P$~(#1)}
 \\newcommand{\\attpnt}{\\attack}
+\\newcommand{\\attt}[1]{\\attack$^T$~(#1)}
 \\newcommand{\\attd}[1]{\\attack$^D$~(#1)}
 \\newcommand{\\attdnt}{\\attack$^D$}
+
+\\newcommand{\\implied}{$\Rightarrow$}
 
 \\newcommand{\\okp}[1]{\\ok$^P$~(#1)}
 \\newcommand{\\okpnt}{\\ok$^P$}
@@ -249,6 +282,11 @@ def gen_tex(data1, filename):
 \\newcommand{\\oktnt}{\\ok$^T$}
 \\newcommand{\\okd}[1]{\\ok$^D$~(#1)}
 \\newcommand{\\okdnt}{\\ok$^D$}
+
+\\newcommand{\\timeoutp}{\\faClock[regular]$^P$}
+\\newcommand{\\timeoutt}{\\faClock[regular]$^T$}
+\\newcommand{\\invalid}{$\emptyset$}
+
 
 \\newcommand{\\authIRunique}{auth-IR-unique}
 \\newcommand{\\authRIunique}{auth-RI-unique}
@@ -283,11 +321,13 @@ def gen_tex(data1, filename):
 
 \\begin{document}
 
- \\begin{NiceTabular} {c """ + " ".join([ "c" for p in Protocols]) + """ }
+\\begin{tabular}{c}
+
+ \\begin{NiceTabular} {c c """ + " ".join([ "c" for p in Protocols]) + """ }
    \\CodeBefore
-    \\rowlistcolors{2}{Gray!15,White}[restart,cols={2-""" + str(1+len(Protocols)) + """}]
+    \\rowlistcolors{2}{Gray!15,White}[restart,cols={1-""" + str(2+len(Protocols)) + """}]
     \\Body
-    \\bf Lemma  """ + "".join([ (" & \\bf %s " % prot) for prot in Protocols])  + """  \\\\ \\hline
+    \\bf Lemma & Scenario  """ + "".join([ (" & \\bf %s " % prot) for prot in Protocols])  + """  \\\\ \\hline
 
   
 
@@ -303,15 +343,40 @@ def gen_tex(data1, filename):
         # for i in range(0,maxrange):
             # for prot in Protocols:                      
             #     tex_template +=  print_res(data,prot,lemma,res_for_prot,i)
-        for threat in set([threat for prot in Protocols  for threat in data[prot][lemma].keys() ]):
+        threats=list(set([threat for prot in Protocols  for threat in data[prot][lemma].keys() ]))
+        threats.sort(reverse=False,key=lambda x: len(x))
+        for threat in threats :
             if any([data[prot][lemma][threat][0]  in ["true","false"] and not data[prot][lemma][threat][1]=="implied" for prot in Protocols]):
+                threat_display = threat.split("*")                
+                tex_template += """ & \\""" +  ', \\'.join(threat_display)  
                 for prot in Protocols:
-                    tex_template +=  print_res_simpl(data,prot,lemma,threat) 
+                    tex_template +=  print_res_simpl(data,data_tam,prot,lemma,threat) 
                 tex_template += """  \\\\ """
         tex_template += """  \\hline """                      
             
 
-    tex_template += """\\end{NiceTabular} \\end{document} """
+    tex_template += """\\end{NiceTabular} 
+\\\\ 
+\\\\
+\\textbf{Automated aggregation of results}
+\\\\
+\\\\
+For each lemma and each scenario, we display the result of the automated analysis based on Proverif and Tamarin. \\\\
+ We display all scenarios for which at least one of the protocol has a non trivial and non timeout result.
+\\\\
+\\\\
+\\begin{tabular}{rl}
+\\attt{x},\\attp{x}:& attack found with Tamarin (T) or Proverif (P) in x seconds \\\\
+\\okt{x},\\okp{x}:& proof found with Tamarin (T) or Proverif (P) in x seconds \\\\
+ (\\implied):& means the result is implied by another displayed result \\\\
+\\timeoutt,\\timeoutp: & timeout for Tamarin (T) or Proverif (P) \\\\
+\\invalid: & the scenario is irrelevant for this protocol (e.g., DH weakness in KEM setting)
+
+\\end{tabular}
+
+\\end{tabular}
+
+ \\end{document} """
     with open(filename, 'w') as res_file:
         res_file.write(tex_template)
 
@@ -479,7 +544,7 @@ if args.fileload:
     results=res
 else:
     results = init_result()
-    load_results(results)
+    load_results(results, "proverif")
 
 if args.retry:
     scenarios=[]
@@ -502,6 +567,19 @@ if args.retry:
     results=new_results
     load_results(results, "proverif")
 
+if args.fileloadtamarin:
+    with open(args.fileloadtamarin[0]) as user_file:
+        file_contents = user_file.read()
+    res = json.loads(file_contents)
+    tam_res = res
+else:
+    tam_res = {}
+    for prot in Protocols:
+        tam_res[prot]={}
+        for lemma in Lemmas:
+            tam_res[prot][lemma]={}
+                
+    
 if args.tamarin:
     results=completion(results)
     scenarios=[]
@@ -518,14 +596,12 @@ if args.tamarin:
     print("ReChecking %i scenarios with Tamarin" % (len(list(scenarios))))
     tamarin_results = init_result()
     load_results(tamarin_results, "tamarin")
-    tam_res = {}
     for prot in Protocols:
-        tam_res[prot]={}
         for lemma in Lemmas:
-            tam_res[prot][lemma]={}
             for key in tamarin_results[prot][lemma].keys():
                 tam_res[prot][lemma][key]=tamarin_results[prot][lemma][key]
-    
+
+
 res = {}
 for prot in Protocols:
     res[prot]={}
@@ -579,4 +655,11 @@ else:
     filename = "-".join(Protocols) + "-".join(Lemmas)+".tex"
 
 if args.latex:
-    gen_tex(comp, filename)
+    gen_tex(comp, tam_res, filename)
+
+
+# TEsts
+
+# scen1=Scenario("lake-draft14/lake-edhoc-KEM","data_authentication_R_to_I" ,"WeakAEAD".split("*"))
+# scen2=Scenario("lake-draft14/lake-edhoc-KEM","data_authentication_R_to_I" ,"XorPrecise*LeakShare".split("*"))
+# print(is_weaker_scenario(scen1,scen2))

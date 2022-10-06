@@ -1,7 +1,8 @@
-\documentclass[compsoc, conference, letterpaper, 10pt, times, table]{standalone}
+\documentclass[letterpaper, 10pt, table]{standalone}
 
 \usepackage[svgnames,dvipsnames]{xcolor}
 \usepackage{pifont}
+\usepackage{fontawesome5}
 \usepackage{multicol}
 \usepackage{nicematrix}
 \usepackage{marvosym}
@@ -15,10 +16,15 @@
 \newcommand{\attack}{\textcolor{FireBrick}{\ding{55}}}
 \newcommand{\ok}{\textcolor{Green}{\ding{51}}}
 
+
+
 \newcommand{\attp}[1]{\attack$^P$~(#1)}
 \newcommand{\attpnt}{\attack}
+\newcommand{\attt}[1]{\attack$^T$~(#1)}
 \newcommand{\attd}[1]{\attack$^D$~(#1)}
 \newcommand{\attdnt}{\attack$^D$}
+
+\newcommand{\implied}{$\Rightarrow$}
 
 \newcommand{\okp}[1]{\ok$^P$~(#1)}
 \newcommand{\okpnt}{\ok$^P$}
@@ -26,6 +32,11 @@
 \newcommand{\oktnt}{\ok$^T$}
 \newcommand{\okd}[1]{\ok$^D$~(#1)}
 \newcommand{\okdnt}{\ok$^D$}
+
+\newcommand{\timeoutp}{\faClock[regular]$^P$}
+\newcommand{\timeoutt}{\faClock[regular]$^T$}
+\newcommand{\invalid}{$\emptyset$}
+
 
 \newcommand{\authIRunique}{auth-IR-unique}
 \newcommand{\authRIunique}{auth-RI-unique}
@@ -60,145 +71,42 @@
 
 \begin{document}
 
- \begin{NiceTabular} {c c c c c }
+\begin{tabular}{c}
+
+ \begin{NiceTabular} {c c c c c c }
    \CodeBefore
-    \rowlistcolors{2}{Gray!15,White}[restart,cols={2-5}]
+    \rowlistcolors{2}{Gray!15,White}[restart,cols={1-6}]
     \Body
-    \bf Lemma   & \bf lake-draft12/lake-edhoc  & \bf lake-draft12/lake-edhoc-KEM  & \bf lake-draft14/lake-edhoc  & \bf lake-draft14/lake-edhoc-KEM   \\ \hline
+    \bf Lemma & Scenario   & \bf lake-draft12/lake-edhoc  & \bf lake-draft12/lake-edhoc-KEM  & \bf lake-draft14/lake-edhoc  & \bf lake-draft14/lake-edhoc-KEM   \\ \hline
 
   
 
 
-\noReflexionAttackRI &  \begin{tabular}{c} 
-        \small \ \\ \attp{18}\end{tabular} &  \begin{tabular}{c} 
-        \small \ \\ \attp{0}\end{tabular} &  \begin{tabular}{c} 
-        \small \ \\ \attp{21}\end{tabular} &  \begin{tabular}{c} 
-        \small \ \\ \attp{0}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \CredCheck \\ \okp{1546}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck \\ \okp{809}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare, \CredCheck \\ \okp{2132}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck \\ \okp{134}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare, \CredCheck \\ \okp{2199}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck \\ \okp{3083}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck \\ \okp{2435}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck \\ \okp{1649}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \CredCheck \\ \okp{132}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \NeutralCheck \\ \attp{16}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck \\ \okp{1239}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck, \NeutralCheck \\ \okp{2242}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck \\ \okp{1080}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck, \NeutralCheck \\ \okp{1541}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \NeutralCheck \\ \attp{14}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \CredCheck, \NeutralCheck \\ \okp{1365}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare, \CredCheck, \NeutralCheck \\ \okp{1419}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck, \NeutralCheck \\ \okp{1971}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck, \NeutralCheck \\ \okp{2280}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \CredCheck, \NeutralCheck \\ \okp{134}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck, \NeutralCheck \\ \okp{1308}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck, \NeutralCheck \\ \okp{1082}\end{tabular} &  &  &   \\   \hline 
-\authIRunique &  \begin{tabular}{c} 
-        \small \ \\ \attp{12}\end{tabular} &  \begin{tabular}{c} 
-        \small \ \\ \attp{0}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare \\ \okp{1705}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{115}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \NeutralCheck \\ \okp{709}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{3288}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \LeakShare, \NeutralCheck \\ \attp{240}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{1260}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseDH, \NeutralCheck \\ \attp{41}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck \\ \okp{2219}\end{tabular} &   \\  &  &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{1391}\end{tabular} &   \\   \hline 
-\dataAuthIR &  \begin{tabular}{c} 
-        \small \LeakShare \\ \attp{61}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{277}\end{tabular} &  \begin{tabular}{c} 
-        \small \LeakShare \\ \attp{69}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{107}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{2853}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{1426}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \LeakShare, \NeutralCheck \\ \attp{51}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \LeakShare, \NeutralCheck \\ \attp{59}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{2759}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{1417}\end{tabular} &   \\   \hline 
-\dataAuthRI &  \begin{tabular}{c} 
-        \small \LeakSessionKey \\ \attp{51}\end{tabular} &  \begin{tabular}{c} 
-        \small \LeakSessionKey \\ \attp{3}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakShare \\ \attp{2106}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise \\ \okp{47}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \WeakAEAD \\ \attp{37}\end{tabular} &  \begin{tabular}{c} 
-        \small \WeakAEAD \\ \attp{2}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \LeakShare \\ \okp{1931}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakShare \\ \attp{27}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \LeakShare \\ \attp{1358}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \XorPrecise \\ \okp{57}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{2146}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \LeakShare \\ \okp{9}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \XorPrecise, \PreciseDH \\ \okp{1928}\end{tabular} &  \begin{tabular}{c} 
-        \small \LeakShare \\ \attp{7}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakShare, \NeutralCheck \\ \attp{991}\end{tabular} &  \begin{tabular}{c} 
-        \small \XorPrecise, \LeakShare \\ \attp{42}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \LeakSessionKey, \NeutralCheck \\ \attp{42}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \LeakShare, \NeutralCheck \\ \okp{783}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \WeakAEAD, \NeutralCheck \\ \attp{24}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \XorPrecise, \LeakShare, \NeutralCheck \\ \attp{1986}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \LeakShare, \NeutralCheck \\ \attp{572}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{2097}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{1942}\end{tabular} &  &  &   \\   \hline 
-\honnestAuthRInonInj &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise \\ \okp{1545}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{752}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare \\ \okp{2012}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{97}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \LeakSessionKey, \LeakShare \\ \attp{1170}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{3529}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \LeakShare \\ \okp{1117}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{1665}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{2545}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck \\ \okp{2508}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH \\ \okp{134}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{1646}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{1243}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{1059}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \NeutralCheck \\ \okp{1448}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \LeakSessionKey, \LeakShare, \NeutralCheck \\ \attp{509}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck \\ \okp{1931}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \NeutralCheck \\ \okp{127}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{1251}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{1062}\end{tabular} &  &  &   \\   \hline 
-\secretI &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \LeakShare \\ \okp{1281}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{495}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise \\ \okp{1044}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{488}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \LeakShare \\ \okp{1758}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH \\ \okp{336}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{3417}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{3442}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{3485}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{3249}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare, \NeutralCheck \\ \okp{2779}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \NeutralCheck \\ \okp{792}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck \\ \okp{2065}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \NeutralCheck \\ \okp{316}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{3434}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{3345}\end{tabular} &   \\  &  &  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{3496}\end{tabular} &   \\  &  &  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{2897}\end{tabular} &   \\  &  &  &  \begin{tabular}{c} 
-        \small \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{3340}\end{tabular} &   \\   \hline 
-\secretR &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise \\ \okp{1622}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{1093}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{2817}\end{tabular} &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{424}\end{tabular}  \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare \\ \okp{3541}\end{tabular} &  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{2860}\end{tabular} &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \WeakAEAD, \XorPrecise, \LeakShare \\ \okp{2678}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH \\ \okp{128}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{1188}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH \\ \okp{968}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \NeutralCheck \\ \okp{1495}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare, \NeutralCheck \\ \okp{2358}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck \\ \okp{1850}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck \\ \okp{3277}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \NeutralCheck \\ \okp{130}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{1174}\end{tabular} &  &  &   \\  &  \begin{tabular}{c} 
-        \small \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck \\ \okp{1012}\end{tabular} &  &  &   \\   \hline \end{NiceTabular} \end{document} 
+\noReflexionAttackRI & \ & \attp{18}  & \attp{0}  & \attp{21}  & \attp{0}   \\  & \NeutralCheck & \attp{14}  & \invalid  & \attp{16}  & \invalid   \\  & \PreciseSignature, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck & \okp{2435} \timeoutt & \okp{\implied} \okt{\implied} & \okp{3083} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck & \okp{1239} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \CredCheck & \okp{132} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare, \CredCheck & \okp{2199} \timeoutt & \okp{\implied} \okt{6753} & \okp{2132} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \CredCheck & \okp{1546} \timeoutt & \okp{\implied} \timeoutt & \okp{\implied} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck & \okp{1080} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck, \NeutralCheck & \okp{1308} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck, \NeutralCheck & \okp{1971} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck & \timeoutp  & \invalid  & \okp{1649} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck & \timeoutp  & \okp{809} \timeoutt & \timeoutp  & \okp{134} \okt{5571}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \CredCheck, \NeutralCheck & \okp{134} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare, \CredCheck, \NeutralCheck & \okp{1419} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \CredCheck, \NeutralCheck & \okp{1365} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck, \NeutralCheck & \okp{2280} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck, \NeutralCheck & \okp{1082} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \CredCheck, \NeutralCheck & \timeoutp  & \invalid  & \okp{1541} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \CredCheck, \NeutralCheck & \timeoutp  & \invalid  & \okp{2242} \timeoutt & \invalid   \\   \hline 
+\authIRunique & \ & \attp{12}  & \attp{0}  & \okp{\implied} \okt{2579} & \okp{\implied} \okt{\implied}  \\  & \LeakShare, \NeutralCheck & \attp{240}  & \invalid  & \okp{\implied} \okt{2433} & \invalid   \\  & \PreciseDH, \NeutralCheck & \attp{41}  & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare & \attp{\implied}  & \attp{\implied}  & \okp{1705} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \attp{\implied}  & \attp{\implied}  & \okp{3288} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \attp{\implied}  & \attp{\implied}  & \timeoutp  & \okp{115} \okt{1250}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \attp{\implied}  & \invalid  & \okp{1260} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \NeutralCheck & \okp{709} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \attp{\implied}  & \invalid  & \okp{1391} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck & \attp{\implied}  & \invalid  & \okp{2219} \timeoutt & \invalid   \\   \hline 
+\dataAuthIR & \LeakShare & \attp{61}  & \okp{\implied} \okt{157} & \attp{69}  & \okp{\implied} \okt{154}  \\  & \LeakShare, \NeutralCheck & \attp{51}  & \invalid  & \attp{59}  & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{2853} \timeoutt & \invalid  & \okp{1426} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \attp{\implied} \timeoutt & \okp{277} \timeoutt & \attp{\implied} \timeoutt & \okp{107} \timeoutt  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{2759} \timeoutt & \invalid  & \okp{1417} \timeoutt & \invalid   \\   \hline 
+\dataAuthRI & \WeakAEAD & \attp{37}  & \attp{2}  & \okp{\implied} \timeoutt & \okp{\implied}   \\  & \LeakShare & \attp{1358}  & \attp{7}  & \okp{\implied} \timeoutt & \okp{\implied}   \\  & \LeakSessionKey & \attp{51}  & \attp{3}  & \okp{\implied} \okt{6587} & \okp{\implied}   \\  & \XorPrecise, \LeakShare & \attp{\implied} \timeoutt & \attp{\implied}  & \timeoutp  & \attp{42}   \\  & \WeakAEAD, \NeutralCheck & \attp{24}  & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \LeakShare, \NeutralCheck & \attp{572}  & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \LeakSessionKey, \NeutralCheck & \attp{42}  & \invalid  & \okp{\implied} \okt{6210} & \invalid   \\  & \PreciseSignatureProof, \LeakShare & \attp{\implied} \timeoutt & \attp{\implied}  & \attp{2106}  & \attp{27}   \\  & \PreciseSignatureProof, \XorPrecise & \okp{\implied} \timeoutt & \okp{57} \okt{1319} & \okp{\implied} \timeoutt & \okp{\implied}   \\  & \XorPrecise, \LeakShare, \NeutralCheck & \attp{\implied} \timeoutt & \invalid  & \attp{1986}  & \invalid   \\  & \PreciseSignatureProof, \XorPrecise, \PreciseDH & \okp{1928} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakShare, \NeutralCheck & \attp{\implied} \timeoutt & \invalid  & \attp{991}  & \invalid   \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \LeakShare & \attp{\implied} \timeoutt & \attp{\implied}  & \okp{1931} \timeoutt & \okp{9} \okt{785}  \\  & \PreciseSignatureProof, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{1942} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise & \attp{\implied} \timeoutt & \attp{\implied}  & \okp{\implied} \timeoutt & \okp{47} \timeoutt  \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \LeakShare, \NeutralCheck & \attp{\implied} \timeoutt & \invalid  & \okp{783} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \attp{\implied} \timeoutt & \invalid  & \okp{2146} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \attp{\implied} \timeoutt & \invalid  & \okp{2097} \timeoutt & \invalid   \\   \hline 
+\honnestAuthRInonInj & \LeakSessionKey, \LeakShare & \attp{1170}  & \okp{\implied} \okt{\implied} & \okp{\implied} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \LeakSessionKey, \LeakShare, \NeutralCheck & \attp{509}  & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \WeakAEAD, \LeakShare & \okp{1117} \timeoutt & \okp{\implied} \okt{\implied} & \okp{\implied} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignature, \WeakAEAD, \XorPrecise, \LeakShare & \okp{2545} \timeoutt & \okp{\implied} \okt{\implied} & \okp{\implied} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{1243} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare & \attp{\implied} \timeoutt & \okp{\implied} \okt{6937} & \okp{2012} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH & \okp{134} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise & \okp{1545} \timeoutt & \okp{\implied} \timeoutt & \okp{\implied} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{1059} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \attp{\implied} \timeoutt & \okp{\implied} \okt{2185} & \okp{3529} \timeoutt & \okp{\implied} \okt{\implied}  \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{1251} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck & \okp{1931} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \attp{\implied} \timeoutt & \okp{752} \timeoutt & \timeoutp  & \okp{97} \okt{7030}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \timeoutp  & \invalid  & \okp{1665} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \NeutralCheck & \okp{127} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \NeutralCheck & \okp{1448} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{1062} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \timeoutp  & \invalid  & \okp{1646} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck & \attp{\implied} \timeoutt & \invalid  & \okp{2508} \timeoutt & \invalid   \\   \hline 
+\secretI & \PreciseSignatureProof, \WeakAEAD, \LeakShare & \okp{1281} \timeoutt & \okp{\implied} \timeoutt & \timeoutp  & \okp{\implied} \timeoutt  \\  & \PreciseSignature, \WeakAEAD, \XorPrecise, \LeakShare & \okp{3417} \timeoutt & \okp{\implied} \timeoutt & \timeoutp  & \okp{\implied} \timeoutt  \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \LeakShare & \okp{1758} \timeoutt & \okp{\implied} \okt{4832} & \timeoutp  & \okp{\implied} \timeoutt  \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{\implied} \timeoutt & \invalid  & \okp{3442} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{\implied} \timeoutt & \invalid  & \okp{3345} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH & \okp{\implied} \timeoutt & \invalid  & \okp{336} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise & \okp{\implied} \timeoutt & \okp{\implied} \timeoutt & \okp{1044} \timeoutt & \okp{\implied} \timeoutt  \\  & \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{\implied} \timeoutt & \invalid  & \okp{3340} \timeoutt & \invalid   \\  & \PreciseSignature, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{\implied} \timeoutt & \invalid  & \okp{2897} \timeoutt & \invalid   \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{\implied} \timeoutt & \invalid  & \okp{3249} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck & \okp{2065} \timeoutt & \invalid  & \timeoutp  & \invalid   \\  & \PreciseSignature, \LeakSessionKey, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{\implied} \timeoutt & \invalid  & \okp{3496} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{495} \timeoutt & \timeoutp  & \okp{488} \timeoutt  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{3485} \timeoutt & \invalid  & \timeoutp  & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \NeutralCheck & \okp{\implied} \timeoutt & \invalid  & \okp{316} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare, \NeutralCheck & \okp{2779} \timeoutt & \invalid  & \timeoutp  & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \NeutralCheck & \okp{\implied} \timeoutt & \invalid  & \okp{792} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{3434} \timeoutt & \invalid  & \timeoutp  & \invalid   \\   \hline 
+\secretR & \PreciseSignature, \WeakAEAD, \XorPrecise, \LeakShare & \okp{2678} \timeoutt & \okp{\implied} \okt{\implied} & \timeoutp  & \okp{\implied} \timeoutt  \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{1188} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare & \okp{3541} \timeoutt & \okp{\implied} \timeoutt & \timeoutp  & \okp{\implied} \timeoutt  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH & \okp{128} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise & \okp{1622} \timeoutt & \okp{\implied} \okt{3174} & \okp{\implied} \timeoutt & \okp{\implied} \okt{4635}  \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{968} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{1174} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck & \okp{1850} \timeoutt & \invalid  & \timeoutp  & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{1093} \timeoutt & \timeoutp  & \okp{424} \timeoutt  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \timeoutp  & \invalid  & \okp{2817} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH, \NeutralCheck & \okp{130} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \LeakShare, \NeutralCheck & \okp{2358} \timeoutt & \invalid  & \timeoutp  & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \NeutralCheck & \okp{1495} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \okp{1012} \timeoutt & \invalid  & \okp{\implied} \timeoutt & \invalid   \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare, \NeutralCheck & \okp{3277} \timeoutt & \invalid  & \timeoutp  & \invalid   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH, \NeutralCheck & \timeoutp  & \invalid  & \okp{2860} \timeoutt & \invalid   \\   \hline \end{NiceTabular} 
+\\ 
+\\
+\textbf{Automated aggregation of results}
+\\
+\\
+For each lemma and each scenario, we display the result of the automated analysis based on Proverif and Tamarin. \\
+ We display all scenarios for which at least one of the protocol has a non trivial and non timeout result.
+\\
+\\
+\begin{tabular}{rl}
+\attt{x},\attp{x}:& attack found with Tamarin (T) or Proverif (P) in x seconds \\
+\okt{x},\okp{x}:& proof found with Tamarin (T) or Proverif (P) in x seconds \\
+ (\implied):& means the result is implied by another displayed result \\
+\timeoutt,\timeoutp: & timeout for Tamarin (T) or Proverif (P) \\
+\invalid: & the scenario is irrelevant for this protocol (e.g., DH weakness in KEM setting)
+
+\end{tabular}
+
+\end{tabular}
+
+ \end{document} 
