@@ -3,7 +3,7 @@
 # Number of different commands that will be executd in parallel
 # Each proverif call takes one core
 
-N=30
+N=$1
 
 files=(
 	"lake-edhoc.spthy --lemma=authIR_unique" # attack    
@@ -57,15 +57,17 @@ files=(
 
     )
 
-IFS='' # required to keep the tabs and spaces
 
-TIMEOUT='30m'
 
 exec_runner(){
+    IFS='' # required to keep the tabs and spaces
+    TIMEOUT='30m'
+    file=$@
+    outfilename="res-pro-compressed.csv"
     START=$(date +%s)
     filename=$(echo "$file" | sed "s/[^[:alnum:]-]//g")
     echo $filename
-    echo "tamarin-prover -m=proverif $lemma  > $filename.pv; timeout $TIMEOUT proverif $filename.pv"
+    echo "tamarin-prover -m=proverif $file  > $filename.pv; timeout $TIMEOUT proverif $filename.pv"
     res=$(eval "timeout $TIMEOUT tamarin-prover  -m=proverif  $file > $filename.pv; timeout $TIMEOUT proverif $filename.pv")
     END=$(date +%s)
     DIFF=$(echo "$END - $START" | bc)
@@ -81,9 +83,8 @@ echo "filename; res; time"  >> "$outfilename"
 
 # for file in $files; do
 # find . -name "*.spthy"  | while read line; do
+export -f exec_runner
 for file in  "${files[@]}"; do
-        ((i=i%N)); ((i++==0)) && wait	
-	exec_runner &
-
+        sem -j $N exec_runner $file
 done
-echo "WARNING: some verification may still be running in the background"
+sem --wait

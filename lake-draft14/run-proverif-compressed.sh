@@ -5,7 +5,7 @@
 # If we use proverif, it uses only one core
 # the command for tamarin takes 8 core (but it is also parametrable)
 
-N=30
+N=$1
 
 files=(
 	"lake-edhoc.spthy --lemma=authIR_unique" # ok  , 51s   
@@ -59,11 +59,11 @@ files=(
 
     )
 
-IFS='' # required to keep the tabs and spaces
-
-TIMEOUT='30m'
-
 exec_runner(){
+    IFS='' # required to keep the tabs and spaces
+    outfilename="res-pro-compressed.csv"
+    file=$@
+    TIMEOUT='30m'
     START=$(date +%s)
     filename=$(echo "$file" | sed "s/[^[:alnum:]-]//g")
     echo $filename
@@ -83,9 +83,9 @@ echo "filename; res; time"  >> "$outfilename"
 
 # for file in $files; do
 # find . -name "*.spthy"  | while read line; do
+export -f exec_runner
 for file in  "${files[@]}"; do
-        ((i=i%N)); ((i++==0)) && wait	
-	exec_runner &
+        sem -j $N exec_runner $file
 
 done
-echo "WARNING: some verification may still be running in the background"
+sem --wait

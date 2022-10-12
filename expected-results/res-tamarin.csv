@@ -1,0 +1,13 @@
+filename; method; result; time
+lake-draft14lake-edhoc-Sig-DDHspthy--lemmadataauthenticationItoR-DLeakSessionKey; ;   data_authentication_I_to_R (all-traces): verified (12624 steps) ; 52237;
+lake-draft14lake-edhoc-Sig-DDHspthy--lemmahonestauthRInoninj-DLeakSessionKey; ;   honestauthRI_non_inj (all-traces): verified (7757 steps) ; 37891;
+lake-draft14lake-edhoc-Sig-DDHspthy--lemmanoreflectionattacksRI-DCredCheck; ;   no_reflection_attacks_RI (all-traces): verified (7757 steps) ; 37924;
+lake-draft14lake-edhocspthy--lemmaauthIRunique-DNeutralCheck-DWeakAEAD-DLeakSessionKey; ;   authIR_unique (all-traces): verified (36 steps) ; 7775;
+lake-draft14lake-edhocspthy--lemmaauthIRunique-DNeutralCheck-DWeakestSignature-DLeakSessionKey; ;   authIR_unique (all-traces): verified (36 steps) ; 5394;
+lake-draft14lake-edhocspthy--lemmaauthRIunique-DNeutralCheck-DWeakAEAD-DLeakSessionKey; ;   authRI_unique (all-traces): verified (36 steps) ; 7838;
+lake-draft14lake-edhocspthy--lemmaauthRIunique-DNeutralCheck-DWeakestSignature-DLeakSessionKey; ;   authRI_unique (all-traces): verified (36 steps) ; 6285;
+lake-draft14lake-edhocspthy--lemmadataauthenticationRtoI-DLeakSessionKey-DWeakestSignature; ;   data_authentication_R_to_I (all-traces): verified (3832 steps) ; 16457;
+lake-draft14lake-edhocspthy--lemmadataauthenticationRtoI-DWeakAEAD; ;   data_authentication_R_to_I (all-traces): verified (4589 steps) ; 23608;
+lake-draft14lake-edhocspthy--lemmahonestauthRInoninj-DLeakShare-DWeakestSignature-DLeakSessionKey; ;   honestauthRI_non_inj (all-traces): verified (5340 steps) ; 18309;
+lake-draft14lake-edhocspthy--lemmasecretI-DLeakSessionKey; ;   secretI (all-traces): verified (2640 steps) ; 9748;
+lake-draft14lake-edhocspthy--lemmasecretR-DLeakSessionKey; ;   secretR (all-traces): verified (1537 steps) ; 7267;

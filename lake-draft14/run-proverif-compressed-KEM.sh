@@ -5,7 +5,7 @@
 # If we use proverif, it uses only one core
 # the command for tamarin takes 8 core (but it is also parametrable)
 
-N=30
+N=$1
 
 files=(
 	"lake-edhoc-KEM.spthy	  --lemma=authIR_unique" # ok	 
@@ -34,15 +34,15 @@ files=(
     "lake-edhoc-KEM.spthy -D=NonRepudiationSoundness --lemma=none" #ok	
     )
 
-IFS='' # required to keep the tabs and spaces
-
-TIMEOUT='30m'AD; RESULT event(AcceptR(cid_2,m,pkI_2,pkR_2,k4,ko,y,gx))@i && event(Honest(pkI_2))@k ==> (i > t && event(AcceptI(cid2,m,pkI_2,pkR_2,k3,k4,ko,x,gy))@t && cid_2 ≠ cid2) || event(Compromise(pkI_2))@t || (eve
-
 exec_runner(){
+    file=$@
+    IFS='' # required to keep the tabs and spaces
+    outfilename="res-pro-compressed-KEM.csv"
+    TIMEOUT='30m'
     START=$(date +%s)
     filename=$(echo "$file" | sed "s/[^[:alnum:]-]//g")
     echo $filename
-    echo "tamarin-prover -m=proverilake-edhoc-KEM.spthy -D=NonRepudiationSoundness ;-lemma=nonef $lemma  > $filename.pv; timeout $TIMEOUT proverif $filename.pv"
+    echo "tamarin-prover -m=proverif $file  > $filename.pv; timeout $TIMEOUT proverif $filename.pv"
     res=$(eval "timeout $TIMEOUT tamarin-prover  -m=proverif  $file > $filename.pv; timeout $TIMEOUT proverif $filename.pv")
     END=$(date +%s)
     DIFF=$(echo "$END - $START" | bc)
@@ -58,9 +58,9 @@ echo "filename; res; time"  >> "$outfilename"
 
 # for file in $files; do
 # find . -name "*.spthy"  | while read line; do
+export -f exec_runner
 for file in  "${files[@]}"; do
-        ((i=i%N)); ((i++==0)) && wait	
-	exec_runner &
+        sem -j $N exec_runner $file
 
 done
-echo "WARNING: some verification may still be running in the background"
+sem --wait
