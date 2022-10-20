@@ -215,9 +215,13 @@ def print_res_simpl(data,data_tam,prot,lemma,scenario):
 lemmas_to_tex = {
     "no_reflection_attacks_RI":"noReflexionAttackRI",
     "authIR_unique":"authIRunique",
+    "authRI_unique":"authRIunique",    
     "data_authentication_I_to_R":"dataAuthIR",
     "data_authentication_R_to_I":"dataAuthRI",
     "honestauthRI_non_inj":"honnestAuthRInonInj",
+    "honestauthRI_unique":"honnestAuthRIunique",
+    "honestauthIR_non_inj":"honnestAuthIRnonInj",
+    "honestauthIR_unique":"honnestAuthIRunique",    
     "secretI":"secretI",
     "secretR":"secretR"
     }
@@ -293,6 +297,9 @@ def gen_tex(data1, data_tam, filename):
 \\newcommand{\\dataAuthIR}{data-authentication-IR}
 \\newcommand{\\dataAuthRI}{data-authentication-RI}
 \\newcommand{\\honnestAuthRInonInj}{honest-auth-RI-non-inj}
+\\newcommand{\\honnestAuthIRnonInj}{honest-auth-IR-non-inj}
+\\newcommand{\\honnestAuthRIunique}{honest-auth-RI-unique}
+\\newcommand{\\honnestAuthIRunique}{honest-auth-IR-unique}
 \\newcommand{\\noReflexionAttackRI}{no-reflection-attacks-RI}
 \\newcommand{\\secretI}{secretI}
 \\newcommand{\\secretR}{secretR}
