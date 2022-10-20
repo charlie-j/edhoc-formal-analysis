@@ -1,8 +1,11 @@
-<!> if you tried to enter the Docker and see this message, run 
-```
-docker run -it protocolanalysis/lake-edhoc:draft-14 bash
-```
-to actually enter the image. <!>
+This repository contains a formal analysis of the LAKE EDHOC protocol drafts 12 and 14 (https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc/14/).
+
+The results are published in:
+A comprehensive, formal and automated analysis of the EDHOC protocol - Charlie Jacomme, Elise Klein,Steve Kremer, Maïwenn Racouchot. USENIX 23, https://hal.inria.fr/hal-03810102/.
+
+A summary of the results can be viewed in the `res_12_14.pdf` file of this repository. 
+
+NOTE: a global update of the models for draft17 as well as the verification scripts is in progress.
 
 # Prerequisite
 
