@@ -66,16 +66,16 @@ def powerset(s):
 
 # We define the main parameters of the case study, first as full list, where we will intuitively want to consider all possible protocol and lemma under all subsets of attacker capabitlies and features
 
-Protocols = ["lake-draft12/lake-edhoc", "lake-draft12/lake-edhoc-KEM", "lake-draft14/lake-edhoc", "lake-draft14/lake-edhoc-KEM"]
+Protocols = ["models/lake-edhoc", "models/lake-edhoc-KEM"]
 
 # Our list of target lemmas
-Lemmas = [ "no_reflection_attacks_RI", "authIR_unique", "data_authentication_I_to_R", "data_authentication_R_to_I", "honestauthRI_non_inj", "secretI", "secretR"]
+Lemmas = [ "authIR_unique", "authRI_unique", "data_authentication_I_to_R", "data_authentication_R_to_I", "honestauthRI_non_inj", , "honestauthRI_unique", "secretI", "secretR", "honestauthIR_non_inj", "honestauthIR_unique" ]
 
 # The list of Attacker Capabilities or Features we are going to look at.
-AtomThreatModel= ["PreciseSignature", "PreciseSignatureProof", "LeakSessionKey", "WeakAEAD", "XorPrecise", "LeakShare", "PreciseDH", "CredCheck", "NeutralCheck"]
+AtomThreatModel= ["PreciseSignature", "PreciseSignatureProof", "LeakSessionKey", "WeakAEAD", "XorPrecise", "LeakShare", "PreciseDH"]
 ThreatModels=list(powerset(AtomThreatModel))
 
-Features = ["CredCheck", "NeutralCheck"]
+Features = []
 
     
 

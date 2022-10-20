@@ -503,7 +503,7 @@ let SIGNATURE_or_MAC_2 = sign(<'Signature1',ID_CRED_R,TH_2,pkR,EAD_2,MAC_2>, 're
 	    event DerivedRShared(pkR, G_XY); 
 	    event DerivedIdR(ID_CRED_R,PRK_3e2m);
 	    let m2 = <G_Y,encxor(plaintext_2,KEYSTREAM_2),C_R> in
-            event SendRData(method_zero, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, m2>);							    
+            event SendRData(method_zero, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, plaintext_2>);							    
 	    out(m2);	    
 	    in(CIPHERTEXT_3);
 	    let TH_3 = hash(wrap(TH_2) || plaintext_2 || pkR) in
@@ -571,7 +571,7 @@ if (verify(SIGNATURE_or_MAC_3,<'Signature2',ID_CRED_I,TH_3,pkI,EAD_3,MAC_3>, pkI
 	    event DerivedRShared(pkR, G_XY); 
 	    event DerivedIdR(ID_CRED_R,PRK_3e2m);
 	    let m2 = <G_Y,encxor(plaintext_2,KEYSTREAM_2),C_R> in
-            event SendRData(method_one, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, m2>);							    
+            event SendRData(method_one, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, plaintext_2>);							    
 	    out(m2);	    
 	    in(CIPHERTEXT_3);
 	    let TH_3 = hash(wrap(TH_2) || plaintext_2 || pkR) in
@@ -631,7 +631,7 @@ let SIGNATURE_or_MAC_2 = sign(<'Signature1',ID_CRED_R,TH_2,pkR,EAD_2,MAC_2>, 're
 	    event DerivedRShared(pkR, G_XY); 
 	    event DerivedIdR(ID_CRED_R,PRK_3e2m);
 	    let m2 = <G_Y,encxor(plaintext_2,KEYSTREAM_2),C_R> in
-            event SendRData(method_two, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, m2>);							    
+            event SendRData(method_two, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, plaintext_2>);							    
 	    out(m2);	    
 	    in(CIPHERTEXT_3);
 	    let TH_3 = hash(wrap(TH_2) || plaintext_2 || pkR) in
@@ -705,7 +705,7 @@ let SIGNATURE_or_MAC_2 = sign(<'Signature1',ID_CRED_R,TH_2,pkR,EAD_2,MAC_2>, 're
 	    event DerivedRShared(pkR, G_XY); 
 	    event DerivedIdR(ID_CRED_R,PRK_3e2m);
 	    let m2 = <G_Y,encxor(plaintext_2,KEYSTREAM_2),C_R> in
-            event SendRData(method_three, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, m2>);							    
+            event SendRData(method_three, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, plaintext_2>);							    
 	    out(m2);	    
 	    in(CIPHERTEXT_3);
 	    let TH_3 = hash(wrap(TH_2) || plaintext_2 || pkR) in

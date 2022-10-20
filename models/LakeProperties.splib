@@ -247,7 +247,7 @@ lemma data_authentication_I_to_R:
     "All method pkI pkR TH_2 TH_3 TH_4 suitesI EAD_1 EAD_2 EAD_3 m1 p2 p3 #i #j x gy PRK_out.
      AcceptIData(PRK_out,method,pkI,pkR,x,gy,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, p2, p3>)@i
      & Honest(pkR)@j ==>    
-      (Ex #l m1 m2. l<i & SendRData(method,pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, p2>)@l)
+      (Ex #l. l<i & SendRData(method,pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, p2>)@l)
     | (Ex #l. l<i & Compromise(pkR)@l)
     |  (Ex #l.  LeakShare(x)@l & (method=method_two | method=method_three))      
        "

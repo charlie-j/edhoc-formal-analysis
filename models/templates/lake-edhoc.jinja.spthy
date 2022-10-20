@@ -489,7 +489,7 @@ let R(~cid, ~skR,~R) =
 	    event DerivedRShared(pkR, G_XY); 
 	    event DerivedIdR(ID_CRED_R,PRK_3e2m);
 	    let m2 = <G_Y,{{ encXOR() }}(plaintext_2,KEYSTREAM_2),C_R> in
-            event SendRData({{ ppMethod(method) }}, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, m2>);							    
+            event SendRData({{ ppMethod(method) }}, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, plaintext_2>);							    
 	    out(m2);	    
 	    in(CIPHERTEXT_3);
 	    {{ HASH('TH_3', 'wrap(TH_2) || plaintext_2 || pkR') }}
