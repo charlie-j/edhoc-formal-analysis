@@ -31,7 +31,6 @@ In `model`, you may find several `.spthy` files, the tamarin and Sapic+ input fo
  * `lake-edhoc-KEM-Sig.spthy`  -> EDHOC KEM based with a more precise model of Signatures
  * `lake-edhoc-KEM-Hash.spthy`  -> EDHOCs with a more precise model of hash
  
- 
  Each of those files shares some common headers, in `Headers.splib`, and the security lemmas, in `LakeProperties.splib`. Moreover, each of those files contains multiple options for advanced threat models that can be enabled or disabled with flags, specified to tamarin on the command line using the "-D" option. 
  
  The `.spthy` files share most of their code as they were actually generated using the Jinja2 templating engine using the template in the `model/templates/` subfolder. For simplicity, we however provide them pre-generated.

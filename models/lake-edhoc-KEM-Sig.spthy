@@ -255,7 +255,7 @@ let I(~cid, ~skI, ~I, ID_CRED_R) =
     
     let G_YX = kemdecap(G_Y,~X) in
     
-    let PRK_2e = hkdfextract('null', G_YX) in
+    let PRK_2e = hkdfextract(TH_2, G_YX) in
     let KEYSTREAM_2 = edhoc_kdf(PRK_2e,'tzero',TH_2,plaintext_length) in 
     let plaintext_2 = decxor(CIPHERTEXT_2,KEYSTREAM_2) in
     let < =ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> = plaintext_2 in
@@ -286,7 +286,7 @@ event Verified (SIGNATURE_or_MAC_2,e1(SIGNATURE_or_MAC_2),e3(SIGNATURE_or_MAC_2)
 
 	    	    
 		(
-		let TH_3 = hash(wrap(TH_2) || plaintext_2) in
+		let TH_3 = hash(wrap(TH_2) || plaintext_2 || pkR) in
     	        event THIShared(pkI, TH_3); 		
 		
 		let PRK_4e3m = PRK_3e2m in 
@@ -302,11 +302,11 @@ let SIGNATURE_or_MAC_3 = sign(<'Signature2',ID_CRED_I,TH_3,pkI,~EAD_3,MAC_3>, 'r
 		let IV_3 = edhoc_kdf(PRK_3e2m,'four',TH_3, iv_length) in
 		let plaintext_3 = <ID_CRED_I, SIGNATURE_or_MAC_3,~EAD_3> in
 		let m3 = aeadenc(plaintext_3,'rep',K_3,IV_3) in
-		let TH_4 = hash(wrap(TH_3) ||  plaintext_3) in
+		let TH_4 = hash(wrap(TH_3) ||  plaintext_3 || pkI) in
 		let PRK_out = edhoc_kdf(PRK_4e3m, 'seven', TH_4, hash_length) in
 		event AcceptI(~cid,method_zero,pkI,pkR,PRK_3e2m,PRK_4e3m,PRK_out,~X,G_Y);
 		event SecretsI(~cid,method_zero,pkI,pkR,PRK_2e,PRK_3e2m,PRK_4e3m,PRK_out,KEYSTREAM_2,K_3,IV_3,~X,G_Y);		
-		event AcceptIData(PRK_out,method_zero,pkI,pkR,~X,G_Y,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, ~EAD_3, m1, m2, m3>);
+		event AcceptIData(PRK_out,method_zero,pkI,pkR,~X,G_Y,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, ~EAD_3, m1, plaintext_2, plaintext_3>);
 		out(m3);
 		  (
                 ContactJudgeFromI(ID_CRED_R,TH_2,pkR,EAD_2,MAC_2, SIGNATURE_or_MAC_2)
@@ -357,7 +357,7 @@ let R(~cid, ~skR,~R) =
     let ID_CRED_R = id(CRED_R,G_R) in
     let TH_1 = hash(wrap(method) || wrap(suitesI) || wrap(G_X) || wrap(C_I) || EAD_1) in
     let TH_2 = hash( wrap(G_Y) || C_R || wrap(TH_1)) in    
-    let PRK_2e = hkdfextract('null', G_XY) in
+    let PRK_2e = hkdfextract(TH_2, G_XY) in
 
     if (check_grp(G_X) = grpid) then // we test against the value testgrpid, which is either a useless constant or the neutral element of the group.
        0
@@ -388,13 +388,13 @@ let SIGNATURE_or_MAC_2 = sign(<'Signature1',ID_CRED_R,TH_2,pkR,EAD_2,MAC_2>, 're
             event SendRData(method_zero, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, m2>);							    
 	    out(m2);	    
 	    in(CIPHERTEXT_3);
-	    let TH_3 = hash(wrap(TH_2) || plaintext_2) in
+	    let TH_3 = hash(wrap(TH_2) || plaintext_2 || pkR) in
             let K_3 = edhoc_kdf(PRK_3e2m,'three',TH_3, key_length) in
 	    let IV_3 = edhoc_kdf(PRK_3e2m,'four',TH_3, iv_length) in	    
 	    let plaintext_3 = aeaddec(CIPHERTEXT_3,K_3,IV_3) in
-	    let TH_4 = hash(wrap(TH_3) || plaintext_3) in	    
-	    let <ID_CRED_I,SIGNATURE_or_MAC_3,EAD_3> = plaintext_3 in
+	    let <ID_CRED_I,SIGNATURE_or_MAC_3,EAD_3> = plaintext_3 in	    
 	    let pkI = get_sig_cred(ID_CRED_I) in
+	    let TH_4 = hash(wrap(TH_3) || plaintext_3 || pkI) in	    	    
    	    
 	    let PRK_4e3m = PRK_3e2m in 
 	    
@@ -413,7 +413,7 @@ event Verified (SIGNATURE_or_MAC_3,e1(SIGNATURE_or_MAC_3),e3(SIGNATURE_or_MAC_3)
   		    let PRK_out = edhoc_kdf(PRK_4e3m, 'seven', TH_4, hash_length) in
                     event AcceptR(~cid,method_zero,pkI,pkR,PRK_4e3m,PRK_out,~Y,G_X);
 		    event SecretsR(~cid,method_zero,pkI,pkR,PRK_2e,PRK_3e2m,PRK_4e3m,PRK_out,KEYSTREAM_2,K_3,IV_3,~Y,G_X);						    
-		    event AcceptRData(PRK_out,method_zero,pkI,pkR,~Y,G_X,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, m2, CIPHERTEXT_3>);
+		    event AcceptRData(PRK_out,method_zero,pkI,pkR,~Y,G_X,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, plaintext_2, plaintext_3>);
 		    (
 		    ContactJudgeFromR(ID_CRED_I,TH_3,pkI,EAD_3,MAC_3,SIGNATURE_or_MAC_3,)
 		    |
@@ -464,6 +464,12 @@ process:
 // *************************************************************
 
 #ifdef diffEquiv
+
+/* 
+
+# draft 17, p. 42 EDHOC provides identity  protection of the Initiator against active attacks
+*/
+
 
 diffEquivLemma: // Anonymity as a diff equivalence
 !(  new ~sk1; new ~ltdh1; new ~computerId1;

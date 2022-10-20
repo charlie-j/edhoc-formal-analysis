@@ -224,6 +224,7 @@ lemma honestauthIR_unique:
 
 
 /*
+
 Transcript authentication [SMP21, p.8 ]
 *Transcript hashes (hashes of message data) TH_2, TH_3, TH_4 used for key derivation and as additional authenticated data.
 
@@ -243,21 +244,20 @@ Changes in message_1 and
 
 
 lemma data_authentication_I_to_R: 
-    "All method pkI pkR TH_2 TH_3 TH_4 suitesI EAD_1 EAD_2 EAD_3 m1 m2 m3 #i #j x gy PRK_out.
-     AcceptIData(PRK_out,method,pkI,pkR,x,gy,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, m2, m3>)@i
+    "All method pkI pkR TH_2 TH_3 TH_4 suitesI EAD_1 EAD_2 EAD_3 m1 p2 p3 #i #j x gy PRK_out.
+     AcceptIData(PRK_out,method,pkI,pkR,x,gy,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, p2, p3>)@i
      & Honest(pkR)@j ==>    
-      (Ex #l m11 m22. l<i & SendRData(method,pkR,<TH_2,suitesI, EAD_1, EAD_2, m11, m22>)@l)
+      (Ex #l m1 m2. l<i & SendRData(method,pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, p2>)@l)
     | (Ex #l. l<i & Compromise(pkR)@l)
     |  (Ex #l.  LeakShare(x)@l & (method=method_two | method=method_three))      
        "
 
 
 lemma data_authentication_R_to_I: 
-    "All method y gx pkI pkR TH_2 TH_3 TH_4 suitesI EAD_1 EAD_2 EAD_3 m1 m2 m3 #i #j PRK_out.
-     AcceptRData(PRK_out,method,pkI,pkR,y,gx,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, m2, m3>)@i
-     & Honest(pkI)@j ==>
-    
-      (Ex #l gy x m11 m22 m33. l<i & AcceptIData(PRK_out,method,pkI,pkR,x,gy,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m11, m22, m33>)@l)
+    "All method y gx pkI pkR TH_2 TH_3 TH_4 suitesI EAD_1 EAD_2 EAD_3 m1 p2 p3 #i #j PRK_out.
+     AcceptRData(PRK_out,method,pkI,pkR,y,gx,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, p2, p3>)@i
+     & Honest(pkI)@j ==>    
+      (Ex #l gy x. l<i & AcceptIData(PRK_out,method,pkI,pkR,x,gy,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, p2, p3>)@l)
     | (Ex #l. l<i & Compromise(pkI)@l)
     | (Ex #l.  LeakShare(y)@l & (method=method_two | method=method_three))
        "

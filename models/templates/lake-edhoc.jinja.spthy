@@ -331,7 +331,7 @@ let I(~cid, ~skI, ~I, ID_CRED_R) =
     {% else %}   
     {{ DDHExp('G_YX','G_Y','~X') }}
     {% endif %}
-    let PRK_2e = hkdfextract('null', G_YX) in
+    let PRK_2e = hkdfextract(TH_2, G_YX) in
     let KEYSTREAM_2 = edhoc_kdf(PRK_2e,'tzero',TH_2,plaintext_length) in 
     let plaintext_2 = {{ decXOR() }}(CIPHERTEXT_2,KEYSTREAM_2) in
     let < =ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> = plaintext_2 in
@@ -359,7 +359,7 @@ let I(~cid, ~skI, ~I, ID_CRED_R) =
 	    if (SIGNATURE_or_MAC_2 = MAC_2) then 
 	    {% endif %}	    
 		(
-		{{ HASH('TH_3', 'wrap(TH_2) || plaintext_2') }}
+		{{ HASH('TH_3', 'wrap(TH_2) || plaintext_2 || pkR') }}
     	        event THIShared(pkI, TH_3); 		
 		{% if method==0 or method==1 %}
 		let PRK_4e3m = PRK_3e2m in 
@@ -379,11 +379,11 @@ let I(~cid, ~skI, ~I, ID_CRED_R) =
 		let IV_3 = edhoc_kdf(PRK_3e2m,'four',TH_3, iv_length) in
 		let plaintext_3 = <ID_CRED_I, SIGNATURE_or_MAC_3,~EAD_3> in
 		let m3 = aeadenc(plaintext_3,'rep',K_3,IV_3) in
-		{{ HASH('TH_4', 'wrap(TH_3) ||  plaintext_3') }}
+		{{ HASH('TH_4', 'wrap(TH_3) ||  plaintext_3 || pkI') }}
 		let PRK_out = edhoc_kdf(PRK_4e3m, 'seven', TH_4, hash_length) in
 		event AcceptI(~cid,{{ ppMethod(method) }},pkI,pkR,PRK_3e2m,PRK_4e3m,PRK_out,~X,G_Y);
 		event SecretsI(~cid,{{ ppMethod(method) }},pkI,pkR,PRK_2e,PRK_3e2m,PRK_4e3m,PRK_out,KEYSTREAM_2,K_3,IV_3,~X,G_Y);		
-		event AcceptIData(PRK_out,{{ ppMethod(method) }},pkI,pkR,~X,G_Y,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, ~EAD_3, m1, m2, m3>);
+		event AcceptIData(PRK_out,{{ ppMethod(method) }},pkI,pkR,~X,G_Y,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, ~EAD_3, m1, plaintext_2, plaintext_3>);
 		out(m3);
 		  (
                 ContactJudgeFromI(ID_CRED_R,TH_2,pkR,EAD_2,MAC_2, SIGNATURE_or_MAC_2)
@@ -461,7 +461,7 @@ let R(~cid, ~skR,~R) =
     let ID_CRED_R = id(CRED_R,G_R) in
     {{ HASH('TH_1', 'wrap(method) || wrap(suitesI) || wrap(G_X) || wrap(C_I) || EAD_1') }}
     {{ HASH('TH_2', ' wrap(G_Y) || C_R || wrap(TH_1)') }}    
-    let PRK_2e = hkdfextract('null', G_XY) in
+    let PRK_2e = hkdfextract(TH_2, G_XY) in
 
     if (check_grp(G_X) = grpid) then // we test against the value testgrpid, which is either a useless constant or the neutral element of the group.
        0
@@ -492,13 +492,13 @@ let R(~cid, ~skR,~R) =
             event SendRData({{ ppMethod(method) }}, pkR,<TH_2,suitesI, EAD_1, EAD_2, m1, m2>);							    
 	    out(m2);	    
 	    in(CIPHERTEXT_3);
-	    {{ HASH('TH_3', 'wrap(TH_2) || plaintext_2') }}
+	    {{ HASH('TH_3', 'wrap(TH_2) || plaintext_2 || pkR') }}
             let K_3 = edhoc_kdf(PRK_3e2m,'three',TH_3, key_length) in
 	    let IV_3 = edhoc_kdf(PRK_3e2m,'four',TH_3, iv_length) in	    
 	    let plaintext_3 = aeaddec(CIPHERTEXT_3,K_3,IV_3) in
-	    {{ HASH('TH_4', 'wrap(TH_3) || plaintext_3') }}	    
-	    let <ID_CRED_I,SIGNATURE_or_MAC_3,EAD_3> = plaintext_3 in
+	    let <ID_CRED_I,SIGNATURE_or_MAC_3,EAD_3> = plaintext_3 in	    
 	    let pkI = {{ getCredInit(method) }}(ID_CRED_I) in
+	    {{ HASH('TH_4', 'wrap(TH_3) || plaintext_3 || pkI') }}	    	    
    	    {% if method==0 or method==1 %}
 	    let PRK_4e3m = PRK_3e2m in 
 	    {% else %}
@@ -519,7 +519,7 @@ let R(~cid, ~skR,~R) =
   		    let PRK_out = edhoc_kdf(PRK_4e3m, 'seven', TH_4, hash_length) in
                     event AcceptR(~cid,{{ ppMethod(method) }},pkI,pkR,PRK_4e3m,PRK_out,~Y,G_X);
 		    event SecretsR(~cid,{{ ppMethod(method) }},pkI,pkR,PRK_2e,PRK_3e2m,PRK_4e3m,PRK_out,KEYSTREAM_2,K_3,IV_3,~Y,G_X);						    
-		    event AcceptRData(PRK_out,{{ ppMethod(method) }},pkI,pkR,~Y,G_X,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, m2, CIPHERTEXT_3>);
+		    event AcceptRData(PRK_out,{{ ppMethod(method) }},pkI,pkR,~Y,G_X,<TH_2,TH_3,TH_4,suitesI, EAD_1, EAD_2, EAD_3, m1, plaintext_2, plaintext_3>);
 		    (
 		    ContactJudgeFromR(ID_CRED_I,TH_3,pkI,EAD_3,MAC_3,SIGNATURE_or_MAC_3,)
 		    |
