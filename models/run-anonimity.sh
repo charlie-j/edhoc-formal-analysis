@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 time (tamarin-prover -m=deepsec -D=EquivLemmas lake-edhoc-KEM.spthy -D=CredCheck > lake-edhoc-KEM.spthy.CC.dps; deepsec lake-edhoc-KEM.spthy.CC.dps) | grep Result > res-anom.csv;
 # 2 secs, attack
 

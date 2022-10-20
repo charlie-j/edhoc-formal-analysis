@@ -591,6 +591,12 @@ process:
 
 #ifdef diffEquiv
 
+/* 
+
+# draft 17, p. 42 EDHOC provides identity  protection of the Initiator against active attacks
+*/
+
+
 diffEquivLemma: // Anonymity as a diff equivalence
 !(  new ~sk1; new ~ltdh1; new ~computerId1;
     let idd1 = id(pk(~sk1), {{ DDHElem('~ltdh1') }}) in 

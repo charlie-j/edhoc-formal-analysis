@@ -7,6 +7,9 @@ We summarize here all the security claims and important modeling informations fr
 [p7] 
    EDHOC is designed to encrypt and integrity protect as much
    information as possible.   
+   
+[p7] `Transcript hashes (hashes of message data) TH_2, TH_3, TH_4 used
+      for key derivation and as additional authenticated data.`
 
 
 [p8] All EDHOC messages
@@ -48,16 +51,16 @@ We summarize here all the security claims and important modeling informations fr
 [p42]  EDHOC inherits its security properties from the theoretical SIGMA-I
    protocol [SIGMA].  Using the terminology from [SIGMA], EDHOC provides
    forward secrecy, mutual authentication with aliveness, consistency,
-   and peer awareness.  As described in [SIGMA], message_3 provides peer
-   awareness to the Responder while message_4 provides peer awareness to
+   and peer awareness.  `As described in [SIGMA], message_3 provides peer
+   awareness to the Responder` while message_4 provides peer awareness to
    the Initiator.  By including the authentication credentials in the
    transcript hash, EDHOC protects against Duplicate Signature Key
    Selection (DSKS)-like identity mis-binding attack that the MAC-then-
    Sign variant of SIGMA-I is otherwise vulnerable to.
 
    As described in [SIGMA], different levels of identity protection are
-   provided to the Initiator and the Responder.  EDHOC provides identity
-   protection of the Initiator against active attacks and identity
+   provided to the Initiator and the Responder.  `EDHOC provides identity
+   protection of the Initiator against active attacks` and identity
    protection of the Responder against passive attacks.  An active
    attacker can get the credential identifier of the Responder by
    eavesdropping on the destination address used for transporting
@@ -67,16 +70,16 @@ We summarize here all the security claims and important modeling informations fr
    information in the lower layers.
 
    EDHOC messages might change in transit due to a noisy channel or
-   through modification by an attacker.  Changes in message_1 and
+   through modification by an attacker.  `Changes in message_1 and
    message_2 (except PAD_2) are detected when verifying
    Signature_or_MAC_2.  Changes to PAD_2 and message_3 are detected when
-   verifying CIPHERTEXT_3.  Changes to message_4 are detected when
+   verifying CIPHERTEXT_3. ` Changes to message_4 are detected when
    verifying CIPHERTEXT_4.
 
-[p43] Compared to [SIGMA], EDHOC adds an explicit method type and expands
+[p43] `Compared to [SIGMA], EDHOC adds an explicit method type and expands
    the message authentication coverage to additional elements such as
    algorithms, external authorization data, and previous plaintext
-   messages.  This protects against an attacker replaying messages or
+   messages.`  This protects against an attacker replaying messages or
    injecting messages from another session.
 
    EDHOC also adds selection of connection identifiers and downgrade
@@ -90,11 +93,11 @@ We summarize here all the security claims and important modeling informations fr
    As required by [RFC7258], IETF protocols need to mitigate pervasive
    monitoring when possible.  EDHOC therefore only supports methods with
    ephemeral Diffie-Hellman and provides a key update function (see
-   Appendix J) for lightweight application protocol rekeying.  Either of
+   Appendix J) for lightweight application protocol rekeying.  `Either of
    these provide forward secrecy, in the sense that compromise of the
    private authentication keys does not compromise past session keys,
    and compromise of a session key does not compromise past session
-   keys.  Frequently re-running EDHOC with ephemeral Diffie-Hellman
+   keys.`  Frequently re-running EDHOC with ephemeral Diffie-Hellman
    forces attackers to perform dynamic key exfiltration where the
    attacker must have continuous interactions with the collaborator,
    which is a significant complication.
@@ -107,17 +110,17 @@ We summarize here all the security claims and important modeling informations fr
    but SHOULD be used instead of symmetrical group keys for
    bootstrapping.
 
-   Compromise of the long-term keys (private signature or static DH
-   keys) does not compromise the security of completed EDHOC exchanges.
+   `Compromise of the long-term keys (private signature or static DH
+   keys) does not compromise the security of completed EDHOC exchanges.`
    Compromising the private authentication keys of one party lets an
    active attacker impersonate that compromised party in EDHOC exchanges
    with other parties but does not let the attacker impersonate other
-   parties in EDHOC exchanges with the compromised party.  Compromise of
+   parties in EDHOC exchanges with the compromised party.  `Compromise of
    the long-term keys does not enable a passive attacker to compromise
-   future session keys.  Compromise of the HDKF input parameters (ECDH
+   future session keys.`  Compromise of the HDKF input parameters (ECDH
    shared secret) leads to compromise of all session keys derived from
-   that compromised shared secret.  Compromise of one session key does
-   not compromise other session keys.  Compromise of PRK_out leads to
+   that compromised shared secret.  `Compromise of one session key does
+   not compromise other session keys.`  Compromise of PRK_out leads to
    compromise of all keying material derived with the EDHOC-Exporter.
 
 
@@ -147,13 +150,13 @@ We summarize here all the security claims and important modeling informations fr
    online attacks can be achieved after completion of the first OSCORE
    request and response.
 
-   After sending message_3, the Initiator is assured that no other party
-   than the Responder can compute the key PRK_out.  While the Initiator
+   `After sending message_3, the Initiator is assured that no other party
+   than the Responder can compute the key PRK_out.`  While the Initiator
    can securely send protected application data, the Initiator SHOULD
    NOT persistently store the keying material PRK_out until the
    Initiator has verified an OSCORE message or message_4 from the
-   Responder.  After verifying message_3, the Responder is assured that
-   an honest Initiator has computed the key PRK_out.  The Responder can
+   Responder. `After verifying message_3, the Responder is assured that
+   an honest Initiator has computed the key PRK_out.`  The Responder can
    securely derive and store the keying material PRK_out, and send
    protected application data.
 
@@ -175,7 +178,7 @@ We summarize here all the security claims and important modeling informations fr
    information passed to and from the application remains.  Any new uses
    of EAD should be subject to careful review.
 
-   Key compromise impersonation (KCI): In EDHOC authenticated with
+   Key compromise impersonation (KCI): `In EDHOC authenticated with
    signature keys, EDHOC provides KCI protection against an attacker
    having access to the long-term key or the ephemeral secret key.  With
    static Diffie-Hellman key authentication, KCI protection would be
@@ -183,13 +186,13 @@ We summarize here all the security claims and important modeling informations fr
    Hellman key, but not to an attacker having access to the ephemeral
    secret key.  Note that the term KCI has typically been used for
    compromise of long-term keys, and that an attacker with access to the
-   ephemeral secret key can only attack that specific session.
+   ephemeral secret key can only attack that specific session.`
 
-   Repudiation: If an endpoint authenticates with a signature, the other
+   Repudiation: `If an endpoint authenticates with a signature, the other
    endpoint can prove that the endpoint performed a run of the protocol
    by presenting the data being signed as well as the signature itself.
    With static Diffie-Hellman key authentication, the authenticating
-   endpoint can deny having participated in the protocol.
+   endpoint can deny having participated in the protocol.`
 
    Two earlier versions of EDHOC have been formally analyzed [Norrman20]
    [Bruni18] and the specification has been updated based on the
@@ -302,3 +305,49 @@ We summarize here all the security claims and important modeling informations fr
    Responder SHALL have access to the Responder's private authentication
    key and only the Initiator SHALL have access to the Initiator's
    private authentication key.
+
+
+[p78] 
+   EDHOC might be used without authentication by allowing the Initiator
+   or Responder to communicate with any identity except its own.  Note
+   that EDHOC without mutual authentication is vulnerable to man-in-the-
+   middle attacks and therefore unsafe for general use.  However, it is
+   possible to later establish a trust relationship with an unknown or
+   not-yet-trusted endpoint.  Some examples:
+
+   *  The EDHOC authentication credential can be verified out-of-band at
+      a later stage.
+
+   * ` The EDHOC session key can be bound to an identity out-of-band at a
+      later state.`
+
+   * ` Trust on first use (TOFU) can be used to verify that several EDHOC
+      connections are made to the same identity.`  TOFU combined with
+      proximity is a common IoT deployment model which provides good
+      security if done correctly.  Note that secure proximity based on
+      short range wireless technology requires very low signal strength
+      or very low latency.
+
+
+[p81] An EDHOC implementation MAY store the previously sent EDHOC message
+   to be able to resend it.
+
+   In principle, if the EDHOC implementation would deterministically
+   regenerate the identical EDHOC message previously sent, it would be
+   possible to instead store the protocol state to be able to recreate
+   and resend the previously sent EDHOC message.  However, even if the
+   protocol state is fixed, the message generation may introduce
+   differences which compromises security.  For example, in the
+   generation of message_3, if I is performing a (non-deterministic)
+   ECDSA signature (say, method 0 or 1, cipher suite 2 or 3) then
+   PLAINTEXT_3 is randomized, but K_3 and IV_3 are the same, leading to
+   a key and nonce reuse.
+
+  The EDHOC implementation MUST NOT store previous protocol state and
+   regenerate an EDHOC message if there is a risk that the same key and
+   IV are used for two (or more) distinct messages.
+
+
+[p83] To provide forward secrecy in an even more efficient way than re-
+   running EDHOC, this section specifies the optional function EDHOC-
+   KeyUpdate in terms of EDHOC-KDF and PRK_out.
