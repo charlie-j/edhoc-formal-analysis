@@ -69,7 +69,7 @@ def powerset(s):
 Protocols = ["models/lake-edhoc", "models/lake-edhoc-KEM"]
 
 # Our list of target lemmas
-Lemmas = [ "authIR_unique", "authRI_unique", "data_authentication_I_to_R", "data_authentication_R_to_I", "honestauthRI_non_inj", , "honestauthRI_unique", "secretI", "secretR", "honestauthIR_non_inj", "honestauthIR_unique" ]
+Lemmas = [ "authIR_unique", "authRI_unique", "data_authentication_I_to_R", "data_authentication_R_to_I", "honestauthRI_non_inj", "honestauthRI_unique", "secretI", "secretR", "honestauthIR_non_inj", "honestauthIR_unique" ]
 
 # The list of Attacker Capabilities or Features we are going to look at.
 AtomThreatModel= ["PreciseSignature", "PreciseSignatureProof", "LeakSessionKey", "WeakAEAD", "XorPrecise", "LeakShare", "PreciseDH"]
