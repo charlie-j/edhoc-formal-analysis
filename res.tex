@@ -1,0 +1,118 @@
+\documentclass[letterpaper, 10pt, table]{standalone}
+
+\usepackage[svgnames,dvipsnames]{xcolor}
+\usepackage{pifont}
+\usepackage{fontawesome5}
+\usepackage{multicol}
+\usepackage{nicematrix}
+\usepackage{marvosym}
+
+\definecolor{darkgreen}{rgb}{0.0, 0.2, 0.13}
+\definecolor{darkred}{rgb}{0.55, 0.0, 0.0}
+\definecolor{cadmiumgreen}{rgb}{0.0, 0.42, 0.24}
+\definecolor{darkblue}{rgb}{0.0, 0.0, 0.55}
+
+
+\newcommand{\attack}{\textcolor{FireBrick}{\ding{55}}}
+\newcommand{\ok}{\textcolor{Green}{\ding{51}}}
+
+
+
+\newcommand{\attp}[1]{\attack$^P$~(#1)}
+\newcommand{\attpnt}{\attack}
+\newcommand{\attt}[1]{\attack$^T$~(#1)}
+\newcommand{\attd}[1]{\attack$^D$~(#1)}
+\newcommand{\attdnt}{\attack$^D$}
+
+\newcommand{\implied}{$\Rightarrow$}
+
+\newcommand{\okp}[1]{\ok$^P$~(#1)}
+\newcommand{\okpnt}{\ok$^P$}
+\newcommand{\okt}[1]{\ok$^T$~(#1)}
+\newcommand{\oktnt}{\ok$^T$}
+\newcommand{\okd}[1]{\ok$^D$~(#1)}
+\newcommand{\okdnt}{\ok$^D$}
+
+\newcommand{\timeoutp}{\faClock[regular]$^P$}
+\newcommand{\timeoutt}{\faClock[regular]$^T$}
+\newcommand{\invalid}{$\emptyset$}
+
+
+\newcommand{\authIRunique}{auth-IR-unique}
+\newcommand{\authRIunique}{auth-RI-unique}
+\newcommand{\dataAuthIR}{data-authentication-IR}
+\newcommand{\dataAuthRI}{data-authentication-RI}
+\newcommand{\honnestAuthRInonInj}{honest-auth-RI-non-inj}
+\newcommand{\honnestAuthIRnonInj}{honest-auth-IR-non-inj}
+\newcommand{\honnestAuthRIunique}{honest-auth-RI-unique}
+\newcommand{\honnestAuthIRunique}{honest-auth-IR-unique}
+\newcommand{\noReflexionAttackRI}{no-reflection-attacks-RI}
+\newcommand{\secretI}{secretI}
+\newcommand{\secretR}{secretR}
+\newcommand{\repudiationSoundness}{repudiation-soundness}
+
+\newcommand{\weak}[1]{#1\ensuremath{^{\text{\Lightning}}}}
+
+\newcommand{\PreciseSignature}{{\sf \weak{Sig}}}
+\newcommand{\WeakAEAD}{{\sf \weak{AEAD}}}
+\newcommand{\WeakHash}{{\sf \weak{Hash}}}
+\newcommand{\XorPrecise}{{\sf \weak{$\oplus$}}}
+
+
+
+\newcommand{\PreciseSignatureProof}{{\sf \weak{Sig}-proof}}
+\newcommand{\PreciseDH}{{\sf \weak{DH}}}
+
+\newcommand{\LeakSessionKey}{{\sf \weak{SessKey}}}
+\newcommand{\LeakShare}{{\sf \weak{DHShare}}}
+
+
+\newcommand{\NeutralCheck}{{\sf DH-Check}}
+\newcommand{\CredCheck}{\sf Cred-Check}
+
+
+
+\begin{document}
+
+\begin{tabular}{c}
+
+ \begin{NiceTabular} {c c c c }
+   \CodeBefore
+    \rowlistcolors{2}{Gray!15,White}[restart,cols={1-4}]
+    \Body
+    \bf Lemma & Scenario   & \bf models/lake-edhoc  & \bf models/lake-edhoc-KEM   \\ \hline
+
+  
+
+
+\authIRunique & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{41} \okt{1272}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{615} \timeoutt & \invalid   \\   \hline 
+\authRIunique & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{32} \okt{1630}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{585} \timeoutt & \invalid   \\   \hline 
+\dataAuthIR & \XorPrecise & \attp{23}  & \attp{2}   \\  & \PreciseSignatureProof, \LeakShare & \timeoutp  & \attp{4}   \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD & \okp{\implied} \timeoutt & \okp{3} \timeoutt  \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \LeakShare & \timeoutp  & \okp{3} \okt{1347}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \PreciseDH & \okp{46} \timeoutt & \invalid   \\   \hline 
+\dataAuthRI & \XorPrecise, \LeakShare & \timeoutp  & \attp{21}   \\  & \PreciseSignatureProof, \LeakShare & \timeoutp  & \attp{23}   \\  & \PreciseSignature, \LeakSessionKey, \WeakAEAD, \LeakShare & \timeoutp  & \okp{6} \okt{1647}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise & \okp{\implied} \timeoutt & \okp{25} \timeoutt  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{933} \timeoutt & \invalid   \\   \hline 
+\honnestAuthRInonInj & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{57} \timeoutt  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{742} \timeoutt & \invalid   \\   \hline 
+\honnestAuthRIunique & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{50} \okt{1319}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{598} \timeoutt & \invalid   \\   \hline 
+\secretI & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{143} \timeoutt  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{1891} \timeoutt & \invalid   \\   \hline 
+\secretR & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{232} \timeoutt  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{1181} \timeoutt & \invalid   \\   \hline 
+\honnestAuthIRnonInj & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{30} \timeoutt  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{504} \timeoutt & \invalid   \\   \hline 
+\honnestAuthIRunique & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \LeakShare & \timeoutp  & \okp{40} \okt{1468}  \\  & \PreciseSignatureProof, \LeakSessionKey, \WeakAEAD, \XorPrecise, \PreciseDH & \okp{619} \timeoutt & \invalid   \\   \hline \end{NiceTabular} 
+\\ 
+\\
+\textbf{Automated aggregation of results}
+\\
+\\
+For each lemma and each scenario, we display the result of the automated analysis based on Proverif and Tamarin. \\
+ We display all scenarios for which at least one of the protocol has a non trivial and non timeout result.
+\\
+\\
+\begin{tabular}{rl}
+\attt{x},\attp{x}:& attack found with Tamarin (T) or Proverif (P) in x seconds \\
+\okt{x},\okp{x}:& proof found with Tamarin (T) or Proverif (P) in x seconds \\
+ (\implied):& means the result is implied by another displayed result \\
+\timeoutt,\timeoutp: & timeout for Tamarin (T) or Proverif (P) \\
+\invalid: & the scenario is irrelevant for this protocol (e.g., DH weakness in KEM setting)
+
+\end{tabular}
+
+\end{tabular}
+
+ \end{document} 
