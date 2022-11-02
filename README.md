@@ -8,7 +8,7 @@ In this reposity, you will find
  * the `Archives` subfolder containing the previous models for draft 12 and draft 14 corresponding to the results reported in the paper `A comprehensive, formal and automated analysis of the EDHOC protocol`- Charlie Jacomme, Elise Klein, Steve Kremer, Maïwenn Racouchot, to appear at USENIX'23.
  * the `models` subfolder contains the actual model, see details bellow.
  * the `SecurityClaims.md` file, which contains the extracted security related mentions inside the draft. In this file, the text between `quotes` is the one explicitely reused inside the specification of the security properties in `models/LakeProperties.splib`.
- * the `auto_checker.py` script along with additional scripts in `utilities`, that allow to run the full analaysis (see prerequisite).
+ * the `auto_checker.py` script along with additional scripts in `utilities`, that allow to run the full analaysis (see prerequisite). `res.pdf` is the automated results produced by the script, after following the steps described in `run.sh`.
  
 
 # Prerequisite
