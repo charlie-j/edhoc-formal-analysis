@@ -30,7 +30,9 @@ RUN mkdir -p /opt/lake-edhoc
 WORKDIR /opt/lake-edhoc
 
 EXPOSE 3001
-COPY SubmissionFolder .
+COPY lake-draft12 .
+COPY lake-draft14 .
+COPY README.md .
 RUN rm -f README
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 ## docker run -it protocolanalysis/lake-edhoc:draft-14 bash
