@@ -2,7 +2,7 @@
 # Description
 
 This repository contains the models for the formal analysis of the Lake EDHOC protocol.
-The version under verification is draft 17 (https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc/17/).
+The version under verification is draft 18 (https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc/18/).
 
 In this reposity, you will find
  * the `Archives` subfolder containing the previous models for draft 12 and draft 14 corresponding to the results reported in the paper `A comprehensive, formal and automated analysis of the EDHOC protocol`- Charlie Jacomme, Elise Klein, Steve Kremer, Maïwenn Racouchot, to appear at USENIX'23.

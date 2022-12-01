@@ -1,4 +1,4 @@
-We summarize here all the security claims and important modeling informations from the draft 17 of the lake edhoc protocol https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-17.
+We summarize here all the security claims and important modeling informations from the draft 18 of the lake edhoc protocol https://datatracker.ietf.org/doc/html/draft-ietf-lake-edhoc-18.
 
 [p6]  EDHOC authenticated with signature keys is
    built on a variant of the SIGMA protocol which provides identity
