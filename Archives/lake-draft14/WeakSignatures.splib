@@ -1,0 +1,65 @@
+/* 
+ * This equational theory can be used as a drop in for Tamarin's existing signature model,
+ * however, be sure to add the representation term to each signature creation, typically 
+ * a constant such as '0'. 
+*/
+
+functions: mangle/2, CEOgen/1, weak/1,
+		   verify/3, sign/3, pk/1, sigtrue/0, revealsign/1
+
+functions: DEOgen/2 [private]
+
+equations: verify(sign(m,r, sk), m, pk(sk)) = sigtrue // correctness
+
+#ifdef weakPK
+equations: verify(sign(m1,r,weak(x)),m2,pk(weak(x))) = sigtrue // res-signing
+#endif
+
+#ifdef CEO
+equations: verify(sign(m,r, sk), m, pk(CEOgen(sign(m,r, sk)))) = sigtrue // CEO weakness
+#endif
+
+#ifdef malleability
+equations: mangle(sign(m,r,sk),repnew)= sign(m,repnew,sk)  // malleability
+#endif
+
+#ifdef reveal
+equations: revealsign(sign(m,r, sk)) = m // the content is not hidden
+#endif
+// DEO weakness
+/*
+original rule, that we translate in sapic for proverif export
+rule make_DEO_sk:
+	[In(<m2,sign(m1,r,sk)>)]
+	--[Neq(m1,m2)]->
+	[Out(DEOgen(m2,sign(m1,r,sk)))]
+*/
+
+
+#ifdef DEO
+
+
+equations: verify(sign(m1,r, sk), m2, pk(DEOgen(m2,sign(m1,r, sk)))) = sigtrue // DEO weakness
+
+functions: ispkDEO/1
+equations: ispkDEO(pk(DEOgen(x,y))) = sigtrue
+
+let MakeDEO =
+    in(<m2,sig,m1,pkey>);
+    if verify(sig,m1,pkey) = sigtrue then
+       if not(m1=m2) then
+          if not(ispkDEO(pkey) = sigtrue) then
+	     	  out(DEOgen(m2,sig))
+#else
+let MakeDEO = 0	  
+#endif
+// Resigning
+/*
+
+We drop the resigning capability, as we simply made the signature scheme to not be hiding
+
+rule ReSign:
+	[ In(<sign(m,r,sk1), sk2 >) ]
+	-->
+	[ Out( sign(m,r,sk2 )) ]
+*/

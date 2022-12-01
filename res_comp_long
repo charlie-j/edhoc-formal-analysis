@@ -1,0 +1,1945 @@
+{
+    "models/lake-edhoc": {
+        "authIR_unique": {
+            "LeakShare": "./utilities/proverif-tamarin models/lake-edhoc.spthy --lemma=authIR_unique -D=LeakSharetest",
+            "PreciseSignature*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare": "./utilities/proverif-tamarin models/lake-edhoc-Sig.spthy --lemma=authIR_unique -D=LeakSharetest",
+            "LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": "./utilities/proverif-tamarin models/lake-edhoc.spthy --lemma=authIR_unique -D=WeakAEAD -D=LeakSharetest",
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
+                "true",
+                615.3410050868988
+            ],
+            "LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        },
+        "authRI_unique": {
+            "LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare": "./utilities/proverif-tamarin models/lake-edhoc.spthy --lemma=authRI_unique -D=PreciseSignature -D=LeakSharetest",
+            "PreciseSignatureProof*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare": "./utilities/proverif-tamarin models/lake-edhoc.spthy --lemma=authRI_unique -D=LeakSessionKey -D=LeakSharetest",
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
+                "true",
+                585.1769649982452
+            ],
+            "LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        },
+        "data_authentication_I_to_R": {
+            "XorPrecise": [
+                "false",
+                23.609612703323364
+            ],
+            "LeakShare": "./utilities/proverif-tamarin models/lake-edhoc.spthy --lemma=data_authentication_I_to_R -D=LeakSharetest",
+            "PreciseSignature*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare": "./utilities/proverif-tamarin models/lake-edhoc.spthy --lemma=data_authentication_I_to_R -D=LeakSessionKey -D=LeakSharetest",
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*PreciseDH": [
+                "true",
+                46.59032917022705
+            ],
+            "LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        },
+        "data_authentication_R_to_I": {
+            "LeakShare": "./utilities/proverif-tamarin models/lake-edhoc.spthy --lemma=data_authentication_R_to_I -D=LeakSharetest",
+            "PreciseSignature*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
+                "true",
+                933.7302148342133
+            ],
+            "LeakShare*PreciseDH": "./utilities/proverif-tamarin models/lake-edhoc-DDH.spthy --lemma=data_authentication_R_to_I -D=LeakSharetest",
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        },
+        "honestauthRI_non_inj": {
+            "LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
+                "true",
+                742.5217549800873
+            ],
+            "LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        },
+        "honestauthRI_unique": {
+            "LeakShare": "./utilities/proverif-tamarin models/lake-edhoc.spthy --lemma=honestauthRI_unique -D=LeakSharetest",
+            "PreciseSignature*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
+                "true",
+                598.7532908916473
+            ],
+            "LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        },
+        "secretI": {
+            "LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
+                "true",
+                1891.6667914390564
+            ],
+            "LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        },
+        "secretR": {
+            "LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
+                "true",
+                1181.7881677150726
+            ],
+            "LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        },
+        "honestauthIR_non_inj": {
+            "LeakShare": "./utilities/proverif-tamarin models/lake-edhoc.spthy --lemma=honestauthIR_non_inj -D=LeakSharetest",
+            "PreciseSignature*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
+                "true",
+                504.4049062728882
+            ],
+            "LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        },
+        "honestauthIR_unique": {
+            "LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
+                "true",
+                619.1690039634705
+            ],
+            "LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+                "timeout",
+                3600
+            ]
+        }
+    },
+    "models/lake-edhoc-KEM": {
+        "authIR_unique": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                41.4824960231781
+            ]
+        },
+        "authRI_unique": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                32.24981355667114
+            ]
+        },
+        "data_authentication_I_to_R": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
+                "true",
+                3.6215968132019043
+            ],
+            "XorPrecise": [
+                "false",
+                2.353116750717163
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "false",
+                4.72387170791626
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "true",
+                3.9036974906921387
+            ]
+        },
+        "data_authentication_R_to_I": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
+                "true",
+                25.97297191619873
+            ],
+            "PreciseSignatureProof*LeakShare": [
+                "false",
+                23.384502172470093
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
+                "true",
+                6.594871997833252
+            ],
+            "XorPrecise*LeakShare": [
+                "false",
+                21.818920373916626
+            ]
+        },
+        "honestauthRI_non_inj": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                57.77021360397339
+            ]
+        },
+        "honestauthRI_unique": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                50.82484149932861
+            ]
+        },
+        "secretI": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                143.70006155967712
+            ]
+        },
+        "secretR": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                232.58732271194458
+            ]
+        },
+        "honestauthIR_non_inj": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                30.347665786743164
+            ]
+        },
+        "honestauthIR_unique": {
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                40.38064241409302
+            ]
+        }
+    }
+}
