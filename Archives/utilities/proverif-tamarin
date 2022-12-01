@@ -1,7 +1,0 @@
-#!/bin/bash
-
-set -x # print what we do
-filename="$@"
-f=${filename//[^[:alnum:]]/}
-temp=$(mktemp -d)/$(basename "$f")
-tamarin-prover "$@" -m=proverif +RTS -N1 -RTS > "$temp.pv"; proverif "$temp.pv"

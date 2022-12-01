@@ -1,12 +1,11 @@
-<!> if you tried to enter the Docker and see this message, run 
-```
-docker run -it protocolanalysis/lake-edhoc:draft-14 bash
-```
-to actually enter the image. <!>
+This repository contains a formal analysis of the LAKE EDHOC protocol drafts 12 and 14 (https://datatracker.ietf.org/doc/draft-ietf-lake-edhoc/14/).
 
-# Description
+The results are published in:
+A comprehensive, formal and automated analysis of the EDHOC protocol - Charlie Jacomme, Elise Klein,Steve Kremer, Maïwenn Racouchot. USENIX 23, https://hal.inria.fr/hal-03810102/.
 
-This repository contains the models for the formal analysis of the EDHOC protocol from the paper `A comprehensive, formal and automated analysis of the EDHOC protocol`- Charlie Jacomme, Elise Klein, Steve Kremer, Maïwenn Racouchot, to appear at USENIX'23.
+A summary of the results can be viewed in the `res_12_14.pdf` file of this repository. 
+
+NOTE: a global update of the models for draft17 as well as the verification scripts is in progress.
 
 # Prerequisite
 
@@ -16,7 +15,7 @@ We provide a Docker Image with all required tools preinstalled and the case stud
 
  $ docker pull protocolanalysis/lake-edhoc:draft-14
 
-Alternatively, one may install the Sapic+ version neeeded for our case studies from the dedicated git repository (https://github.com/charlie-j/tamarin-prover/tree/feature-proverif-output-with-assoc) and the DeepSec (https://deepsec-prover.github.io/) webpages. 
+Alternatively, one may install the Sapic+ version neeeded for our case studies through the provided archive (with corresponding README), and then follow the installations instructions from the Proverif (https://proverif.inria.fr/) and DeepSec (https://deepsec-prover.github.io/) webpages. 
 
 # High Level Description
 
