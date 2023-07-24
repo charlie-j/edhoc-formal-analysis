@@ -157,9 +157,9 @@ let I(~cid, ~skI, ~I, ID_CRED_R) =
     out(m1);
     
     in(m2);
-    let < G_Y, CIPHERTEXT_2, C_R > = m2 in
+    let < G_Y, CIPHERTEXT_2 > = m2 in
     let TH_1 = hash(wrap(method) || wrap(suitesI) || wrap(G_X) || wrap(C_I) || EAD_1) in
-    let TH_2 = hash( wrap(G_Y) || C_R || wrap(TH_1)) in
+    let TH_2 = hash( wrap(G_Y) || wrap(TH_1)) in
        
     
 
@@ -170,7 +170,7 @@ let G_YX = G_Y^~X in
     let PRK_2e = hkdfextract(TH_2, G_YX) in
     let KEYSTREAM_2 = edhoc_kdf(PRK_2e,'tzero',TH_2,plaintext_length) in 
     let plaintext_2 = decxor(CIPHERTEXT_2,KEYSTREAM_2) in
-    let < =ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> = plaintext_2 in
+    let < C_R, =ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> = plaintext_2 in
     if (check_grp(G_Y) = grpid) then // Not in the standard: we test against the value testgrpid, which is either a useless constant or the neutral element of the group.
        0
     else   
@@ -421,7 +421,7 @@ let G_XY = G_X^~Y in
     
     let ID_CRED_R = id(CRED_R,G_R) in
     let TH_1 = hash(wrap(method) || wrap(suitesI) || wrap(G_X) || wrap(C_I) || EAD_1) in
-    let TH_2 = hash( wrap(G_Y) || C_R || wrap(TH_1)) in    
+    let TH_2 = hash( wrap(G_Y) || wrap(TH_1)) in    
     let PRK_2e = hkdfextract(TH_2, G_XY) in
 
     if (check_grp(G_X) = grpid) then // we test against the value testgrpid, which is either a useless constant or the neutral element of the group.
@@ -443,7 +443,7 @@ let G_XY = G_X^~Y in
 let SIGNATURE_or_MAC_2 = sign(<'Signature1',ID_CRED_R,TH_2,pkR,EAD_2,MAC_2>, 'rep', ~skR) in
 
 	    	    
-	    let plaintext_2 = <ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> in
+	    let plaintext_2 = <C_R, ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> in
             let KEYSTREAM_2 = edhoc_kdf(PRK_2e,'tzero',TH_2,plaintext_length) in 	    
 	    event DerivedR(~cid,pkR,PRK_3e2m,~Y,G_X);
 	    event THRShared(pkR, TH_2); 	    
@@ -507,7 +507,7 @@ let G_XR = G_X^~R in
 	    	    
 	    let SIGNATURE_or_MAC_2 = MAC_2 in	    //1,3
 	    	    
-	    let plaintext_2 = <ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> in
+	    let plaintext_2 = <C_R, ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> in
             let KEYSTREAM_2 = edhoc_kdf(PRK_2e,'tzero',TH_2,plaintext_length) in 	    
 	    event DerivedR(~cid,pkR,PRK_3e2m,~Y,G_X);
 	    event THRShared(pkR, TH_2); 	    
@@ -567,7 +567,7 @@ if (verify(SIGNATURE_or_MAC_3,<'Signature2',ID_CRED_I,TH_3,pkI,EAD_3,MAC_3>, pkI
 let SIGNATURE_or_MAC_2 = sign(<'Signature1',ID_CRED_R,TH_2,pkR,EAD_2,MAC_2>, 'rep', ~skR) in
 
 	    	    
-	    let plaintext_2 = <ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> in
+	    let plaintext_2 = <C_R, ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> in
             let KEYSTREAM_2 = edhoc_kdf(PRK_2e,'tzero',TH_2,plaintext_length) in 	    
 	    event DerivedR(~cid,pkR,PRK_3e2m,~Y,G_X);
 	    event THRShared(pkR, TH_2); 	    
@@ -633,7 +633,7 @@ let G_XR = G_X^~R in
 	    	    
 	    let SIGNATURE_or_MAC_2 = MAC_2 in	    //1,3
 	    	    
-	    let plaintext_2 = <ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> in
+	    let plaintext_2 = <C_R, ID_CRED_R, SIGNATURE_or_MAC_2, EAD_2> in
             let KEYSTREAM_2 = edhoc_kdf(PRK_2e,'tzero',TH_2,plaintext_length) in 	    
 	    event DerivedR(~cid,pkR,PRK_3e2m,~Y,G_X);
 	    event THRShared(pkR, TH_2); 	    
