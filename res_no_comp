@@ -15,7 +15,11 @@
             ],
             "PreciseSignatureProof": [
                 "true",
-                24.8167986869812
+                "implied"
+            ],
+            "LeakSessionKey": [
+                "true",
+                "implied"
             ],
             "XorPrecise": [
                 "timeout",
@@ -25,37 +29,33 @@
                 "timeout",
                 30
             ],
-            "LeakSessionKey": [
-                "timeout",
-                30
-            ],
             "PreciseDH": [
                 "timeout",
                 30
             ],
             "PreciseSignature*WeakAEAD": [
                 "true",
-                21.09467315673828
+                "implied"
             ],
             "PreciseSignature*LeakSessionKey": [
-                "timeout",
-                30
-            ],
-            "PreciseSignatureProof*LeakSessionKey": [
-                "timeout",
-                30
+                "true",
+                "implied"
             ],
             "PreciseSignatureProof*WeakAEAD": [
-                "timeout",
-                30
+                "true",
+                29.161999225616455
             ],
-            "LeakSessionKey*WeakAEAD": [
+            "PreciseSignatureProof*LeakSessionKey": [
                 "timeout",
                 30
             ],
             "PreciseSignature*XorPrecise": [
                 "timeout",
                 30
+            ],
+            "LeakSessionKey*WeakAEAD": [
+                "true",
+                "implied"
             ],
             "PreciseSignatureProof*XorPrecise": [
                 "timeout",
@@ -114,8 +114,8 @@
                 30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD": [
-                "timeout",
-                30
+                "true",
+                27.857442140579224
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
                 "timeout",
@@ -125,11 +125,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
+            "PreciseSignature*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "timeout",
                 30
             ],
@@ -173,11 +173,11 @@
                 "timeout",
                 30
             ],
-            "WeakAEAD*XorPrecise*LeakShare": [
+            "PreciseSignature*LeakSessionKey*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*LeakSessionKey*PreciseDH": [
+            "WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -213,11 +213,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakShare*PreciseDH": [
+            "PreciseSignature*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*LeakShare*PreciseDH": [
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -317,11 +317,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
+            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*XorPrecise*LeakShare*PreciseDH": [
+            "PreciseSignatureProof*XorPrecise*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -395,23 +395,23 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof": [
-                "timeout",
-                30
-            ],
             "WeakAEAD": [
                 "true",
                 "implied"
+            ],
+            "XorPrecise": [
+                "timeout",
+                30
             ],
             "LeakShare": [
                 "timeout",
                 30
             ],
-            "LeakSessionKey": [
+            "PreciseSignatureProof": [
                 "timeout",
                 30
             ],
-            "XorPrecise": [
+            "LeakSessionKey": [
                 "timeout",
                 30
             ],
@@ -421,7 +421,7 @@
             ],
             "PreciseSignature*WeakAEAD": [
                 "true",
-                29.77570915222168
+                29.40277075767517
             ],
             "PreciseSignature*LeakSessionKey": [
                 "timeout",
@@ -671,15 +671,15 @@
                 "timeout",
                 30
             ],
+            "PreciseSignature*WeakAEAD*XorPrecise*PreciseDH": [
+                "timeout",
+                30
+            ],
             "PreciseSignatureProof*WeakAEAD*XorPrecise*PreciseDH": [
                 "timeout",
                 30
             ],
             "LeakSessionKey*WeakAEAD*XorPrecise*PreciseDH": [
-                "timeout",
-                30
-            ],
-            "PreciseSignature*WeakAEAD*XorPrecise*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -789,19 +789,19 @@
                 "true",
                 "implied"
             ],
-            "LeakShare": [
-                "timeout",
-                30
+            "LeakSessionKey": [
+                "true",
+                "implied"
             ],
             "XorPrecise": [
                 "timeout",
                 30
             ],
-            "LeakSessionKey": [
-                "true",
-                "implied"
-            ],
             "PreciseDH": [
+                "timeout",
+                30
+            ],
+            "LeakShare": [
                 "timeout",
                 30
             ],
@@ -809,13 +809,13 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignatureProof*WeakAEAD": [
+                "true",
+                25.243972778320312
+            ],
             "PreciseSignature*LeakSessionKey": [
                 "true",
                 "implied"
-            ],
-            "PreciseSignatureProof*WeakAEAD": [
-                "true",
-                27.65164089202881
             ],
             "PreciseSignatureProof*LeakSessionKey": [
                 "timeout",
@@ -887,7 +887,7 @@
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD": [
                 "true",
-                29.354979991912842
+                28.277029752731323
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
                 "timeout",
@@ -897,11 +897,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
+            "PreciseSignature*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "timeout",
                 30
             ],
@@ -969,11 +969,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*XorPrecise*PreciseDH": [
+            "PreciseSignature*XorPrecise*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*XorPrecise*PreciseDH": [
+            "PreciseSignatureProof*XorPrecise*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -989,11 +989,11 @@
                 "timeout",
                 30
             ],
-            "LeakSessionKey*LeakShare*PreciseDH": [
+            "PreciseSignatureProof*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakShare*PreciseDH": [
+            "LeakSessionKey*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -1160,18 +1160,10 @@
         },
         "data_authentication_R_to_I": {
             "": [
-                "timeout",
-                30
+                "true",
+                28.648162126541138
             ],
             "PreciseSignature": [
-                "timeout",
-                30
-            ],
-            "PreciseSignatureProof": [
-                "timeout",
-                30
-            ],
-            "WeakAEAD": [
                 "timeout",
                 30
             ],
@@ -1179,7 +1171,15 @@
                 "timeout",
                 30
             ],
+            "PreciseSignatureProof": [
+                "timeout",
+                30
+            ],
             "LeakSessionKey": [
+                "timeout",
+                30
+            ],
+            "WeakAEAD": [
                 "timeout",
                 30
             ],
@@ -1407,15 +1407,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
-                "timeout",
-                30
-            ],
             "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -1423,11 +1419,15 @@
                 "timeout",
                 30
             ],
-            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*PreciseDH": [
+                "timeout",
+                30
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -1463,11 +1463,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -1507,11 +1507,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -1523,11 +1523,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -1553,15 +1553,19 @@
                 "true",
                 "implied"
             ],
-            "PreciseDH": [
-                "timeout",
-                30
-            ],
             "WeakAEAD": [
                 "true",
                 "implied"
             ],
             "LeakSessionKey": [
+                "timeout",
+                30
+            ],
+            "PreciseDH": [
+                "timeout",
+                30
+            ],
+            "PreciseSignatureProof": [
                 "timeout",
                 30
             ],
@@ -1573,21 +1577,17 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof": [
+            "PreciseSignature*WeakAEAD": [
+                "true",
+                26.907127857208252
+            ],
+            "PreciseSignature*LeakSessionKey": [
                 "timeout",
                 30
             ],
             "PreciseSignatureProof*LeakSessionKey": [
                 "timeout",
                 30
-            ],
-            "PreciseSignature*LeakSessionKey": [
-                "timeout",
-                30
-            ],
-            "PreciseSignature*WeakAEAD": [
-                "true",
-                30.000283241271973
             ],
             "PreciseSignatureProof*WeakAEAD": [
                 "timeout",
@@ -1713,19 +1713,19 @@
                 "timeout",
                 30
             ],
-            "WeakAEAD*XorPrecise*LeakShare": [
-                "timeout",
-                30
-            ],
             "LeakSessionKey*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakSessionKey*PreciseDH": [
+            "WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
             "PreciseSignature*LeakSessionKey*PreciseDH": [
+                "timeout",
+                30
+            ],
+            "PreciseSignatureProof*LeakSessionKey*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -1738,6 +1738,10 @@
                 30
             ],
             "LeakSessionKey*WeakAEAD*PreciseDH": [
+                "timeout",
+                30
+            ],
+            "PreciseSignature*XorPrecise*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -1754,10 +1758,6 @@
                 30
             ],
             "PreciseSignature*LeakShare*PreciseDH": [
-                "timeout",
-                30
-            ],
-            "PreciseSignature*XorPrecise*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -1931,19 +1931,19 @@
             ]
         },
         "honestauthRI_unique": {
-            "PreciseSignature": [
-                "true",
-                23.61251735687256
-            ],
             "": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignature": [
                 "true",
                 "implied"
             ],
             "WeakAEAD": [
                 "true",
-                29.83329486846924
+                "implied"
             ],
-            "PreciseSignatureProof": [
+            "LeakSessionKey": [
                 "timeout",
                 30
             ],
@@ -1951,7 +1951,7 @@
                 "timeout",
                 30
             ],
-            "LeakSessionKey": [
+            "PreciseSignatureProof": [
                 "timeout",
                 30
             ],
@@ -1963,15 +1963,15 @@
                 "timeout",
                 30
             ],
+            "PreciseSignature*WeakAEAD": [
+                "true",
+                28.00743079185486
+            ],
             "PreciseSignature*LeakSessionKey": [
                 "timeout",
                 30
             ],
             "PreciseSignatureProof*LeakSessionKey": [
-                "timeout",
-                30
-            ],
-            "PreciseSignature*WeakAEAD": [
                 "timeout",
                 30
             ],
@@ -2047,11 +2047,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignature*LeakSessionKey*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
+            "PreciseSignature*LeakSessionKey*XorPrecise": [
                 "timeout",
                 30
             ],
@@ -2191,15 +2191,15 @@
                 "timeout",
                 30
             ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                30
+            ],
             "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*PreciseDH": [
-                "timeout",
-                30
-            ],
-            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -2235,11 +2235,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
+            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*WeakAEAD*LeakShare*PreciseDH": [
+            "PreciseSignature*WeakAEAD*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -2318,12 +2318,12 @@
         },
         "secretI": {
             "": [
-                "timeout",
-                30
+                "true",
+                "implied"
             ],
             "PreciseSignature": [
-                "timeout",
-                30
+                "true",
+                "implied"
             ],
             "PreciseSignatureProof": [
                 "timeout",
@@ -2334,8 +2334,8 @@
                 30
             ],
             "WeakAEAD": [
-                "timeout",
-                30
+                "true",
+                "implied"
             ],
             "XorPrecise": [
                 "timeout",
@@ -2358,8 +2358,8 @@
                 30
             ],
             "PreciseSignature*WeakAEAD": [
-                "timeout",
-                30
+                "true",
+                29.551657676696777
             ],
             "PreciseSignatureProof*WeakAEAD": [
                 "timeout",
@@ -2369,15 +2369,15 @@
                 "timeout",
                 30
             ],
-            "PreciseSignature*XorPrecise": [
-                "timeout",
-                30
-            ],
             "PreciseSignatureProof*XorPrecise": [
                 "timeout",
                 30
             ],
             "LeakSessionKey*XorPrecise": [
+                "timeout",
+                30
+            ],
+            "PreciseSignature*XorPrecise": [
                 "timeout",
                 30
             ],
@@ -2489,6 +2489,10 @@
                 "timeout",
                 30
             ],
+            "PreciseSignature*LeakSessionKey*PreciseDH": [
+                "timeout",
+                30
+            ],
             "WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
@@ -2509,11 +2513,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignature*LeakSessionKey*PreciseDH": [
+            "PreciseSignature*XorPrecise*PreciseDH": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*XorPrecise*PreciseDH": [
+            "PreciseSignatureProof*XorPrecise*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -2529,10 +2533,6 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*XorPrecise*PreciseDH": [
-                "timeout",
-                30
-            ],
             "PreciseSignatureProof*LeakShare*PreciseDH": [
                 "timeout",
                 30
@@ -2541,11 +2541,11 @@
                 "timeout",
                 30
             ],
-            "XorPrecise*LeakShare*PreciseDH": [
+            "WeakAEAD*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
-            "WeakAEAD*LeakShare*PreciseDH": [
+            "XorPrecise*LeakShare*PreciseDH": [
                 "timeout",
                 30
             ],
@@ -2743,11 +2743,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*WeakAEAD": [
+            "PreciseSignature*WeakAEAD": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*WeakAEAD": [
+            "PreciseSignatureProof*WeakAEAD": [
                 "timeout",
                 30
             ],
@@ -2835,11 +2835,11 @@
                 "timeout",
                 30
             ],
-            "LeakSessionKey*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+            "LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
@@ -3097,11 +3097,11 @@
                 "true",
                 "implied"
             ],
-            "WeakAEAD": [
+            "PreciseSignatureProof": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof": [
+            "WeakAEAD": [
                 "true",
                 "implied"
             ],
@@ -3127,11 +3127,11 @@
             ],
             "PreciseSignatureProof*WeakAEAD": [
                 "true",
-                24.791911602020264
+                23.124819040298462
             ],
             "PreciseSignature*LeakSessionKey": [
                 "true",
-                28.243762016296387
+                "implied"
             ],
             "PreciseSignatureProof*LeakSessionKey": [
                 "timeout",
@@ -3139,7 +3139,7 @@
             ],
             "LeakSessionKey*WeakAEAD": [
                 "true",
-                27.679182767868042
+                "implied"
             ],
             "PreciseSignature*XorPrecise": [
                 "timeout",
@@ -3202,8 +3202,8 @@
                 30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD": [
-                "timeout",
-                30
+                "true",
+                27.368854522705078
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
                 "timeout",
@@ -3213,11 +3213,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
+            "PreciseSignature*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
@@ -3245,11 +3245,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignature*XorPrecise*LeakShare": [
+            "LeakSessionKey*WeakAEAD*LeakShare": [
                 "timeout",
                 30
             ],
-            "LeakSessionKey*WeakAEAD*LeakShare": [
+            "PreciseSignature*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -3333,11 +3333,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
                 "timeout",
                 30
             ],
@@ -3489,7 +3489,7 @@
             ],
             "PreciseSignatureProof": [
                 "true",
-                27.273270845413208
+                "implied"
             ],
             "LeakSessionKey": [
                 "true",
@@ -3513,19 +3513,19 @@
             ],
             "PreciseSignature*LeakSessionKey": [
                 "true",
-                "implied"
+                28.68858766555786
             ],
             "PreciseSignatureProof*LeakSessionKey": [
                 "timeout",
                 30
             ],
             "PreciseSignatureProof*WeakAEAD": [
-                "timeout",
-                30
+                "true",
+                29.70213794708252
             ],
             "LeakSessionKey*WeakAEAD": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "PreciseSignature*XorPrecise": [
                 "timeout",
@@ -3588,8 +3588,8 @@
                 30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD": [
-                "true",
-                29.86890482902527
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
                 "timeout",
@@ -3871,11 +3871,11 @@
                 "true",
                 "implied"
             ],
-            "WeakAEAD": [
+            "LeakSessionKey": [
                 "true",
                 "implied"
             ],
-            "LeakSessionKey": [
+            "WeakAEAD": [
                 "true",
                 "implied"
             ],
@@ -3891,15 +3891,11 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD": [
-                "true",
-                "implied"
-            ],
             "PreciseSignature*LeakSessionKey": [
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*WeakAEAD": [
+            "PreciseSignature*WeakAEAD": [
                 "true",
                 "implied"
             ],
@@ -3907,7 +3903,7 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*XorPrecise": [
+            "LeakSessionKey*WeakAEAD": [
                 "true",
                 "implied"
             ],
@@ -3915,11 +3911,11 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*LeakShare": [
+            "PreciseSignatureProof*LeakShare": [
                 "true",
                 "implied"
             ],
-            "WeakAEAD*XorPrecise": [
+            "PreciseSignature*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -3927,11 +3923,15 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakShare": [
+            "LeakSessionKey*LeakShare": [
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*LeakShare": [
+            "PreciseSignature*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -3939,11 +3939,11 @@
                 "true",
                 "implied"
             ],
-            "XorPrecise*LeakShare": [
+            "PreciseSignatureProof*XorPrecise": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*XorPrecise": [
+            "XorPrecise*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -3955,7 +3955,7 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -3963,15 +3963,11 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
             "PreciseSignature*LeakSessionKey*LeakShare": [
                 "true",
                 "implied"
             ],
-            "PreciseSignature*LeakSessionKey*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -3979,11 +3975,23 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignature*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
             "LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+            "PreciseSignature*LeakSessionKey*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -3995,19 +4003,11 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*XorPrecise*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
-                "true",
-                29.344528675079346
-            ],
-            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*XorPrecise*LeakShare": [
+            "LeakSessionKey*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -4015,27 +4015,23 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+                "true",
+                4.903234004974365
+            ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
-                5.0875349044799805
+                18.636754274368286
             ],
             "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
                 "true",
-                "implied"
+                26.079760313034058
             ],
             "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
@@ -4047,9 +4043,13 @@
                 "timeout",
                 30
             ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                30
+            ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
-                "true",
-                21.116141319274902
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
@@ -4077,15 +4077,11 @@
                 "true",
                 "implied"
             ],
-            "XorPrecise": [
-                "true",
-                "implied"
-            ],
             "LeakShare": [
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD": [
+            "XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4093,11 +4089,11 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*WeakAEAD": [
+            "PreciseSignature*WeakAEAD": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*WeakAEAD": [
+            "LeakSessionKey*WeakAEAD": [
                 "true",
                 "implied"
             ],
@@ -4105,19 +4101,7 @@
                 "true",
                 "implied"
             ],
-            "WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*LeakShare": [
+            "PreciseSignatureProof*WeakAEAD": [
                 "true",
                 "implied"
             ],
@@ -4125,7 +4109,11 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*XorPrecise": [
+            "PreciseSignature*LeakShare": [
+                "true",
+                "implied"
+            ],
+            "WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -4133,19 +4121,27 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignature*XorPrecise": [
+                "true",
+                "implied"
+            ],
             "PreciseSignatureProof*XorPrecise": [
                 "true",
                 "implied"
             ],
-            "XorPrecise*LeakShare": [
+            "WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
+            ],
+            "LeakSessionKey*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4157,22 +4153,6 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*LeakSessionKey*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*LeakSessionKey*LeakShare": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*WeakAEAD*LeakShare": [
                 "true",
                 "implied"
@@ -4181,7 +4161,23 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignature*LeakSessionKey*LeakShare": [
+                "true",
+                "implied"
+            ],
+            "LeakSessionKey*WeakAEAD*LeakShare": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
             "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4189,13 +4185,13 @@
                 "true",
                 "implied"
             ],
-            "WeakAEAD*XorPrecise*LeakShare": [
+            "LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
             "PreciseSignature*XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*XorPrecise*LeakShare": [
                 "timeout",
@@ -4205,9 +4201,9 @@
                 "timeout",
                 30
             ],
-            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
@@ -4215,21 +4211,25 @@
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
-                9.643677949905396
+                8.09123969078064
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
-                26.764118671417236
+                "implied"
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
-                28.238146543502808
+                17.756045818328857
             ],
-            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                30
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -4255,11 +4255,11 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature": [
+            "WeakAEAD": [
                 "true",
                 "implied"
             ],
-            "WeakAEAD": [
+            "PreciseSignature": [
                 "true",
                 "implied"
             ],
@@ -4272,26 +4272,22 @@
                 "implied"
             ],
             "LeakShare": [
-                "true",
-                "implied"
-            ],
-            "XorPrecise": [
                 "false",
-                2.353116750717163
+                3.548112154006958
             ],
-            "PreciseSignature*XorPrecise": [
+            "PreciseSignature*LeakShare": [
                 "false",
                 "implied"
             ],
-            "PreciseSignatureProof*XorPrecise": [
+            "PreciseSignatureProof*LeakShare": [
                 "false",
                 "implied"
             ],
-            "LeakSessionKey*XorPrecise": [
+            "LeakSessionKey*LeakShare": [
                 "false",
                 "implied"
             ],
-            "WeakAEAD*XorPrecise": [
+            "WeakAEAD*LeakShare": [
                 "false",
                 "implied"
             ],
@@ -4299,23 +4295,23 @@
                 "false",
                 "implied"
             ],
-            "PreciseSignature*LeakSessionKey*XorPrecise": [
+            "PreciseSignature*LeakSessionKey*LeakShare": [
                 "false",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
                 "false",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
+            "PreciseSignature*WeakAEAD*LeakShare": [
                 "false",
                 "implied"
             ],
-            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
                 "false",
                 "implied"
             ],
-            "LeakSessionKey*WeakAEAD*XorPrecise": [
+            "LeakSessionKey*WeakAEAD*LeakShare": [
                 "false",
                 "implied"
             ],
@@ -4335,11 +4331,11 @@
                 "false",
                 "implied"
             ],
-            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
+            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
                 "false",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
                 "false",
                 "implied"
             ],
@@ -4371,6 +4367,54 @@
                 "false",
                 "implied"
             ],
+            "XorPrecise": [
+                "false",
+                13.331618785858154
+            ],
+            "PreciseSignature*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "PreciseSignatureProof*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "LeakSessionKey*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "WeakAEAD*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
+                "false",
+                "implied"
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
+                "false",
+                "implied"
+            ],
             "PreciseSignature*WeakAEAD": [
                 "true",
                 "implied"
@@ -4387,61 +4431,17 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*LeakShare": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*LeakSessionKey": [
                 "true",
-                "implied"
-            ],
-            "WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "LeakSessionKey*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignatureProof*LeakShare": [
-                "false",
-                4.72387170791626
-            ],
-            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
-                "false",
-                "implied"
-            ],
-            "PreciseSignatureProof*WeakAEAD*LeakShare": [
-                "false",
-                "implied"
-            ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
-                "false",
                 "implied"
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD": [
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*LeakSessionKey*LeakShare": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
                 "true",
-                3.6215968132019043
-            ],
-            "LeakSessionKey*WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
-                "true",
-                3.9036974906921387
+                3.1667184829711914
             ]
         },
         "data_authentication_R_to_I": {
@@ -4477,11 +4477,11 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*WeakAEAD": [
+            "PreciseSignature*LeakSessionKey": [
                 "true",
                 "implied"
             ],
-            "PreciseSignature*LeakSessionKey": [
+            "LeakSessionKey*WeakAEAD": [
                 "true",
                 "implied"
             ],
@@ -4497,15 +4497,7 @@
                 "true",
                 "implied"
             ],
-            "WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
             "PreciseSignature*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4513,13 +4505,17 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*XorPrecise": [
+            "PreciseSignature*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
             "PreciseSignatureProof*LeakShare": [
                 "false",
-                23.384502172470093
+                27.455202341079712
             ],
             "PreciseSignatureProof*LeakSessionKey*LeakShare": [
                 "false",
@@ -4553,6 +4549,10 @@
                 "timeout",
                 30
             ],
+            "LeakSessionKey*XorPrecise": [
+                "true",
+                "implied"
+            ],
             "XorPrecise*LeakShare": [
                 "timeout",
                 30
@@ -4563,17 +4563,9 @@
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
                 "true",
-                7.126862525939941
+                7.629052400588989
             ],
             "PreciseSignature*WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -4581,13 +4573,17 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*WeakAEAD*XorPrecise": [
+            "LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
+            "PreciseSignature*WeakAEAD*XorPrecise": [
+                "true",
+                23.52172827720642
+            ],
             "PreciseSignature*LeakSessionKey*XorPrecise": [
                 "true",
-                "implied"
+                29.46358036994934
             ],
             "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "timeout",
@@ -4597,11 +4593,11 @@
                 "timeout",
                 30
             ],
-            "PreciseSignature*XorPrecise*LeakShare": [
+            "LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
-            "WeakAEAD*XorPrecise*LeakShare": [
+            "PreciseSignature*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -4609,13 +4605,17 @@
                 "timeout",
                 30
             ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                30
+            ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
-                6.594871997833252
+                10.308862924575806
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                11.236284971237183
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
@@ -4687,15 +4687,7 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*XorPrecise": [
-                "true",
-                "implied"
-            ],
             "WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4707,7 +4699,11 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*XorPrecise": [
+            "PreciseSignature*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4715,27 +4711,27 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*XorPrecise": [
-                "timeout",
-                30
-            ],
-            "XorPrecise*LeakShare": [
+            "LeakSessionKey*XorPrecise": [
                 "true",
                 "implied"
+            ],
+            "PreciseSignatureProof*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "XorPrecise*LeakShare": [
+                "timeout",
+                30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD": [
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignature*WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -4747,11 +4743,7 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*LeakSessionKey*XorPrecise": [
+            "PreciseSignature*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4763,27 +4755,35 @@
                 "true",
                 "implied"
             ],
-            "WeakAEAD*XorPrecise*LeakShare": [
+            "PreciseSignature*LeakSessionKey*XorPrecise": [
                 "true",
                 "implied"
             ],
-            "PreciseSignature*XorPrecise*LeakShare": [
+            "LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+                "true",
+                25.739771127700806
             ],
             "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
+                "true",
+                28.873940229415894
+            ],
+            "PreciseSignature*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
-            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
             "LeakSessionKey*XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
-            "PreciseSignatureProof*XorPrecise*LeakShare": [
+            "WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -4791,27 +4791,27 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
-                15.133358716964722
+                16.13220453262329
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
-                "implied"
+                19.61296844482422
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
             "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                30
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -4820,12 +4820,12 @@
                 30
             ],
             "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
-                "true",
-                29.954996824264526
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
@@ -4837,11 +4837,11 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature": [
+            "WeakAEAD": [
                 "true",
                 "implied"
             ],
-            "WeakAEAD": [
+            "PreciseSignature": [
                 "true",
                 "implied"
             ],
@@ -4853,15 +4853,11 @@
                 "true",
                 "implied"
             ],
-            "XorPrecise": [
-                "true",
-                "implied"
-            ],
             "LeakShare": [
                 "true",
                 "implied"
             ],
-            "PreciseSignature*LeakSessionKey": [
+            "XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4869,11 +4865,11 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*WeakAEAD": [
+            "PreciseSignature*LeakSessionKey": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey": [
+            "LeakSessionKey*WeakAEAD": [
                 "true",
                 "implied"
             ],
@@ -4881,11 +4877,7 @@
                 "true",
                 "implied"
             ],
-            "WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey": [
                 "true",
                 "implied"
             ],
@@ -4897,11 +4889,19 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*XorPrecise": [
+            "LeakSessionKey*LeakShare": [
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*LeakShare": [
+            "PreciseSignature*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "LeakSessionKey*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4914,14 +4914,10 @@
                 "implied"
             ],
             "XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4933,19 +4929,23 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*LeakSessionKey*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
             "LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
             "PreciseSignature*LeakSessionKey*LeakShare": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -4957,29 +4957,29 @@
                 "true",
                 "implied"
             ],
-            "WeakAEAD*XorPrecise*LeakShare": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*WeakAEAD*XorPrecise": [
                 "true",
-                28.113443851470947
+                27.194350242614746
             ],
             "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "timeout",
                 30
             ],
             "PreciseSignature*XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
             "LeakSessionKey*XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
+            ],
+            "WeakAEAD*XorPrecise*LeakShare": [
+                "timeout",
+                30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
@@ -4987,25 +4987,25 @@
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
-                "implied"
+                15.91698169708252
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
-                19.41661787033081
-            ],
-            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                21.75549340248108
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
             "PreciseSignature*LeakSessionKey*XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
+                "timeout",
+                30
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
@@ -5014,12 +5014,12 @@
                 30
             ],
             "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
-                "true",
-                29.78395962715149
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
@@ -5048,8 +5048,8 @@
                 "implied"
             ],
             "XorPrecise": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "LeakShare": [
                 "true",
@@ -5071,19 +5071,7 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*XorPrecise": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*LeakSessionKey": [
-                "true",
-                "implied"
-            ],
-            "WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "LeakSessionKey*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -5095,15 +5083,27 @@
                 "true",
                 "implied"
             ],
-            "WeakAEAD*LeakShare": [
-                "true",
-                "implied"
+            "PreciseSignature*XorPrecise": [
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*XorPrecise": [
                 "timeout",
                 30
             ],
+            "LeakSessionKey*XorPrecise": [
+                "timeout",
+                30
+            ],
+            "WeakAEAD*XorPrecise": [
+                "timeout",
+                30
+            ],
             "LeakSessionKey*LeakShare": [
+                "timeout",
+                30
+            ],
+            "WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -5115,35 +5115,35 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
                 "true",
-                8.49431848526001
-            ],
-            "PreciseSignature*LeakSessionKey*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
+                9.552932500839233
             ],
             "PreciseSignatureProof*WeakAEAD*LeakShare": [
                 "true",
-                17.318120002746582
+                18.450660228729248
             ],
             "PreciseSignature*WeakAEAD*LeakShare": [
-                "true",
-                22.376529216766357
+                "timeout",
+                30
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise": [
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "timeout",
                 30
             ],
+            "PreciseSignature*WeakAEAD*XorPrecise": [
+                "timeout",
+                30
+            ],
             "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+                "timeout",
+                30
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
@@ -5156,8 +5156,8 @@
                 30
             ],
             "LeakSessionKey*WeakAEAD*LeakShare": [
-                "true",
-                29.917075872421265
+                "timeout",
+                30
             ],
             "PreciseSignature*XorPrecise*LeakShare": [
                 "timeout",
@@ -5176,8 +5176,8 @@
                 30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                11.343229293823242
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
@@ -5265,6 +5265,10 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignatureProof*LeakSessionKey": [
+                "true",
+                "implied"
+            ],
             "PreciseSignature*XorPrecise": [
                 "true",
                 "implied"
@@ -5277,13 +5281,9 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*XorPrecise": [
                 "true",
-                29.10637903213501
+                29.628307104110718
             ],
             "PreciseSignature*LeakShare": [
                 "true",
@@ -5291,15 +5291,15 @@
             ],
             "PreciseSignatureProof*LeakShare": [
                 "true",
-                "implied"
+                29.570168256759644
             ],
             "LeakSessionKey*LeakShare": [
                 "timeout",
                 30
             ],
             "WeakAEAD*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "XorPrecise*LeakShare": [
                 "timeout",
@@ -5309,27 +5309,27 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
+                "true",
+                19.210102558135986
+            ],
             "PreciseSignature*WeakAEAD*XorPrecise": [
                 "true",
-                "implied"
+                24.16749596595764
             ],
             "PreciseSignature*LeakSessionKey*XorPrecise": [
                 "true",
-                "implied"
-            ],
-            "LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD": [
-                "true",
-                17.166856288909912
+                27.446771383285522
             ],
             "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "timeout",
                 30
             ],
             "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+                "timeout",
+                30
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
                 30
             ],
@@ -5342,12 +5342,12 @@
                 30
             ],
             "PreciseSignature*WeakAEAD*LeakShare": [
-                "true",
-                "implied"
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*WeakAEAD*LeakShare": [
-                "true",
-                29.95857548713684
+                "timeout",
+                30
             ],
             "LeakSessionKey*WeakAEAD*LeakShare": [
                 "timeout",
@@ -5370,8 +5370,8 @@
                 30
             ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                13.947515726089478
+                "timeout",
+                30
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "timeout",
@@ -5427,11 +5427,11 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey": [
+            "PreciseSignatureProof": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof": [
+            "LeakSessionKey": [
                 "true",
                 "implied"
             ],
@@ -5443,11 +5443,11 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*LeakSessionKey": [
+            "PreciseSignature*WeakAEAD": [
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD": [
+            "PreciseSignature*LeakSessionKey": [
                 "true",
                 "implied"
             ],
@@ -5455,23 +5455,15 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey": [
-                "true",
-                "implied"
-            ],
             "PreciseSignatureProof*WeakAEAD": [
                 "true",
                 "implied"
             ],
-            "PreciseSignature*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey": [
                 "true",
                 "implied"
             ],
             "PreciseSignature*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -5487,15 +5479,23 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignature*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
             "LeakSessionKey*XorPrecise": [
                 "true",
                 "implied"
             ],
-            "XorPrecise*LeakShare": [
+            "PreciseSignatureProof*XorPrecise": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*XorPrecise": [
+            "XorPrecise*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -5507,11 +5507,7 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*LeakSessionKey*XorPrecise": [
+            "PreciseSignature*WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -5519,11 +5515,7 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "LeakSessionKey*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -5535,7 +5527,23 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+            "PreciseSignature*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "LeakSessionKey*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -5547,23 +5555,11 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
+            "PreciseSignatureProof*XorPrecise*LeakShare": [
                 "true",
                 "implied"
             ],
             "LeakSessionKey*XorPrecise*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignatureProof*XorPrecise*LeakShare": [
-                "timeout",
-                30
-            ],
-            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -5573,9 +5569,21 @@
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
-                5.1309731006622314
+                "implied"
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
             ],
             "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -5583,29 +5591,21 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                "implied"
+            ],
             "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
-                "true",
-                26.26274561882019
-            ],
-            "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
-                "timeout",
-                30
-            ],
-            "PreciseSignatureProof*WeakAEAD*XorPrecise*LeakShare": [
-                "timeout",
-                30
-            ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
                 "true",
-                18.79839277267456
+                "implied"
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
-                "timeout",
-                30
+                "true",
+                29.124280214309692
             ]
         },
         "honestauthIR_unique": {
@@ -5657,11 +5657,7 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -5673,11 +5669,19 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakShare": [
+            "LeakSessionKey*LeakShare": [
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*LeakShare": [
+            "PreciseSignature*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignatureProof*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -5689,10 +5693,6 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*XorPrecise": [
-                "true",
-                "implied"
-            ],
             "PreciseSignature*LeakSessionKey*WeakAEAD": [
                 "true",
                 "implied"
@@ -5701,19 +5701,11 @@
                 "true",
                 "implied"
             ],
-            "PreciseSignature*WeakAEAD*XorPrecise": [
+            "PreciseSignatureProof*WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
             "PreciseSignature*WeakAEAD*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignature*LeakSessionKey*XorPrecise": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignatureProof*WeakAEAD*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -5725,11 +5717,27 @@
                 "true",
                 "implied"
             ],
+            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignature*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignature*LeakSessionKey*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
             "LeakSessionKey*WeakAEAD*XorPrecise": [
                 "true",
                 "implied"
             ],
-            "PreciseSignatureProof*LeakSessionKey*LeakShare": [
+            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
                 "true",
                 "implied"
             ],
@@ -5741,23 +5749,11 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*XorPrecise*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignatureProof*LeakSessionKey*XorPrecise": [
-                "timeout",
-                30
-            ],
-            "PreciseSignatureProof*WeakAEAD*XorPrecise": [
-                "true",
-                29.58090853691101
-            ],
             "PreciseSignatureProof*XorPrecise*LeakShare": [
                 "timeout",
                 30
             ],
-            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
+            "LeakSessionKey*XorPrecise*LeakShare": [
                 "true",
                 "implied"
             ],
@@ -5767,7 +5763,15 @@
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*LeakShare": [
                 "true",
-                4.808813095092773
+                4.781387090682983
+            ],
+            "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise": [
+                "true",
+                "implied"
+            ],
+            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
+                "true",
+                18.392895936965942
             ],
             "PreciseSignature*WeakAEAD*XorPrecise*LeakShare": [
                 "true",
@@ -5777,14 +5781,6 @@
                 "true",
                 "implied"
             ],
-            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
-                "true",
-                "implied"
-            ],
-            "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise": [
-                "timeout",
-                30
-            ],
             "PreciseSignatureProof*LeakSessionKey*XorPrecise*LeakShare": [
                 "timeout",
                 30
@@ -5793,9 +5789,13 @@
                 "timeout",
                 30
             ],
+            "LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
+                "true",
+                "implied"
+            ],
             "PreciseSignature*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
                 "true",
-                19.299058437347412
+                27.823944568634033
             ],
             "PreciseSignatureProof*LeakSessionKey*WeakAEAD*XorPrecise*LeakShare": [
                 "timeout",
